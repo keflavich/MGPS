@@ -48,7 +48,7 @@ for regname,fn in files.items():
             pltr = dend.plotter()
             for struct in dend.leaves:
                 pltr.plot_contour(ax, structure=struct, colors=['r'],
-                                         linewidths=[0.9], zorder=5)
+                                  linewidths=[0.9], zorder=5)
                 if struct.parent:
                     while struct.parent:
                         struct = struct.parent
@@ -57,13 +57,13 @@ for regname,fn in files.items():
 
             cntr = pl.gca().collections
 
-            pl.setp([x for x in cntr.collections if x.get_color()[0] == 1], linewidth=0.2)
-            pl.setp([x for x in cntr.collections if x.get_color()[1] == 1], linewidth=0.2)
+            pl.setp([x for x in cntr if x.get_color()[0,0] == 1], linewidth=0.25)
+            pl.setp([x for x in cntr if x.get_color()[0,1] == 1], linewidth=0.25)
             pl.savefig('{2}_dend_contour_{0}_{1}.pdf'.format(threshold, min_delta, regname))
             pl.axis((1125.4006254228616, 1670.3650637799306,
                      1291.6829155596627, 1871.8063499397681))
-            pl.setp([x for x in cntr.collections if x.get_color()[0] == 1], linewidth=0.75) # Red
-            pl.setp([x for x in cntr.collections if x.get_color()[1] == 1], linewidth=0.5) # Green
+            pl.setp([x for x in cntr if x.get_color()[0,0] == 1], linewidth=0.75) # Red
+            pl.setp([x for x in cntr if x.get_color()[0,1] == 1], linewidth=0.5) # Green
             pl.savefig('{2}_dend_contour_{0}_{1}_zoom.pdf'.format(threshold, min_delta, regname))
 
             metadata = {'data_unit': u.Jy / u.beam,
