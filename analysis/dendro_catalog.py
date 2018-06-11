@@ -3,6 +3,7 @@ from astropy import wcs
 from astropy.io import fits
 from astropy.stats import mad_std
 from astropy.convolution import convolve_fft, Gaussian2DKernel
+from astropy import units as u
 import regions
 import pylab as pl
 
@@ -32,12 +33,12 @@ for regname,fn in files.items():
     cutout = mask.multiply(data_filtered)
     ww_cutout = ww[mask.bbox.ixmin:mask.bbox.ixmax, mask.bbox.iymin:mask.bbox.iymax]
 
-    for threshold in (4, 6, 8, 10):
+    for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
         for min_delta in (1, 2):
             dend = astrodendro.Dendrogram.compute(cutout,
                                                   min_value=err*threshold,
                                                   min_delta=err*min_delta,
-                                                  verbose=True, min_npix=15,
+                                                  verbose=True, min_npix=min_npix,
                                                   wcs=ww_cutout)
 
             ax = pl.gca()
@@ -47,17 +48,32 @@ for regname,fn in files.items():
             pltr = dend.plotter()
             for struct in dend.leaves:
                 pltr.plot_contour(ax, structure=struct, colors=['r'],
-                                  linewidths=[0.9], zorder=5)
+                                         linewidths=[0.9], zorder=5)
                 if struct.parent:
                     while struct.parent:
                         struct = struct.parent
                     pltr.plot_contour(ax, structure=struct, colors=[(0,1,0,1)],
                                       linewidths=[0.5])
 
+            cntr = pl.gca().collections
+
+            pl.setp([x for x in cntr.collections if x.get_color()[0] == 1], linewidth=0.2)
+            pl.setp([x for x in cntr.collections if x.get_color()[1] == 1], linewidth=0.2)
             pl.savefig('{2}_dend_contour_{0}_{1}.pdf'.format(threshold, min_delta, regname))
             pl.axis((1125.4006254228616, 1670.3650637799306,
                      1291.6829155596627, 1871.8063499397681))
+            pl.setp([x for x in cntr.collections if x.get_color()[0] == 1], linewidth=0.75) # Red
+            pl.setp([x for x in cntr.collections if x.get_color()[1] == 1], linewidth=0.5) # Green
             pl.savefig('{2}_dend_contour_{0}_{1}_zoom.pdf'.format(threshold, min_delta, regname))
+
+            metadata = {'data_unit': u.Jy / u.beam,
+                        'beam_major': 8*u.arcsec,
+                        'beam_minor': 8*u.arcsec,
+                        'wcs': ww_cutout,
+                        'spatial_scale': wcs.utils.proj_plane_pixel_scales(ww_cutout).mean()*u.deg,
+                       }
+            ppcat = astrodendro.pp_catalog(dend, metadata)
+            ppcat.write('{2}_dend_contour_{0}_{1}.ipac', format='ascii.ipac')
 
     # only do G31 for now, since it's hard-coded
     break
