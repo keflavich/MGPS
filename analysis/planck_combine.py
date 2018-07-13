@@ -32,7 +32,8 @@ for regname, fn in files.items():
     fh = fits.open(fn)
     ww = wcs.WCS(fh[0].header)
     center = coordinates.SkyCoord(fh[0].header['CRVAL1'], fh[0].header['CRVAL2'],
-                                  frame=ww.wcs.radesys.lower() or 'galactic', unit=(u.deg, u.deg))
+                                  frame=wcs.utils.wcs_to_celestial_frame(ww),
+                                  unit=(u.deg, u.deg))
 
     planck_image = SkyView.get_images(center, 'Planck 100')[0][0]
     # bandpass information here: https://wiki.cosmos.esa.int/planckpla2015/index.php/The_RIMO#HFI_2
