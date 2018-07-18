@@ -81,7 +81,7 @@ contributing to the integrated Galactic star formation.
 
 
 
-\indent\underline{\textbf{\helv Dust as a mass estimator in high-mass protoclusters:}} 
+\indent\underline{\textbf{\helv Dust as a mass estimator:}} 
 %{\color{red}{\bf to be axed:} Some HII regions have shown evidence for
 %excess microwave emission in the 15-30 GHz range, which has been attributed to
 %electric dipole emission from spinning dust \citep{Watson2005a,Dickinson2007a}.
@@ -127,22 +127,32 @@ characterize the evolutionary stage of these protoclusters.
 %contamination with free-free emission from ionized gas.
 
 \subsection{Dust $\beta$}
+The dust opacity index $\beta$ is the key uncertain parameter in the measurement
+of column density from dust emission.  Surveys at $<1$ mm are generally forced
+to assume a fixed $\beta$ index because it is difficult to measure; it
+is degenerate with the dust temperature, leading to huge uncertainties in its
+value and therefore in the corresponding dust mass \citep{}.
+At wavelengths longer than $\sim1$ mm, however, measurements are firmly
+on the Rayleigh-Jeans tail and sensitive only to $\beta$, not temperature.
+\MUSTANG 3 mm observations of dust emission will provide the best
+measurements of this parameter \citep{Schnee...}, and these measurements will
+be the first of their kind in most of the Galaxy.
 
-The cold dust observed from $\sim100$ \um to 3 mm is an accurate tracer of
-the total mass of gas `clumps' that make up the densest part of molecular clouds.
-The 3 mm data provide sensitivity to the coldest dust, being well within the
-Rayleigh-Jeans limit for any temperatures so far observed.
-%However, the accuracy of mass estimation is
-%limited by uncertainties in the temperature and emissivity
-%of the dust and, at long wavelengths, the amount of free-free “contamination”.
-Long-wavelength data are necessary for estimating the dust emissivity power-law
-index $\beta$, and the \MUSTANG 3mm data point is the longest available on
-angular scales comparable to the (sub)millimeter instruments.
-Assuming standard emissivity, a 0.5 mJy RMS is equivalent to 3.8\ee{21}
-\persc, so our target $5\sigma$ sensitivity is $\sim1.9\ee{22}$ \persc, well
-below the column density typically associated with high-mass star formation
-\citep[e.g.,][]{Krumholz2008a}.
-%(e.g., Krumholz \& McKee 2008).
+% The cold dust observed from $\sim100$ \um to 3 mm is an accurate tracer of
+% the total mass of gas `clumps' that make up the densest part of molecular clouds.
+% The 3 mm data provide sensitivity to the coldest dust, being well within the
+% Rayleigh-Jeans limit for any temperatures so far observed.
+% %However, the accuracy of mass estimation is
+% %limited by uncertainties in the temperature and emissivity
+% %of the dust and, at long wavelengths, the amount of free-free “contamination”.
+% Long-wavelength data are necessary for estimating the dust emissivity power-law
+% index $\beta$, and the \MUSTANG 3mm data point is the longest available on
+% angular scales comparable to the (sub)millimeter instruments.
+% Assuming standard emissivity, a 0.5 mJy RMS is equivalent to 3.8\ee{21}
+% \persc, so our target $5\sigma$ sensitivity is $\sim1.9\ee{22}$ \persc, well
+% below the column density typically associated with high-mass star formation
+% \citep[e.g.,][]{Krumholz2008a}.
+% %(e.g., Krumholz \& McKee 2008).
 
 To enable SED fitting, we will use SCUBA 450\um and SHARC/ARTEMIS 350\um data
 that have recently become available at $\sim8-10\arcsec$ resolution toward many
@@ -337,25 +347,16 @@ other Galactic plane surveys at this resolution.
 % MNRAS, 437, 1791-1807
 
 \begin{figure}
-\includegraphics[width=12cm]{coverage_gc.pdf}
-\includegraphics[width=5.5cm]{MUSTANGwithSCUBA450contoursB.png}
-\caption{(A) The target regions superposed on an emission map from the BGPS
-\citep{Aguirre2011a,Ginsburg2013a}.  The red boxes represent the approximate
-area to be covered by \MUSTANG.  The labels indicate source names \& distances
-for the massive proto-clusters being targeted.  The observed 1-square-degree
-regions include the entire parent molecular clouds of the massive clumps.  The
-1-degree size scale is selected because \MUSTANG is very efficient at
-covering maps of this size, and a Galactic plane survey can be carried out with
-the same configuration.  The large maps are essential to include the complete
-molecular clouds, since massive star formation is not isolated to the cluster
-regions. \hspace{\textwidth}
-(B) Grayscale image showing some of the first MUSTANG-1.5 data taken in the
-Galactic plane toward the W51 star-forming region.  The image shows MUSTANG-1.5
-data with RMS $\sim10$ mJy, much higher than our target sensitivity.  The
-contours show SCUBA-2 450 \um emission, tracing the warm dust.  In this case,
-the 3mm emission is dominated by free-free emission on the largest scales, but
-the compact sources e2 and IRS2 both contain high-mass protostars, as has
-been demonstrated with VLA and ALMA observations \citep{Ginsburg2016b}.
+\includegraphics[width=18cm]{W43_RGB_90cm_MGPS_JPS.png}
+\includegraphics[width=18cm]{SgrB2_RGB_20cm_MGPSplanck_ATLASGAL.png}
+%\includegraphics[width=5.5cm]{MUSTANGwithSCUBA450contoursB.png}
+\caption{
+A color composite of VLA 90 cm (red), \MUSTANG (green), and JPS 850 \um (blue)
+images of the W43 region ($\ell=30\deg$).  The \MUSTANG data primarily pick up
+the ionized gas seen at longer wavelengths, with some contribution from the 
+850 \um-bright dust.  There are a few sources that are strongly detected at 3 mm
+but not at 850 \um or 90 cm; these are hypercompact \hii regions that represent
+the earliest stages of high-mass star formation.
 }
 \label{fig:figure}
 \end{figure}
