@@ -12,6 +12,7 @@ MGPS_2019_proposal:
 	${PDFLATEX} MGPS_2019_proposal.tex
 	${BIBTEX} MGPS_2019_proposal
 	${PDFLATEX} MGPS_2019_proposal.tex
+	bibexport -o extracted MGPS_2019_proposal.aux
 	gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
        -dFirstPage=1 -dLastPage=4 \
        -dMaxBitmap=500000000 \
