@@ -10,7 +10,7 @@ almafh = fits.open(almafn)[0]
 loresfn = 'SgrB2/SgrB2_precon_2_arcsec_pass_9.fits'
 loresfh_ = fits.open(loresfn)[0]
 
-loresfwhm = 10*u.arcsec
+loresfwhm = 8*u.arcsec
 loresbm = radio_beam.Beam(loresfwhm)
 
 loresfh_header = loresfh_.header
@@ -36,6 +36,10 @@ loresfh.data[loresfh.data < repr_alma] = repr_alma[loresfh.data < repr_alma]
 combined = uvcombine.feather_simple(almafn, lores=loresfh, lowresfwhm=loresfwhm, highresscalefactor=1)
 
 hdr = fits.getheader(almafn)
+
+fits.PrimaryHDU(data=repr_alma, header=loresfh.header).writeto('SgrB2/ALMAsmtoMGPS.fits')
+loresfh.writeto('SgrB2/MGPS_SgrB2_zoom_fixed.fits')
+
 
 fits.PrimaryHDU(data=combined.real,
                 header=hdr).writeto('SgrB2/feathered_MGPS_ALMATCTE7m.fits',
