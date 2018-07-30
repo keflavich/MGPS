@@ -9,9 +9,9 @@
 %color tag as has been done here.}
 %{\color{green}(Charles' comments)}
 
-A Galactic Plane Survey (GPS) at 3 mm and 8\arcsec resolution will provide a
+A Galactic Plane Survey (GPS) at 3 mm and 8\arcsec resolution with the GBT will provide a
 unique legacy data set that no other telescope, existing or planned, will be
-able to achieve.  With \MUSTANG on the GBT, a full GPS is now practical.  This
+able to achieve.  With the deployment of \MUSTANG, a full GPS is now practical.  This
 proposal is to complete the first segment of a Galactic plane survey.  With
 our previous pilot program, we demonstrated the power and efficiency of \MUSTANG
 to survey the plane, and we demonstrated combination with zero-spacing provided
@@ -24,7 +24,7 @@ to spread the observations over several semesters.
 \underline{\bf Background:}
 Galactic plane surveys provide the critical path to understanding the Milky Way
 as a Galaxy.  They provide us with the ability to perform complete, unbiased
-censuses and therefore the tools to study populations of forming stars.
+censuses and therefore the tools to study meaningful populations of forming stars.
 
 We propose a survey of the inner 50 degrees of the northern
 Galactic plane at 3 mm with \MUSTANG: \MGPS.  This portion of the observed Galaxy covers
@@ -37,7 +37,7 @@ A 3 mm continuum survey will address the following key questions:
 
 \begin{enumerate}
 
-    \item How much do massive stars accrete once ionization has begun, or, how
+    \item How much do massive stars accrete once ionization has begun, or practically speaking, how
         long is the \hchii region phase?
     \item How does the dust opacity index $\beta$  vary across the Galaxy?  
     \item  What is the
@@ -87,16 +87,15 @@ A 3 mm continuum survey will address the following key questions:
 \underline{\textbf{\helv How long is the \hchii phase?  Measuring the population of young massive stars:}}
 The pilot program demonstrated that an unbiased search for massive protostars
 just now reaching the Zero Age Main Sequence (ZAMS) is feasible.  Deeply
-embedded, rapidly accreting young massive stars embedded in hypercompact \hii regions (\hchii) have
-SED peaks near 3 mm and are faint at cm wavelengths because they
+embedded, rapidly accreting young massive stars powering hypercompact \hii regions (\hchii) emit free-free radiation that peaks near 3 mm and are faint at cm wavelengths because they
 are compact and optically thick.  At shorter wavelengths, they are
-indistinguishable from luminous dust clumps.  Individual rapidly accreting
-stars in \hchii regions are  detectable across the galactic disk with
+indistinguishable from other luminous dust clumps in somewhat earlier stages of evolution.  Individual rapidly accreting
+stars in \hchii regions will be detectable across the galactic disk with
 \MGPS over the full range of theoretical models.  Figure \ref{fig:figure}
 shows the W43 region, in which three sources were found fitting these criteria.
 
 Massive stars form in the middle of ultra-dense cores undergoing gravitational
-collapse at a rate of order dM/dt $\sim 10^{-3}$ \msun \peryr such that a 100
+collapse leading to an accretion rate of order dM/dt $\sim 10^{-3}$ \msun \peryr such that a 100
 \msun star takes about $10^5$ years to accrete its mass.  
 %During their main
 %accretion phase, the photosphere is bloated and the star will resemble a
@@ -107,28 +106,29 @@ For a sufficiently dense accretion flow, the Strömgren
 radius of the \hchii regions are bound by the gravity of the star, with a
 radius $R_G \sim$50-100 AU. \citep{Keto2002a,Keto2003a,Keto2007a}.  These
 gravitationally bound \hchii regions are optically thick at centimeter
-wavelengths and therefore emit as blackbodies at 3 mm, with $S_\nu=21 \textrm{mJy} (d/5
+wavelengths and therefore emit as blackbodies at wavelengths $\gtrsim$3~mm, with $S_\nu=21 \textrm{mJy} (d/5
 \textrm{kpc})^2 (R/100 AU)^2(\nu/90 \textrm{GHz})^2$, which is only 0.06 mJy at
 $\nu=5$ GHz, and therefore below the detection limit of many existing surveys;
 they are certainly unremarkable sources at long wavelengths.
 These \hchii regions are bright at 90 GHz but faint at 5 GHz, which is a
 direct means to distinguish them from older ultracompact (\uchii) regions.
-Sources with a local peak at or just below 3 mm represent the youngest
+Sources with free-free emission that peaks at or just below 3 mm represent the youngest
 high-mass YSOs.
 
 A complete survey for these sources will provide a strong statistical
-constraint on the accreting lifetime of OB stars.  There is growing evidence
+constraint on the accreting lifetime of proto-OB stars.  There is growing evidence
 that, once the stars leave their \hchii phase, their accretion is nearly or
-entirely done \citep[e.g.,][]{Goddi2018a}.  The relative lifetime of the \hchii
+entirely done \citep[e.g.,][]{Goddi2018a}.  Only once the escape velocity and the infall velocity at the 
+radius of the \hchii drops below the sound speed in ionized gas, can it begin steady expansion \citep{Keto06}. Therefore, the relative lifetime of the \hchii
 to \uchii phase is a powerful test of high-mass star formation theory, as it
 provides a direct measurement how long these stars take to form.
 
 A complete search for such young sources is only possible with a blind Galactic
 plane survey.  While the massive clusters targeted in the pilot program are the
 best candidate locations for detecting new sources, and they did indeed provide
-several of these, several of  the regions that are just now turning on were
+a few of these despite being unable to resolve the crowded centers of protoclusters, several of the massive star forming regions that are just now turning on were
 naturally excluded by that ionized-gas-rich sample.  The isolated sources we
-will detect account for about half of the ongoing star formation in the Galaxy,
+will detect account for about half of the ongoing star formation in the Galaxy, {\bf (AG: do you have a reference for this statement?-TH)}
 serving as a key counterpart to the highly clustered, narrow sample from the
 pilot program.
 
@@ -146,30 +146,30 @@ pilot program.
 %information will add a powerful constraint on the spectrum of spinning dust
 %\citep{Draine1998a}.
 %}
-Accurate mass measurements are critical for understanding cloud
-structure, mass budgets, and the star formation process.  In local clouds,
-which lack massive stars and therefore free-free emission and can be observed
-at high spatial resolution from space, accurate mass measurements have been
-enabled by \textit{Herschel}.  For more massive clouds in the Galactic plane, free-free
+Star forming clouds concentrate their mass into progressively higher density
+regions under the influence of gravity until stars are formed and their
+feedback halts collapse. Accurate mass measurements on each scale are critical for understanding molecular cloud
+structure, mass budgets, and the star formation process.  
+ In local clouds,
+which lack massive stars (and therefore free-free emission) and can be observed
+at sufficiently high spatial resolution from space, accurate mass measurements have been
+enabled by \textit{Herschel} data.  For more massive clouds in the Galactic plane, free-free
 contamination and spatial confusion significantly hamper mass measurements and
 can easily lead to wrong conclusions about the density structure of clouds.
 The increased free-free contribution at higher mass implies that there is 
 a bias toward observing shallower cloud mass distributions.
-\MGPS will constrain the free-free contribution
-to dust mass measurements and correct this bias.
-
-Star forming clouds concentrate their mass into progressively higher density
-regions under the influence of gravity until stars are formed and their
-feedback halts collapse.  The relative amount of mass at each column density,
-often called the gas `PDF' (probability density function), has become a popular
-way to characterize cloud evolutionary states.  This tool and others
+In practice, the relative amount of mass at each column density,
+often called the gas `PDF' (probability density function), has become a popular tool to characterize cloud evolutionary states.  This tool and others
 \citep[e.g., column autocorrelation functions,][]{Lin2016a}  have been exploited
 to measure the progression of star formation in clouds, but all are affected by
 free-free contamination biasing the high-column measurements to regions that
-are merely bright rather than massive.  Accurate measurements of these
-region-characterizing statistics, particularly on the high-mass tail where
-contamination is most significant, are needed to determine the evolutionary
-state of molecular clouds.
+are merely bright rather than massive.  
+%Accurate measurements of these
+%region-characterizing statistics, particularly on the high-mass tail where
+%contamination is most significant, are essential.
+%needed to determine the evolutionary state of molecular clouds.  
+By providing better constraints on the free-free contribution to the cloud SEDs,  particularly on the high-mass tail where
+contamination is most significant, the \MGPS will enable more accurate dust mass calculations and correct this bias.
 
 %Spectral energy distribution (SED) fitting of Herschel dust maps have greatly
 %improved measurements of dust masses.  Their main limitations are the short
@@ -181,8 +181,8 @@ state of molecular clouds.
 
 \textbf{Dust $\beta$}:
 The dust opacity index $\beta$ is the key uncertain parameter in the measurement
-of column density from dust emission.  Surveys at $<1$ mm are generally forced
-to assume a fixed $\beta$ index because it is difficult to measure; it
+of column density from dust emission.  Surveys at $\lambda<1$ mm are generally forced
+to assume a fixed $\beta$ index because it is difficult to measure; yet it
 is degenerate with the dust temperature, leading to huge uncertainties in its
 value and therefore in the corresponding dust mass \citep[e.g.,][]{Juvela2012a}.
 At wavelengths longer than $\sim1$ mm, however, measurements are firmly
@@ -268,10 +268,10 @@ destructive feedback process during the early phases of cloud dissolution,
 prior to the first supernova event in a star-forming region \citep{Matzner2015a}.
 The rate of mass loss via this process is the key parameter for determining
 how rapidly a cloud will be destroyed and therefore how quickly the star
-formation process will end. 
-
-The mass loss can be measured directly by measuring the density of the ionized
-gas and assuming it is flowing away at 1-2$\times$ the sound speed.  The bright
+formation process will end.  The mass loss can be measured directly by measuring the density of the ionized
+gas and assuming it is flowing away at 1-2$\times$ the sound speed. 
+{\bf (AG: Why would the outflow be supersonic? -TH)} 
+The bright
 free-free emission traced in our pilot survey data indicates that the ionized
 gas in these regions is dense, implying that the spectral turnover point must
 be at a higher frequency than typically observed for diffuse \hii regions.
@@ -293,7 +293,7 @@ survey will benefit from a wealth of currently available and ongoing surveys,
 including: MAGPIS \citep{Helfand2006a}, CORNISH \citep{Hoare2012a}, ATLASGAL
 \citep{Schuller2009a},  Hi-Gal \citep{Molinari2010a}, and the BGPS
 \citep[][]{Aguirre2011a,Ginsburg2013a}.  More recently, there are incomplete
-surveys that reach $\sim10\arcsec$ resolution at 350 \um with ARTEMIS and SHARC
+surveys that reach $\sim10\arcsec$ resolution at 350 \um with ARTEMIS and SHARC2
 \citep[e.g.][]{Lin2016a}, at 450 and 850 \um the JPS with SCUBA-2 on the JCMT,
 and at 1100\um with AzTEC/TolTEC on the LMT. These surveys provide the data needed to
 completely measure a dust + free-free SED.   \MGPS will cover the largest area
@@ -334,7 +334,7 @@ the sub-millimeter with Hi-Gal and the BGPS, at 20\arcsec with ATLASGAL, and at
 The dust mass sensitivity of \MGPS is comparable to other Galactic plane surveys assuming the
 dust has an emissivity power-law index of $\alpha=3.5$ ($\beta=1.5$), which is 
 typically assumed for Galactic plane
-dust.  However, the pilot region has revealed that the 3 mm dust emission is much fainter
+dust. {\bf AG: I think beta=1.7 is a more commonly measured generic value? See Sadavoy 2016A&A...588A..30S for OMC2/3. - TH}  However, the pilot region has revealed that the 3 mm dust emission is much fainter
 in the Galactic plane than predicted from high-frequency surveys,
 but possibly brighter in the Galactic center (Fig \ref{fig:figure}).  This is an immediate
 indication that the dust opacity properties significantly vary with Galactocentric
@@ -342,10 +342,10 @@ radius, or that free-free and synchrotron emission are well-mixed with dust emis
 in the Galactic center.
 
 \indent\underline{\textbf{\helv Sensitivity:}}  Our sensitivity goal is to
-detect a 100 AU radius optically thick \hii region out to 12 kpc, which requires a
-$5-\sigma$ detection limit of 4.0 mJy.  This sensitivity limit means our survey
-will detect extremely young massive stars residing in bound \hii regions down
-to $M \gtrsim 15$ \msun throughout our sample.  This sensitivity corresponds to
+detect a 100 AU radius gravitationally-bound, optically-thick \hii region out to 12 kpc, which requires a
+5$\sigma$ detection limit of 4.0 mJy.  This sensitivity limit means our survey
+will detect extremely young massive stars powering \hii regions down
+to $M \gtrsim 12$ \msun throughout our sample.  The dust sensitivity corresponds to
 $N(\hh)=3\ee{22}$ \persc for $T=20$ K gas using an opacity index of
 $\beta=1.5$, comparable to that achieved by the other Galactic plane surveys at
 this resolution.
