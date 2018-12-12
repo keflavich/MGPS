@@ -1,4 +1,5 @@
 import astrodendro
+import dendrocat
 from astropy import wcs
 from astropy.io import fits
 from astropy.stats import mad_std
@@ -6,6 +7,7 @@ from astropy.convolution import convolve_fft, Gaussian2DKernel
 from astropy import units as u
 import regions
 import pylab as pl
+from paths import catalog_figure_path
 
 files = {
     'G31':'../GAL_031/GAL_031_precon_2_arcsec_pass_9.fits',
@@ -15,9 +17,8 @@ files = {
     'W51':'../W51/W51_precon_2_arcsec_pass_10.fits',
 }
 
-cutout_regions = {
-    'G31':'galactic; box(30.76437454,0.01702667736,3582.947",6142.195",90)'
-}
+reglist = regions.io.read_ds9('cutout_regions.reg')
+cutout_regions = {reg.meta['label']: reg for reg in reglist}
 
 for regname,fn in files.items():
     # presently hard-coded to G31
@@ -25,7 +26,7 @@ for regname,fn in files.items():
     data = fh[0].data
     header = fh[0].header
     ww = wcs.WCS(header)
-    reg = regions.io.DS9Parser(cutout_regions[regname]).shapes.to_regions()[0].to_pixel(ww)
+    reg = cutout_regions[regname].to_pixel(ww) 
     mask = reg.to_mask()
     data_sm = convolve_fft(data, Gaussian2DKernel(15))
     data_filtered = data-data_sm
@@ -33,13 +34,33 @@ for regname,fn in files.items():
     cutout = mask.multiply(data_filtered)
     ww_cutout = ww[mask.bbox.ixmin:mask.bbox.ixmax, mask.bbox.iymin:mask.bbox.iymax]
 
+    # add beam parameters to header
+    cutout_header = ww_cutout.to_header()
+    cutout_header['BMAJ'] = 8/3600.
+    cutout_header['BMIN'] = 8/3600.
+    cutout_header['BUNIT'] = 'Jy/beam'
+    cutout_header['TELESCOP'] = 'GBT'
+    cutout_header['FREQ'] = '9.0e10'
+
     for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
         for min_delta in (1, 2):
-            dend = astrodendro.Dendrogram.compute(cutout,
-                                                  min_value=err*threshold,
-                                                  min_delta=err*min_delta,
-                                                  verbose=True, min_npix=min_npix,
-                                                  wcs=ww_cutout)
+            radiosource = dendrocat.RadioSource([fits.PrimaryHDU(data=cutout,
+                                                                 header=cutout_header)])
+            radiosource.nu = 90*u.GHz
+            radiosource.freq_id = 'MUSTANG'
+            radiosource.set_metadata()
+            radiosource.to_dendrogram()
+            radiosource.plot_grid(skip_rejects=False,
+                                  outfile=f'{catalog_figure_path}/{regname}_dendrocat_thr{threshold}_minn{min_npix}_mind{min_delta}_prerejection.png')
+            radiosource.autoreject(threshold=5.0)
+            radiosource.plot_grid(skip_rejects=False,
+                                  outfile=f'{catalog_figure_path}/{regname}_dendrocat_thr{threshold}_minn{min_npix}_mind{min_delta}_postrejection.png')
+            #dend = astrodendro.Dendrogram.compute(cutout,
+            #                                      min_value=err*threshold,
+            #                                      min_delta=err*min_delta,
+            #                                      verbose=True, min_npix=min_npix,
+            #                                      wcs=ww_cutout)
+            dend = radiosource.dendrogram
 
             ax = pl.gca()
             ax.cla()
@@ -72,7 +93,8 @@ for regname,fn in files.items():
                         'wcs': ww_cutout,
                         'spatial_scale': wcs.utils.proj_plane_pixel_scales(ww_cutout).mean()*u.deg,
                        }
-            ppcat = astrodendro.pp_catalog(dend, metadata)
+            #ppcat = astrodendro.pp_catalog(dend, metadata)
+            ppcat = radiosource.to_catalog()
             ppcat.write('{2}_dend_contour_{0}_{1}.ipac', format='ascii.ipac')
 
     # only do G31 for now, since it's hard-coded
