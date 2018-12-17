@@ -9,14 +9,8 @@ from astropy import coordinates
 import regions
 import pylab as pl
 from paths import catalog_figure_path, catalog_path
+from files import files
 
-files = {
-    'G31':'../GAL_031/GAL_031_precon_2_arcsec_pass_9.fits',
-    'SgrB2':'../SgrB2/SgrB2_precon_2_arcsec_pass_9.fits',
-    'W33':'../W33/W33_precon_2_arcsec_cached_pass_19.fits',
-    'W49':'../W49/W49_precon_2_arcsec_pass_9.fits',
-    'W51':'../W51/W51_precon_2_arcsec_pass_10.fits',
-}
 
 reglist = regions.io.read_ds9('cutout_regions.reg')
 cutout_regions = {reg.meta['label']: reg for reg in reglist}
@@ -25,6 +19,11 @@ def ppcat_to_regions(cat):
     center = coordinates.SkyCoord(cat['x_cen'], cat['y_cen'], unit=(u.deg, u.deg), frame='icrs')
     rad = cat['radius'].quantity
     regs = [regions.CircleSkyRegion(cen, rr) for cen, rr in zip(center, rad)]
+    for reg, row in zip(regs, cat):
+        if row['rejected']:
+            reg.visual['color'] = 'red'
+        else:
+            reg.visual['color'] = 'green'
     return regs
 
 for regname,fn in files.items():
@@ -32,14 +31,24 @@ for regname,fn in files.items():
     fh = fits.open(fn)
     data = fh[0].data
     header = fh[0].header
+    # LONPOLE isn't very relevant and LATPOLE is not part of the coordinate
+    # systems we're interested in.  From Calabretta 2002: "LATPOLEa is never
+    # required for zenithal projections"
+    try:
+        del header['LONPOLE']
+        del header['LATPOLE']
+    except KeyError:
+        pass
     ww = wcs.WCS(header)
-    reg = cutout_regions[regname].to_pixel(ww) 
+    reg = cutout_regions[regname].to_pixel(ww)
     mask = reg.to_mask()
     data_sm = convolve_fft(data, Gaussian2DKernel(15))
     data_filtered = data-data_sm
     err = mad_std(data_filtered)
     cutout = mask.multiply(data_filtered)
-    ww_cutout = ww[mask.bbox.ixmin:mask.bbox.ixmax, mask.bbox.iymin:mask.bbox.iymax]
+
+    # TODO: check that this is working - the regions output seem to be offset?
+    ww_cutout = ww[mask.bbox.iymin:mask.bbox.iymax, mask.bbox.ixmin:mask.bbox.ixmax]
 
     # add beam parameters to header
     cutout_header = ww_cutout.to_header()
@@ -66,7 +75,8 @@ for regname,fn in files.items():
                                  )
             pl.figure(1).clf()
             radiosource.autoreject(threshold=5.0)
-            print("Rejected {0} sources".format(radiosource.rejected.sum()))
+            print("Rejected {0}, kept {1}, of {2} total sources".format(radiosource.catalog['rejected'].sum(), (1-radiosource.catalog['rejected']).sum(),
+                                                                       len(radiosource.catalog)))
             radiosource.plot_grid(skip_rejects=False,
                                   outfile=f'{catalog_figure_path}/{regname}_dendrocat_thr{threshold}_minn{min_npix}_mind{min_delta}_postrejection.png',
                                   figurekwargs={'num': 1},
@@ -108,18 +118,19 @@ for regname,fn in files.items():
                 pl.setp([x for x in cntr if x.get_color()[0,1] == 1], linewidth=0.5) # Green
                 pl.savefig(f'{catalog_figure_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_zoom.pdf')
 
-            metadata = {'data_unit': u.Jy / u.beam,
-                        'beam_major': 8*u.arcsec,
-                        'beam_minor': 8*u.arcsec,
-                        'wcs': ww_cutout,
-                        'spatial_scale': wcs.utils.proj_plane_pixel_scales(ww_cutout).mean()*u.deg,
-                       }
+            #metadata = {'data_unit': u.Jy / u.beam,
+            #            'beam_major': 8*u.arcsec,
+            #            'beam_minor': 8*u.arcsec,
+            #            'wcs': ww_cutout,
+            #            'spatial_scale': wcs.utils.proj_plane_pixel_scales(ww_cutout).mean()*u.deg,
+            #           }
             #ppcat = astrodendro.pp_catalog(dend, metadata)
-            ppcat = radiosource.to_catalog()
+            ppcat = radiosource.catalog
             ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
 
             regs = ppcat_to_regions(ppcat)
             regions.write_ds9(regions=regs, filename=f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.reg')
+
 
     # only do G31 for now, since it's hard-coded
     break
