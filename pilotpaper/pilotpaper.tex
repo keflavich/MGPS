@@ -1,3 +1,7 @@
+\documentclass[twocolumn]{aastex62}
+\input{preface}
+%\input{macros}
+
 \begin{document}
 The MUSTANG Galactic Plane Survey (MGPS90) pilot
 
@@ -11,20 +15,30 @@ We report the results of a pilot program for a MUSTANG Galactic Plane survey
 
 
 Effective Central Frequency Table:
-0.0: 89.72 GHz
-0.5: 90.17 GHz
-1.0: 90.63 GHz
-1.5: 91.09 GHz
-2.0: 91.54 GHz
-2.5: 92.00 GHz
-3.0: 92.44 GHz
-3.5: 92.89 GHz
-4.0: 93.32 GHz
+
+\begin{tabular}{ll}
+0.0 & 89.72 GHz \\
+0.5 & 90.17 GHz \\
+1.0 & 90.63 GHz \\
+1.5 & 91.09 GHz \\
+2.0 & 91.54 GHz \\
+2.5 & 92.00 GHz \\
+3.0 & 92.44 GHz \\
+3.5 & 92.89 GHz \\
+4.0 & 93.32 GHz 
+\end{tabular}
 
 \section{Catalogs}
 
 We use \texttt{astrodendro} via the \texttt{dendrocat} wrapper to extract a catalog of both compact structures.  In brief, \texttt{astrodendro} catalogs hierarchically nested signal, effectively cataloging contoured regions.  For the catalog described here, we included only the most compact structures, which are the `leaves' in the catalog hierarchy.
 
 We experimented with a range of parameters for the noise threshold, the minimum number of pixels, and the minimum $\Delta$ between levels.  While each of these parameters significantly changes the total dendrogram structure, only the threshold parameter had any effect on the leaves.
+
+
+\begin{figure*}[htp]
+    \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
+\caption{histograms.}
+\label{fig:histogram}
+\end{figure*}
 
 \end{document}
