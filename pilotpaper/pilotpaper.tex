@@ -30,10 +30,28 @@ Effective Central Frequency Table:
 
 \section{Catalogs}
 
-We use \texttt{astrodendro} via the \texttt{dendrocat} wrapper to extract a catalog of both compact structures.  In brief, \texttt{astrodendro} catalogs hierarchically nested signal, effectively cataloging contoured regions.  For the catalog described here, we included only the most compact structures, which are the `leaves' in the catalog hierarchy.
+We use \texttt{astrodendro} via the \texttt{dendrocat} wrapper to extract a
+catalog of both compact structures.  In brief, \texttt{astrodendro} catalogs
+hierarchically nested signal, effectively cataloging contoured regions.  For
+the catalog described here, we included only the most compact structures, which
+are the `leaves' in the catalog hierarchy.
 
-We experimented with a range of parameters for the noise threshold, the minimum number of pixels, and the minimum $\Delta$ between levels.  While each of these parameters significantly changes the total dendrogram structure, only the threshold parameter had any effect on the leaves.
+To select primarily robust compact sources, we reject sources with a signal-to-noise
+ratio less than 6.  We compute the noise for each source as the standard deviation
+of pixel values in an aperture starting from 24\arcsec plus the source's major axis
+size to 48\arcsec plus the source's major axis size.  This process was performed with
+\texttt{dendrocat.autoreject}.
 
+We experimented with a range of parameters for the noise threshold, the minimum
+number of pixels, and the minimum $\Delta$ between levels.  While each of these
+parameters significantly changes the total dendrogram structure, only the
+threshold parameter had any effect on the retained leaves.
+
+We then cross-match the resulting catalog with the Herschel HiGal [cite],
+Spitzer GLIMPSE and MIPSGAL [cite], and MAGPIS 6cm and 20cm and CORNISH 6cm
+catalogs.
+
+\subsection{W43 catalog}
 
 \begin{figure*}[htp]
     \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
