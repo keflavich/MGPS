@@ -19,9 +19,9 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm',
                       #'J/ApJ/799/29/table5': {
                       'J/AJ/149/64/catalog': {'S24': 'Fint24um',
                                               '__8.0_': 'Fint8um',
-                                              '__5.8_': 'Fint5.8um',
-                                              '__4.5_': 'Fint4.5um',
-                                              '__3.6_': 'Fint3.6um',
+                                              '__5.8_': 'Fint5_8um',
+                                              '__4.5_': 'Fint4_5um',
+                                              '__3.6_': 'Fint3_6um',
                                              },
                       'J/A+A/591/A149/higalblu': {'Fint': 'Fint70um', 'Fpeak': 'Fpeak70um'}, # Blue (PACS 70um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalred': {'Fint': 'Fint160um', 'Fpeak': 'Fpeak160um'}, # Red (PACS 160um) band HIGAL Herschel catalog
@@ -40,7 +40,7 @@ for regname,fn in files.items():
                     ppcat.add_column(Column(name=colname, length=len(ppcat)))
 
             for row in ppcat:
-                if ~row['rejected']:
+                if row['rejected'] == 0:
                     for vcat,coldesc in catalogs_to_search.items():
                         rslt = Vizier.query_region(coordinates.SkyCoord(row['x_cen'],
                                                                         row['y_cen'],
@@ -57,4 +57,9 @@ for regname,fn in files.items():
                                 tbl = tbl[0]
                             for origcolname,colname in coldesc.items():
                                 row[colname] = tbl[origcolname]
+            ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
             break
+        break
+    break
+
+#ds9 W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind2.reg
