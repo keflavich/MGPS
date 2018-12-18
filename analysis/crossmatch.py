@@ -30,36 +30,42 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm',
                      }
 #magpis_both_catalog = 'J/AJ/130/586'
 
-for regname,fn in files.items():
-    for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
-        for min_delta in (1, 2):
-            ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
+if __name__ == "__main__":
+    for regname,fn in files.items():
+        for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
+            for min_delta in (1, 2):
+                ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
 
-            for vcatname, coldesc in catalogs_to_search.items():
-                for colname in coldesc.values():
-                    ppcat.add_column(Column(name=colname, length=len(ppcat)))
+                for vcatname, coldesc in catalogs_to_search.items():
+                    for colname in coldesc.values():
+                        ppcat.add_column(Column(name=colname, length=len(ppcat)))
 
-            for row in ppcat:
-                if row['rejected'] == 0:
-                    for vcat,coldesc in catalogs_to_search.items():
-                        rslt = Vizier.query_region(coordinates.SkyCoord(row['x_cen'],
-                                                                        row['y_cen'],
-                                                                        frame='icrs',
-                                                                        unit=(u.deg, u.deg)),
-                                                   radius=10*u.arcsec,
-                                                   catalog=vcat)
-                        print(rslt)
+                for row in ppcat:
+                    if row['rejected'] == 0:
+                        for vcat,coldesc in catalogs_to_search.items():
+                            rslt = Vizier.query_region(coordinates.SkyCoord(row['x_cen'],
+                                                                            row['y_cen'],
+                                                                            frame='icrs',
+                                                                            unit=(u.deg, u.deg)),
+                                                       radius=10*u.arcsec,
+                                                       catalog=vcat)
+                            print(rslt)
 
-                        if len(rslt) == 1:
-                            # convert from tabledict to table
-                            tbl = rslt[0]
-                            if len(tbl) > 1:
-                                tbl = tbl[0]
-                            for origcolname,colname in coldesc.items():
-                                row[colname] = tbl[origcolname]
-            ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
-            break
-        break
-    break
+                            if len(rslt) == 1:
+                                # convert from tabledict to table
+                                tbl = rslt[0]
+                                if len(tbl) > 1:
+                                    tbl = tbl[0]
+                                for origcolname,colname in coldesc.items():
+                                    row[colname] = tbl[origcolname]
 
-#ds9 W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind2.reg
+                herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
+                spitzerdetected = (ppcat['Fint8um', 'Fint3_6um', 'Fint4_5um', 'Fint5_8um', 'Fint24um'].as_array().view('float').reshape(len(ppcat),5) > 0).any(axis=1)
+                cmdetected = (ppcat['Fint6cm_CORNISH', 'Fpeak6cm_MAGPIS','Fint20cm'].as_array().view('float').reshape(len(ppcat),3) > 0).any(axis=1)
+                ppcat.add_column(Column(name='HerschelDetected', data=herscheldetected))
+                ppcat.add_column(Column(name='SpitzerDetected', data=spitzerdetected))
+                ppcat.add_column(Column(name='cmDetected', data=cmdetected))
+
+                ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
+
+    #ds9 W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind2.reg
