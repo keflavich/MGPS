@@ -1,5 +1,6 @@
 import astrodendro
 import dendrocat
+from dendrocat.aperture import Circle, Annulus
 from astropy import wcs
 from astropy.io import fits
 from astropy.stats import mad_std
@@ -125,8 +126,16 @@ for regname,fn in files.items():
             #            'spatial_scale': wcs.utils.proj_plane_pixel_scales(ww_cutout).mean()*u.deg,
             #           }
             #ppcat = astrodendro.pp_catalog(dend, metadata)
+
             ppcat = radiosource.catalog
-            ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
+
+            mastercatalog = dendrocat.MasterCatalog(radiosource, catalog=ppcat)
+            aperture1 = Circle([0, 0], 10*u.arcsec, name='10as')
+            aperture2 = Circle([0, 0], 15*u.arcsec, name='15as')
+            background = Annulus([0, 0], inner=15*u.arcsec, outer=20*u.arcsec, name='background')
+            mastercatalog.photometer(aperture1, aperture2, background)
+            mastercatalog.catalog.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
+
 
             regs = ppcat_to_regions(ppcat)
             regions.write_ds9(regions=regs, filename=f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.reg')
