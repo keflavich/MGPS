@@ -58,8 +58,8 @@ for regname,fn in files.items():
     cutout_header['TELESCOP'] = 'GBT'
     cutout_header['FREQ'] = '9.0e10'
 
-    for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
-        for min_delta in (1, 2):
+    for threshold,min_npix in ((4, 20), (4, 15)): # (6, 15), (8, 15), (10, 15)):
+        for min_delta in (1, ):
             radiosource = dendrocat.RadioSource([fits.PrimaryHDU(data=cutout,
                                                                  header=cutout_header)])
             radiosource.nu = 90*u.GHz
@@ -76,7 +76,7 @@ for regname,fn in files.items():
             pl.figure(1).clf()
             radiosource.autoreject(threshold=5.0)
             print("Rejected {0}, kept {1}, of {2} total sources".format(radiosource.catalog['rejected'].sum(), (1-radiosource.catalog['rejected']).sum(),
-                                                                       len(radiosource.catalog)))
+                                                                        len(radiosource.catalog)))
             radiosource.plot_grid(skip_rejects=False,
                                   outfile=f'{catalog_figure_path}/{regname}_dendrocat_thr{threshold}_minn{min_npix}_mind{min_delta}_postrejection.png',
                                   figurekwargs={'num': 1},

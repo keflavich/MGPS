@@ -7,7 +7,7 @@ from paths import catalog_path
 from files import files
 
 higal_catalog = 'http://vialactea.iaps.inaf.it/vialactea/public/HiGAL_clump_catalogue_v1.tar.gz'
-catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm',
+catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                                                'Fint':'Fint20cm',
                                                'RMS':'RMS20cm'},
                       'J/AJ/129/348/cat6cm': {'F5GHzp': 'Fpeak6cm_MAGPIS', },
@@ -23,6 +23,7 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm',
                                               '__4.5_': 'Fint4_5um',
                                               '__3.6_': 'Fint3_6um',
                                              },
+                      # int: Jy, peak: MJy/sr
                       'J/A+A/591/A149/higalblu': {'Fint': 'Fint70um', 'Fpeak': 'Fpeak70um'}, # Blue (PACS 70um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalred': {'Fint': 'Fint160um', 'Fpeak': 'Fpeak160um'}, # Red (PACS 160um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalpsw': {'Fint': 'Fint250um', 'Fpeak': 'Fpeak250um'}, # PSW (SPIRE 250um) band HIGAL Herschel catalog
