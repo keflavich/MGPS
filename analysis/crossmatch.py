@@ -11,6 +11,9 @@ higal_catalog = 'http://vialactea.iaps.inaf.it/vialactea/public/HiGAL_clump_cata
 catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                                                'Fint':'Fint20cm',
                                                'RMS':'RMS20cm'},
+                      'J/A+A/619/A124/catalog': {'Sp': 'Fpeak20cm_THOR', # Jy/beam
+                                                 'Sint': 'Fint20cm_THOR',
+                                                },
                       'J/AJ/129/348/cat6cm': {'F5GHzp': 'Fpeak6cm_MAGPIS', }, # mJy
                       'J/ApJS/205/1/catalog': {'Sint': 'Fint6cm_CORNISH',
                                                'e_Sint': 'eFint6cm_CORNISH',
@@ -76,10 +79,13 @@ if __name__ == "__main__":
 
                 herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
                 spitzerdetected = (ppcat['Fint8um', 'Fint3_6um', 'Fint4_5um', 'Fint5_8um', 'Fint24um'].as_array().view('float').reshape(len(ppcat),5) > 0).any(axis=1)
-                cmdetected = (ppcat['Fint6cm_CORNISH', 'Fpeak6cm_MAGPIS','Fint20cm'].as_array().view('float').reshape(len(ppcat),3) > 0).any(axis=1)
+                cmdetected = (ppcat['Fint6cm_CORNISH', 'Fpeak6cm_MAGPIS','Fint20cm', 'Fint20cm_THOR'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
                 ppcat.add_column(Column(name='HerschelDetected', data=herscheldetected))
                 ppcat.add_column(Column(name='SpitzerDetected', data=spitzerdetected))
                 ppcat.add_column(Column(name='cmDetected', data=cmdetected))
+
+                ppcat['x_cen'].unit = u.deg
+                ppcat['y_cen'].unit = u.deg
 
                 ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
 

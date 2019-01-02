@@ -47,16 +47,29 @@ number of pixels, and the minimum $\Delta$ between levels.  While each of these
 parameters significantly changes the total dendrogram structure, only the
 threshold parameter had any effect on the retained leaves.
 
-We then cross-match the resulting catalog with the Herschel HiGal [cite],
-Spitzer GLIMPSE and MIPSGAL [cite], and MAGPIS 6cm and 20cm and CORNISH 6cm
-catalogs.
+We then cross-match the resulting catalog with the Herschel HiGal
+\citep{Elia2017a}, Spitzer GLIMPSE and MIPSGAL [cite], and MAGPIS 6cm and 20cm
+\citep{Giveon2005a,Hoare2006a} and CORNISH 6cm \citep{Hoare2012a} catalogs.  In
+W43, most (90\%) of the MUSTANG 3mm sources have a corresponding Herschel
+compact source, 63\% have a centimeter association, and only 15\% have a
+Spitzer association.
 
 \subsection{W43 catalog}
 
 \begin{figure*}[htp]
     \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
-\caption{histograms.}
+\caption{Histograms of the MUSTANG 3mm flux density.  In each panel, the colored region shows which
+sources were detected in one or more of the Herschel Hi-Gal (top), Spitzer GLIMPSE or MIPSGAL (middle),
+or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
 \label{fig:histogram}
+\end{figure*}
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/W43_catalog_overlay.pdf}
+\caption{Image of the W43 region from MUSTANG.  The overplotted symbols show the locations
+of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
+and centimeter and Herschel non-detections in green.}
+\label{fig:w43overview}
 \end{figure*}
 
 \end{document}
