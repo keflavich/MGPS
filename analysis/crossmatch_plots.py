@@ -170,7 +170,8 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
     ax.loglog(x, y, 'o-')
 
     crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame='fk5', unit=(u.deg, u.deg))
-    make_sed_plot(crd, '../GAL_031/GAL_031_precon_2_arcsec_pass_9_PlanckCombined.fits', figure=fig5)
+    make_sed_plot(crd, '../GAL_031/GAL_031_precon_2_arcsec_pass_9_PlanckCombined.fits', figure=fig5,
+                  regname='GAL_031')
 
     ax = fig5.add_subplot(4, 5, 20)
     ax.loglog(x, y, 'o-')
@@ -179,6 +180,7 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
     ax.set_ylabel("Flux Density [Jy]")
     name = 'G031_{0}'.format(row['_idx'])
     fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')
+    print(f"finished {name}")
 
 
 galhdr = fits.Header.fromtextfile('../GAL_031/g31gal.hdr')
