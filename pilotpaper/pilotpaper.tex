@@ -55,13 +55,34 @@ compact source, 63\% have a centimeter association, and only 15\% have a
 Spitzer association.
 
 \subsection{W43 catalog}
-We use the W43 region as our test area.
+We use the W43 region as our test area to examine the cataloging process and
+cross-matching in detail.
 
 While most MUSTANG sources are detected at either millimeter and submillimeter
 wavelengths, representing dust emission, or at centimeter wavelengths,
 representing free-free emission, there are some interesting exceptions.
 
-Source 177 is detected at 3 mm, but has no counterpart from 250 to 1100 \um.
+Source 177 (Figure \ref{fig:sed177}) is detected at 3 mm, but has no counterpart from 160 to 1100 \um or
+at centimeter wavelengths, and only a weak counterpart in the Herschel 70 \um
+data. However, it has a clear and bright detection from 3.6 - 24 \um, indicating
+the presence of a star with surrounding hot dust.  The lack of cm detection suggests
+that hot dust is not part of an ionized region.  It is not clear why 3 mm emission
+is detected.
+
+Source 22 (Figure \ref{fig:sed22}) is detected at 20 cm, 1.1 and 3 mm, 70 \um, and 3.6 - 24 \um.  The lack
+of far-infrared detections indicates that there is no cold dust associated with
+the source, but the detection at 20 cm and nondetection at 6 cm is not consistent.
+Most likely, this source is variable and has a flickering \hii region.
+
+One of the aims of this survey is to identify the youngest high-mass protostars.
+Candidates are those with little to no infrared emission and very compact, optically
+thick hypercompact \hii regions.
+
+Source 83 (Figure \ref{fig:sed83}) is detected at 6 cm, 20 cm, and 3 mm, but has no compact source detections
+at shorter wavelengths.  There is diffuse dust emission from 24 - 1100 \um around this
+source, indicating that dense, cold dust is present.  This source is an excellent
+candidate for a very young hypercompact \hii region.
+
 
 \begin{figure*}[htp]
     \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
@@ -77,6 +98,24 @@ or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
 of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
 and centimeter and Herschel non-detections in green.}
 \label{fig:w43overview}
+\end{figure*}
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/SED_plot_G031_177.png}
+\caption{SED plot for Source 177 from W43.}
+\label{fig:sed177}
+\end{figure*}
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/SED_plot_G031_83.png}
+\caption{SED plot for Source 83 from W43.}
+\label{fig:sed83}
+\end{figure*}
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/SED_plot_G031_22.png}
+\caption{SED plot for Source 22 from W43.}
+\label{fig:sed22}
 \end{figure*}
 
 \end{document}
