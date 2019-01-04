@@ -10,10 +10,11 @@ import reproject
 import aplpy
 
 from files import files
+from make_sed_cutout_image import make_sed_plot
 from paths import catalog_figure_path, catalog_path
 
 def makesed(row):
-    frqscols = {6*u.cm: 'Fint6cm_MAGPIS',
+    frqscols = {#6*u.cm: 'Fint6cm_MAGPIS',
                 6*u.cm: 'Fint6cm_CORNISH',
                 20*u.cm: 'Fint20cm',
                 3*u.mm: 'MUSTANG_dend_flux',
@@ -156,15 +157,28 @@ for regname,fn in files.items():
         break
     break
 
-pl.figure(2)
-pl.clf()
+fig5 = pl.figure(5, figsize=(15,12))
+
+fig2 = pl.figure(2)
+fig2.clf()
 mgpsdetected = ppcat['rejected'] == 0
 for ii,row in enumerate(ppcat[mgpsdetected]):
     if ii/4+1 > 9:
         break
-    pl.subplot(3, 3, int(ii/4) + 1)
+    ax = fig2.add_subplot(3, 3, int(ii/4) + 1)
     x,y = makesed(row)
-    pl.loglog(x, y, 'o-')
+    ax.loglog(x, y, 'o-')
+
+    crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame='fk5', unit=(u.deg, u.deg))
+    make_sed_plot(crd, '../GAL_031/GAL_031_precon_2_arcsec_pass_9_PlanckCombined.fits', figure=fig5)
+
+    ax = fig5.add_subplot(4, 5, 20)
+    ax.loglog(x, y, 'o-')
+    ax.set_aspect('equal', 'box')
+    ax.set_xlabel("Wavelength ($\mu$m)")
+    ax.set_ylabel("Flux Density [Jy]")
+    name = 'G031_{0}'.format(row['_idx'])
+    fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')
 
 
 galhdr = fits.Header.fromtextfile('../GAL_031/g31gal.hdr')
