@@ -17,6 +17,7 @@ We report the results of a pilot program for a MUSTANG Galactic Plane survey
 Effective Central Frequency Table:
 
 \begin{tabular}{ll}
+$\alpha$ & Frequency \\
 0.0 & 89.72 GHz \\
 0.5 & 90.17 GHz \\
 1.0 & 90.63 GHz \\
@@ -47,20 +48,31 @@ number of pixels, and the minimum $\Delta$ between levels.  While each of these
 parameters significantly changes the total dendrogram structure, only the
 threshold parameter had any effect on the retained leaves.
 
+\subsection{Catalog cross-matching}
+\label{sec:catalogmatching}
 We then cross-match the resulting catalog with the Herschel HiGal
-\citep{Elia2017a}, Spitzer GLIMPSE and MIPSGAL \citep{Churchwell2009a,Gutermuth2015a}, and MAGPIS 6cm and 20cm
-\citep{Giveon2005a,Hoare2006a} and CORNISH 6cm \citep{Hoare2012a} catalogs.  In
-W43, most (90\%) of the MUSTANG 3mm sources have a corresponding Herschel
-compact source, 63\% have a centimeter association, and only 15\% have a
-Spitzer association.  However, upon closer visual inspection, there are likely
-infrared sources associated with the majority of the MUSTANG sources, but
-many of these are extended objects that were not included in the Spitzer GLIMPSE
-and MIPSGAL catalogs.
+\citep{Elia2017a}, Spitzer GLIMPSE and MIPSGAL
+\citep{Churchwell2009a,Gutermuth2015a}, and MAGPIS 6cm and 20cm
+\citep{Giveon2005a,Hoare2006a} and CORNISH 6cm \citep{Hoare2012a} catalogs.
+Matches in these catalogs are included if there is a source within 10\arcsec
+(approximately the MUSTANG beam FWHM) of the MGPS catalog entry.
 
 \subsection{W43 catalog}
 We use the W43 region as our test area to examine the cataloging process and
-cross-matching in detail.
+cross-matching in detail.  Cataloging was performed on the file
+\texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.
 
+In W43, most (90\%) of the MUSTANG 3mm sources have a corresponding Herschel
+compact source, 63\% have a centimeter association, and only 15\% have a
+Spitzer association.  However, upon closer visual inspection, there are likely
+infrared sources associated with the majority of the MUSTANG sources, but many
+of these are extended objects that were not included in the Spitzer GLIMPSE and
+MIPSGAL catalogs.
+
+The breakdown of match fraction as a function of flux density is shown in histograms
+in Figure \ref{fig:histogram}.
+
+\subsubsection{Individual sources}
 While most MUSTANG sources are detected at either millimeter and submillimeter
 wavelengths, representing dust emission, or at centimeter wavelengths,
 representing free-free emission, there are some interesting exceptions.
@@ -77,6 +89,13 @@ and 3.6 - 24 \um.  The lack of far-infrared detections indicates that there is
 no cold dust associated with the source, but the detection at 20 cm and
 nondetection at 6 cm is not consistent.  The most likely explanation for this
 discrepancy is that this source is variable and has a flickering \hii region.
+
+The brightest source with a Herschel nondetection is Source 244.  It is in a
+region filled with extended emission at all wavelengths.  The 3 mm emission
+more closely matches the 20 cm emission than the Herschel and longer-wavelength
+millimeter emission, suggesting that the 3 mm is dominated by free-free
+emission.  The millimeter and centimeter emission are offset from one another,
+which is why there was no catalog source match.
 
 One of the aims of this survey is to identify the youngest high-mass protostars.
 Candidates are those with little to no infrared emission and very compact, optically
@@ -106,20 +125,34 @@ and centimeter and Herschel non-detections in green.}
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/SED_plot_G031_177.png}
-\caption{SED plot for Source 177 from W43.}
+\caption{SED plot for Source 177 from W43.  The panels are labeled with the
+survey and frequency used for the plot.  The data come from the MAGPIS cutout
+server (\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal image
+server (\url{https://tools.ssdc.asi.it/HiGAL.jsp}); references are given in the
+text.  The bottom-right panel shows an SED constructed from the sources matched
+from the catalogs described in Section \ref{sec:catalogmatching}.
+This source is detected only at 3 mm and in the near infrared; it is not clear
+what class of object it is.
+}
 \label{fig:sed177}
 \end{figure*}
 
 \begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/SED_plot_G031_83.png}
-\caption{SED plot for Source 83 from W43.}
-\label{fig:sed83}
-\end{figure*}
-
-\begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/SED_plot_G031_22.png}
-\caption{SED plot for Source 22 from W43.}
+\caption{SED plot for Source 22 from W43.  See Figure \ref{fig:sed177} for a description.
+Because this source is detected at 20 cm and 3 mm, but not at the intermediate 6 cm wavelength,
+it is likely a variable \hii region associated with the central massive star.
+}
 \label{fig:sed22}
 \end{figure*}
 
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/SED_plot_G031_83.png}
+    \caption{SED plot for Source 83 from W43.  See Figure \ref{fig:sed177} for a description.
+    This source is likely a hypercompact \hii region.}
+\label{fig:sed83}
+\end{figure*}
+
+\input{solobib.tex}
 \end{document}
