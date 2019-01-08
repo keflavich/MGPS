@@ -8,6 +8,7 @@ import pylab as pl
 almafn = 'SgrB2/SgrB2_selfcal_full_TCTE_selfcal5_ampphase_taylorterms_multiscale.image.tt0.pbcor.fits'
 almafh = fits.open(almafn)[0]
 loresfn = 'SgrB2/SgrB2_precon_2_arcsec_pass_9.fits'
+loresfn = 'SgrB2/SgrB2_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits'
 loresfh_ = fits.open(loresfn)[0]
 
 loresfwhm = 8*u.arcsec
@@ -37,17 +38,17 @@ combined = uvcombine.feather_simple(almafn, lores=loresfh, lowresfwhm=loresfwhm,
 
 hdr = fits.getheader(almafn)
 
-fits.PrimaryHDU(data=repr_alma, header=loresfh.header).writeto('SgrB2/ALMAsmtoMGPS.fits')
-loresfh.writeto('SgrB2/MGPS_SgrB2_zoom_fixed.fits')
+fits.PrimaryHDU(data=repr_alma, header=loresfh.header).writeto('SgrB2/ALMAsmtoMGPS.fits', overwrite=True)
+loresfh.writeto('SgrB2/MGPS_SgrB2_zoom_fixed.fits', overwrite=True)
 
 
 fits.PrimaryHDU(data=combined.real,
                 header=hdr).writeto('SgrB2/feathered_MGPS_ALMATCTE7m.fits',
                                     overwrite=True)
 
-pl.figure(1)
+pl.figure(1).clf()
 rslts_thresh = uvcombine.feather_plot(almafn,
-                                      lores='SgrB2/SgrB2_precon_2_arcsec_pass_9.fits',
+                                      lores=loresfn,
                                       lowresfwhm=loresfwhm, hires_threshold=0.0005,
                                       lores_threshold=0.001)
 pl.figure(2).clf()
