@@ -6,6 +6,8 @@ from astropy import units as u
 from astropy import coordinates
 from astropy import wcs
 
+from constants import mustang_central_frequency, mustang_beam_fwhm
+
 rootdir = '/Users/adam/work/mgps'
 
 files = {'G29':'G29/GAL_029_precon_2_arcsec_galactic_white_alt_svd_pass_8.fits',
@@ -22,6 +24,14 @@ files = {
          'G12':'/Volumes/external/mgps/nov6_2018/W33_5pass_1_.0.2_10mJy_10mJy_final.fits',
          'G43':'/Volumes/external/mgps/nov6_2018/W49_5pass_1_.0.2_10mJy_10mJy_final.fits',
          'G49':'/Volumes/external/mgps/nov6_2018/W51_5pass_1_.0.2_10mJy_10mJy_final.fits',
+        }
+files = {
+         'G29':'/Volumes/external/mgps/Jan10_2019/GAL029_-16ms/GAL029_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
+         'G31':'/Volumes/external/mgps/Jan10_2019/GAL031_-14ms/GAL031_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
+         'G01':'/Volumes/external/mgps/Jan10_2019/SgrB2_-16ms/SgrB2_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
+         'G12':'/Volumes/external/mgps/Jan10_2019/W33_-21ms/W33_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
+         'G43':'/Volumes/external/mgps/Jan10_2019/W49_-18ms/W49_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
+         'G49':'/Volumes/external/mgps/Jan10_2019/W51_-15ms/W51_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
         }
 dirs = {'G29':'G29',
         'G31':'GAL_031',
@@ -56,9 +66,9 @@ for regname, fn in files.items():
         planck_image.header['BUNIT'] = 'K'
         planck_image.writeto(planckfn, overwrite=True)
 
-    fh[0].header['BMAJ'] = 10/3600
-    fh[0].header['BMIN'] = 10/3600
-    fh[0].header['REFFREQ'] = 91.5e9
+    fh[0].header['BMAJ'] = mustang_beam_fwhm.to(u.deg).value
+    fh[0].header['BMIN'] = mustang_beam_fwhm.to(u.deg).value
+    fh[0].header['REFFREQ'] = mustang_central_frequency.to(u.Hz).value
     fh[0].header['BUNIT'] = 'Jy/beam'
 
     rslt = feather_simple(fh[0], planckfn)

@@ -43,7 +43,7 @@ flux_limits = {20*u.cm: 2*u.mJy, # MAGPIS: Helfand+ 2006
 
 
 for regname,fn in files.items():
-    for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
+    for threshold,min_npix in ((4, 20), ):#(6, 15), (8, 15), (10, 15)):
         for min_delta in (1, ): #2):
             catfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac'
             if not os.path.exists(catfn):

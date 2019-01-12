@@ -7,17 +7,19 @@ from astropy.stats import mad_std
 from astropy.convolution import convolve_fft, Gaussian2DKernel
 from astropy import units as u
 from astropy import coordinates
+from astropy.table import Column
 import regions
 import pylab as pl
 from paths import catalog_figure_path, catalog_path
 from files import files
 
+from constants import mustang_central_frequency, mustang_beam_fwhm
 
 reglist = regions.io.read_ds9('cutout_regions.reg')
 cutout_regions = {reg.meta['label']: reg for reg in reglist}
 
-def ppcat_to_regions(cat):
-    center = coordinates.SkyCoord(cat['x_cen'], cat['y_cen'], unit=(u.deg, u.deg), frame='icrs')
+def ppcat_to_regions(cat, frame):
+    center = coordinates.SkyCoord(cat['x_cen'], cat['y_cen'], unit=(u.deg, u.deg), frame=frame)
     rad = cat['radius'].quantity
     regs = [regions.CircleSkyRegion(cen, rr) for cen, rr in zip(center, rad)]
     for reg, row in zip(regs, cat):
@@ -28,7 +30,6 @@ def ppcat_to_regions(cat):
     return regs
 
 for regname,fn in files.items():
-    # presently hard-coded to G31
     fh = fits.open(fn)
     data = fh[0].data
     header = fh[0].header
@@ -43,27 +44,28 @@ for regname,fn in files.items():
     ww = wcs.WCS(header)
     reg = cutout_regions[regname].to_pixel(ww)
     mask = reg.to_mask()
-    data_sm = convolve_fft(data, Gaussian2DKernel(15))
+    data_sm = convolve_fft(data, Gaussian2DKernel(15), allow_huge=True)
     data_filtered = data-data_sm
     err = mad_std(data_filtered)
     cutout = mask.multiply(data_filtered)
+    frame = wcs.utils.wcs_to_celestial_frame(ww)
 
     # TODO: check that this is working - the regions output seem to be offset?
     ww_cutout = ww[mask.bbox.iymin:mask.bbox.iymax, mask.bbox.ixmin:mask.bbox.ixmax]
 
     # add beam parameters to header
     cutout_header = ww_cutout.to_header()
-    cutout_header['BMAJ'] = 8/3600.
-    cutout_header['BMIN'] = 8/3600.
+    cutout_header['BMAJ'] = mustang_beam_fwhm.to(u.deg).value
+    cutout_header['BMIN'] = mustang_beam_fwhm.to(u.deg).value
     cutout_header['BUNIT'] = 'Jy/beam'
     cutout_header['TELESCOP'] = 'GBT'
-    cutout_header['FREQ'] = '9.0e10'
+    cutout_header['FREQ'] = mustang_central_frequency.to(u.Hz).value
 
     for threshold,min_npix in ((4, 20), (4, 15)): # (6, 15), (8, 15), (10, 15)):
         for min_delta in (1, ):
             radiosource = dendrocat.RadioSource([fits.PrimaryHDU(data=cutout,
                                                                  header=cutout_header)])
-            radiosource.nu = 90*u.GHz
+            radiosource.nu = mustang_central_frequency
             radiosource.freq_id = 'MUSTANG'
             radiosource.set_metadata()
             radiosource.to_dendrogram(min_value=err*threshold,
@@ -130,14 +132,25 @@ for regname,fn in files.items():
             ppcat = radiosource.catalog
 
             mastercatalog = dendrocat.MasterCatalog(radiosource, catalog=ppcat)
-            aperture1 = Circle([0, 0], 10*u.arcsec, name='10as')
-            aperture2 = Circle([0, 0], 15*u.arcsec, name='15as')
-            background = Annulus([0, 0], inner=15*u.arcsec, outer=20*u.arcsec, name='background')
+            aperture1 = Circle([0, 0], 10*u.arcsec, name='10as', frame=frame.name)
+            aperture2 = Circle([0, 0], 15*u.arcsec, name='15as', frame=frame.name)
+            background = Annulus([0, 0], inner=15*u.arcsec, outer=20*u.arcsec,
+                                 name='background', frame=frame.name)
             mastercatalog.photometer(aperture1, aperture2, background)
+
+            source_center = coordinates.SkyCoord(mastercatalog.catalog['x_cen'],
+                                                 mastercatalog.catalog['y_cen'],
+                                                 unit=(u.deg, u.deg),
+                                                 frame=frame.name)
+            source_name = ["G{0:0.3f}{1:+0.3f}".format(sc.galactic.l.deg,
+                                                       sc.galactic.b.deg)
+                           for sc in source_center]
+            mastercatalog.catalog.add_column(Column(name='SourceName', data=source_name))
+
             mastercatalog.catalog.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
 
 
-            regs = ppcat_to_regions(ppcat)
+            regs = ppcat_to_regions(ppcat, frame.name)
             regions.write_ds9(regions=regs, filename=f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.reg')
 
 
