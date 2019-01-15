@@ -46,11 +46,12 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
                   regname='GAL_031'):
 
     mgps_fh = fits.open(mgpsfile)[0]
+    frame = wcs.utils.wcs_to_celestial_frame(wcs.WCS(mgps_fh.header))
 
     coordname = "{0:06.3f}_{1:06.3f}".format(coordinate.galactic.l.deg,
                                              coordinate.galactic.b.deg)
 
-    mgps_cutout = Cutout2D(mgps_fh.data, coordinate, size=width*2, wcs=wcs.WCS(mgps_fh.header))
+    mgps_cutout = Cutout2D(mgps_fh.data, coordinate.transform_to(frame.name), size=width*2, wcs=wcs.WCS(mgps_fh.header))
     print(f"Retrieving MAGPIS data for {coordname} ({coordinate.to_string()} {coordinate.frame.name})")
     # we're treating 'width' as a radius elsewhere, here it's a full width
     images = {survey:getimg(coordinate, image_size=width*2.75, survey=survey) for survey in surveys}

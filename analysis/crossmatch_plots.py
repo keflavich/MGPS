@@ -6,6 +6,7 @@ from astropy.table import Table
 from astropy import units as u
 from astropy.io import fits
 from astropy import coordinates
+from astropy import wcs
 import reproject
 import aplpy
 
@@ -169,8 +170,11 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
     x,y = makesed(row)
     ax.loglog(x, y, 'o-')
 
-    crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame='fk5', unit=(u.deg, u.deg))
-    make_sed_plot(crd, '../GAL_031/GAL_031_precon_2_arcsec_pass_9_PlanckCombined.fits', figure=fig5,
+    mgps_fn = '../GAL_031/GAL031_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits'
+    frame = wcs.utils.wcs_to_celestial_frame(wcs.WCS(fits.getheader(mgps_fn)))
+
+    crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame=frame.name, unit=(u.deg, u.deg))
+    make_sed_plot(crd, mgps_fn, figure=fig5,
                   regname='GAL_031')
 
     ax = fig5.add_subplot(4, 5, 20)
@@ -179,6 +183,7 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
     ax.set_xlabel("Wavelength ($\mu$m)")
     ax.set_ylabel("Flux Density [Jy]")
     name = 'G031_{0}'.format(row['_idx'])
+    name = f'{row["SourceName"]}'
     fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')
     print(f"finished {name}")
 

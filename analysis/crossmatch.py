@@ -3,6 +3,8 @@ from astroquery.vizier import Vizier
 from astroquery.irsa import Irsa
 from astropy import coordinates
 from astropy import units as u
+from astropy.io import fits
+from astropy import wcs
 
 from paths import catalog_path
 from files import files
@@ -41,8 +43,11 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
 
 if __name__ == "__main__":
     for regname,fn in files.items():
-        for threshold,min_npix in ((4, 20), (6, 15), (8, 15), (10, 15)):
-            for min_delta in (1, 2):
+        header = fits.getheader(fn)
+        ww = wcs.WCS(header)
+        frame = wcs.utils.wcs_to_celestial_frame(ww)
+        for threshold,min_npix in ((4, 20), (4, 15)): #(6, 15), (8, 15), (10, 15)):
+            for min_delta in (1, ): #2):
                 ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
 
                 for vcatname, coldesc in catalogs_to_search.items():
@@ -52,8 +57,8 @@ if __name__ == "__main__":
                 for row in ppcat:
                     if row['rejected'] == 0:
                         crd = coordinates.SkyCoord(row['x_cen'], row['y_cen'],
-                                                   frame='icrs', unit=(u.deg,
-                                                                       u.deg))
+                                                   frame=frame.name,
+                                                   unit=(u.deg, u.deg))
                         for vcat,coldesc in catalogs_to_search.items():
                             if 'IRSA' in vcat:
                                 rslt = Irsa.query_region(crd,
@@ -66,7 +71,8 @@ if __name__ == "__main__":
                                                            radius=10*u.arcsec,
                                                            catalog=vcat)
                             if len(rslt) >= 1:
-                                print(rslt)
+                                pass
+                                #print(rslt)
 
                             if len(rslt) == 1:
                                 # convert from tabledict to table
@@ -76,6 +82,9 @@ if __name__ == "__main__":
                                     row[colname] = tblrow[origcolname]
                                     if ppcat[colname].unit is None and tbl[origcolname].unit is not None:
                                         ppcat[colname].unit = tbl[origcolname].unit
+                                        print(f"Set unit for {colname} to {tbl[origcolname].unit}")
+                                    if tbl[origcolname].unit is None:
+                                        raise
 
                 herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
                 spitzerdetected = (ppcat['Fint8um', 'Fint3_6um', 'Fint4_5um', 'Fint5_8um', 'Fint24um'].as_array().view('float').reshape(len(ppcat),5) > 0).any(axis=1)
@@ -87,6 +96,8 @@ if __name__ == "__main__":
                 ppcat['x_cen'].unit = u.deg
                 ppcat['y_cen'].unit = u.deg
 
-                ppcat.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
+                outfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac'
+                ppcat.write(outfn, format='ascii.ipac')
+                print(f"Completed file {outfn}")
 
     #ds9 W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind2.reg
