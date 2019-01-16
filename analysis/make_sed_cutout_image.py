@@ -86,6 +86,8 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
     # coordinate stuff so images can be reprojected to same frame
     ww = mgps_cutout.wcs.celestial
     target_header = ww.to_header()
+    del target_header['LONPOLE']
+    del target_header['LATPOLE']
     mgps_pixscale = (wcs.utils.proj_plane_pixel_area(ww)*u.deg**2)**0.5
     target_header['NAXES'] = 2
     target_header['NAXIS1'] = target_header['NAXIS2'] = (width / mgps_pixscale).decompose().value

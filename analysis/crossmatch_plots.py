@@ -164,18 +164,17 @@ fig2 = pl.figure(2)
 fig2.clf()
 mgpsdetected = ppcat['rejected'] == 0
 for ii,row in enumerate(ppcat[mgpsdetected]):
-    if ii/4+1 > 9:
-        break
-    ax = fig2.add_subplot(3, 3, int(ii/4) + 1)
+    #if ii/4+1 > 9:
+    #    break
+    #ax = fig2.add_subplot(3, 3, int(ii/4) + 1)
     x,y = makesed(row)
-    ax.loglog(x, y, 'o-')
+    #ax.loglog(x, y, 'o-')
 
     mgps_fn = '../GAL_031/GAL031_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits'
     frame = wcs.utils.wcs_to_celestial_frame(wcs.WCS(fits.getheader(mgps_fn)))
 
     crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame=frame.name, unit=(u.deg, u.deg))
-    make_sed_plot(crd, mgps_fn, figure=fig5,
-                  regname='GAL_031')
+    make_sed_plot(crd, mgps_fn, figure=fig5, regname='GAL_031')
 
     ax = fig5.add_subplot(4, 5, 20)
     ax.loglog(x, y, 'o-')

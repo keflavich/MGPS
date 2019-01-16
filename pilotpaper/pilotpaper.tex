@@ -62,8 +62,8 @@ We use the W43 region as our test area to examine the cataloging process and
 cross-matching in detail.  Cataloging was performed on the file
 \texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.
 
-In W43, most (90\%) of the MUSTANG 3mm sources have a corresponding Herschel
-compact source, 63\% have a centimeter association, and only 15\% have a
+In W43, most (80\%) of the 108 MUSTANG 3mm sources have a corresponding Herschel
+compact source, 49\% have a centimeter association, and only 19\% have a
 Spitzer association.  However, upon closer visual inspection, there are likely
 infrared sources associated with the majority of the MUSTANG sources, but many
 of these are extended objects that were not included in the Spitzer GLIMPSE and
@@ -76,6 +76,38 @@ in Figure \ref{fig:histogram}.
 While most MUSTANG sources are detected at either millimeter and submillimeter
 wavelengths, representing dust emission, or at centimeter wavelengths,
 representing free-free emission, there are some interesting exceptions.
+
+Sources with no counterparts at other wavelengths: \\
+G29.955-0.110 (faint) \\
+G29.973-0.285 (Herschel not available) \\
+G30.159-0.466 (faint) \\
+G30.008-0.039 (faint/questionable) \\
+G30.721-0.039 (diffuse counterparts?) \\
+G29.969+0.033 (faint) \\
+G30.364+0.027 (diffuse, faint)\\
+G31.371+0.021 (faint) \\
+
+
+Sources with 3mm and cm-and-longer detections, but no IR or FIR or submm detections:\\
+G30.437-0.206 \\
+G31.150-0.189 \\
+G31.387-0.383 \\
+G30.330+0.090 \\
+G31.440+0.510 (no Herschel 70 \um or 160 \um data available) \\
+
+
+Sources with 3mm and Spitzer detections, but no FIR or cm:
+G30.248-0.192 \\
+
+IRDCs:\\
+G30.400-0.296 \\
+G30.419-0.231 \\
+G30.689+0.032 (faint, questionable)\\
+G30.920+0.091 \\
+G31.382+0.318 \\
+G31.581+0.077 \\
+
+
 
 % Source G30.651-0.060 (Figure \ref{fig:sed177}) is detected at 3 mm, but has no counterpart from 160 to 1100 \um or
 % at centimeter wavelengths, and only a weak counterpart in the Herschel 70 \um
@@ -90,21 +122,23 @@ representing free-free emission, there are some interesting exceptions.
 % nondetection at 6 cm is not consistent.  The most likely explanation for this
 % discrepancy is that this source is variable and has a flickering \hii region.
 
-The brightest source with a Herschel nondetection is Source 244.  It is in a
-region filled with extended emission at all wavelengths.  The 3 mm emission
-more closely matches the 20 cm emission than the Herschel and longer-wavelength
-millimeter emission, suggesting that the 3 mm is dominated by free-free
-emission.  The millimeter and centimeter emission are offset from one another,
-which is why there was no catalog source match.
+The brightest source with a Herschel nondetection is G30.711-0.019.  It is in a
+region filled with extended emission.  The 3 mm emission closely matches the 20
+cm emission and 70 \um and shorter-wavelength emission, but does not match the
+longer-wavelength millimeter emission, suggesting that the 3 mm is dominated by
+free-free emission.  The millimeter and centimeter emission are offset from one
+another, which is why there was no catalog source match; the free-free emission
+wraps around the dust emission.
 
 One of the aims of this survey is to identify the youngest high-mass protostars.
 Candidates are those with little to no infrared emission and very compact, optically
 thick hypercompact \hii regions.
 
-Source G30.437-0.206 (Figure \ref{fig:sed83}) is detected at 6 cm, 20 cm, and 3 mm, but has no compact source detections
-at shorter wavelengths.  There is diffuse dust emission from 24 - 1100 \um around this
-source, indicating that dense, cold dust is present.  This source is an excellent
-candidate for a very young hypercompact \hii region.
+Source G30.437-0.206 (Figure \ref{fig:sed83}) is detected at 6 cm, 20 cm, and 3
+mm, but has no compact source detections at shorter wavelengths.  There is
+diffuse dust emission from 24 - 1100 \um around this source, indicating that
+dense, cold dust is present.  This source is an excellent candidate for a very
+young hypercompact \hii region.
 
 
 \begin{figure*}[htp]
@@ -151,8 +185,14 @@ and centimeter and Herschel non-detections in green.}
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/SED_plot_G30.437-0.206.png}
-    \caption{SED plot for Source G30.437-0.206 from W43.  See Figure \ref{fig:sed177} for a description.
-    This source is likely a hypercompact \hii region.}
+    \caption{SED plot for Source G30.437-0.206 from W43.  The panels are
+    labeled with the survey and frequency used for the plot.  The data come
+    from the MAGPIS cutout server (\url{https://third.ucllnl.org/gps/}) and the
+    Herschel Hi-Gal image server (\url{https://tools.ssdc.asi.it/HiGAL.jsp});
+    references are given in the text.  The bottom-right panel shows an SED
+    constructed from the sources matched from the catalogs described in Section
+    \ref{sec:catalogmatching}.  This source is detected only at 3 mm and longer
+    wavelengths.  It is likely a hypercompact \hii region.}
 \label{fig:sed83}
 \end{figure*}
 
