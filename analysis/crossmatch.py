@@ -37,6 +37,7 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                       'J/A+A/591/A149/higalred': {'Fint': 'Fint160um', 'Fpeak': 'Fpeak160um'}, # Red (PACS 160um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalpsw': {'Fint': 'Fint250um', 'Fpeak': 'Fpeak250um'}, # PSW (SPIRE 250um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalpmw': {'Fint': 'Fint350um', 'Fpeak': 'Fpeak350um'}, # PMW (SPIRE 350um) band HIGAL Herschel catalog
+                      'J/A+A/591/A149/higalplw': {'Fint': 'Fint500um', 'Fpeak': 'Fpeak500um'}, # PMW (SPIRE 350um) band HIGAL Herschel catalog
                       'IRSA:bolocamv21': {'flux': 'Fint1100um', 'flux_40': 'Fint1100um_40as', 'err_flux_40': 'eFint1100um_40as'}, # Jy
                      }
 #magpis_both_catalog = 'J/AJ/130/586'

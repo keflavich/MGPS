@@ -19,6 +19,10 @@ flux_limits = {20*u.cm: 2*u.mJy, # MAGPIS: Helfand+ 2006
                6*u.cm: 2.5*u.mJy, # MAGPIS: Giveon+ 2005, CORNISH 2 mjy: Hoare+ 2012
                70*u.um: 20*u.mJy, # from Fig 3 of Molinari 2016, ~20 MJy/sr rms w/6" beam -> 20 mJy/beam
                160*u.um: 26*u.mJy, # from Fig 3 of Molinari 2016, ~10 MJy/sr rms w/10" beam -> 26 mJy/beam
+               350*u.um: 50*u.mJy, # total guess.  Close, though: 5 MJy/sr w/20" beam gives 53 mJy
+               500*u.um: 85*u.mJy, # 2 MJy/sr in 4.24e-8 sr
+               870*u.um: 70*u.mJy, # Csengeri+ 2014 fig 1
+               1100*u.um: 50*u.mJy, # Ginsburg+ 2013, fig 1
               }
 
 
@@ -97,17 +101,45 @@ for regname,fn in files.items():
             pl.xlabel("3 mm / 350 $\mu$m")
             pl.ylabel("250 $\mu$m / 160 $\mu$m")
 
+            # pl.subplot(2,2,2)
+            # pl.loglog(ppcat['MUSTANG_dend_flux'][cm]/ppcat['Fpeak6cm_MAGPIS'][cm]*1000,
+            #           ppcat['Fpeak6cm_MAGPIS'][cm]/ppcat['Fpeak20cm'][cm],
+            #           linestyle='none',
+            #           marker='o')
+            # #pl.loglog(ppcat['MUSTANG_dend_flux'][cmu]/ppcat['Fpeak6cm_MAGPIS'][cmu]*1000,
+            # #          ppcat['Fpeak6cm_MAGPIS'][cmu]/ppcat['Fpeak20cm'][cmu],
+            # #          linestyle='none',
+            # #          marker='^')
+            # pl.xlabel("3 mm / 6 cm")
+            # pl.ylabel("6 cm / 20 cm")
+
             pl.subplot(2,2,2)
-            pl.loglog(ppcat['MUSTANG_dend_flux'][cm]/ppcat['Fpeak6cm_MAGPIS'][cm]*1000,
-                      ppcat['Fpeak6cm_MAGPIS'][cm]/ppcat['Fpeak20cm'][cm],
+            # from http://herschel.esac.esa.int/hcss-doc-15.0/load/spire_drg/html/ch06s09.html
+            f350um = (ppcat['Fpeak350um'].quantity * 1.95386e-8*u.sr).to(u.Jy)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hm & cm]/ppcat['Fpeak6cm_MAGPIS'][hm & cm]*1000,
+                      f350um[hm & cm]/ppcat['MUSTANG_dend_flux'][hm & cm],
                       linestyle='none',
-                      marker='o')
-            #pl.loglog(ppcat['MUSTANG_dend_flux'][cmu]/ppcat['Fpeak6cm_MAGPIS'][cmu]*1000,
-            #          ppcat['Fpeak6cm_MAGPIS'][cmu]/ppcat['Fpeak20cm'][cmu],
-            #          linestyle='none',
-            #          marker='^')
+                      marker='o', alpha=0.8)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hmu & cm]/ppcat['Fpeak20cm'][hmu & cm]*1000,
+                      flux_limits[350*u.um].to(u.Jy)/ppcat['MUSTANG_dend_flux'][hmu & cm],
+                      linestyle='none',
+                      marker='v', alpha=0.8, zorder=-3)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hm & cmu]/flux_limits[6*u.cm].to(u.Jy),
+                      f350um[hm & cmu]/ppcat['MUSTANG_dend_flux'][hm & cmu],
+                      linestyle='none',
+                      marker='>', zorder=-5, alpha=0.8)
+            xlims = pl.gca().get_xlim()
+            ylims = pl.gca().get_ylim()
+            pl.plot([1e-3, 1e3], [(3*u.mm/(350*u.um)).decompose().value**3]*2, 'k--', zorder=-10)
+            pl.plot([1e-3, 1e3], [(3*u.mm/(350*u.um)).decompose().value**4]*2, 'k:', zorder=-10)
+            pl.plot([1e-3, 1e3], [(3*u.mm/(350*u.um)).decompose().value**2]*2, 'k-', zorder=-10)
+            #pl.plot([(6*u.cm / (3*u.mm)).decompose()**2]*2, [1,1e5], 'g--', zorder=-10)
+            pl.plot([(6*u.cm / (3*u.mm)).decompose()**-0.1]*2, [1,1e5], 'r:', zorder=-10)
+            pl.gca().set_xlim(*xlims)
+            pl.gca().set_ylim(*ylims)
             pl.xlabel("3 mm / 6 cm")
-            pl.ylabel("6 cm / 20 cm")
+            pl.ylabel("350 $\mu$m / 3 mm")
+
 
             pl.subplot(2,2,3)
             pl.loglog(ppcat['MUSTANG_dend_flux'][hm]/ppcat['Fpeak20cm'][hm]*1000,
@@ -136,9 +168,92 @@ for regname,fn in files.items():
             fign = f'{catalog_figure_path}/colorcolor_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
             pl.savefig(fign)
 
+
+            pl.figure(4).clf()
+            # from http://herschel.esac.esa.int/hcss-doc-15.0/load/spire_drg/html/ch06s09.html
+            f350um = (ppcat['Fpeak350um'].quantity * 1.95386e-8*u.sr).to(u.Jy)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hm & cm]/ppcat['Fpeak6cm_MAGPIS'][hm & cm]*1000,
+                      f350um[hm & cm]/ppcat['MUSTANG_dend_flux'][hm & cm],
+                      linestyle='none',
+                      marker='o', alpha=0.8)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hmu & cm]/ppcat['Fpeak20cm'][hmu & cm]*1000,
+                      flux_limits[350*u.um].to(u.Jy)/ppcat['MUSTANG_dend_flux'][hmu & cm],
+                      linestyle='none',
+                      marker='v', alpha=0.8, zorder=-3)
+
+            # these are candidate HCHIIs: they have dust (because they're Hershel-detected)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hm & cmu]/flux_limits[6*u.cm].to(u.Jy),
+                      f350um[hm & cmu]/ppcat['MUSTANG_dend_flux'][hm & cmu],
+                      linestyle='none',
+                      marker='>', zorder=5, alpha=0.8)
+
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hmu & cmu]/flux_limits[6*u.cm].to(u.Jy),
+                      flux_limits[350*u.um].to(u.Jy)/ppcat['MUSTANG_dend_flux'][hmu & cmu],
+                      linestyle='none',
+                      marker=[(0,0),(1,-1),(1,-0.25),(1,-1),(0.25,-1)], zorder=-5, alpha=0.8)
+
+            xlims = pl.gca().get_xlim()
+            ylims = pl.gca().get_ylim()
+            pl.plot([1e-3, 1e3], [(3*u.mm/(350*u.um)).decompose().value**3]*2, 'k--', zorder=-10)
+            pl.plot([1e-3, 1e3], [(3*u.mm/(350*u.um)).decompose().value**4]*2, 'k:', zorder=-10)
+            pl.plot([1e-3, 1e3], [(3*u.mm/(350*u.um)).decompose().value**2]*2, 'k-', zorder=-10)
+            #pl.plot([(6*u.cm / (3*u.mm)).decompose()**2]*2, [1,1e5], 'g--', zorder=-10)
+            pl.plot([(6*u.cm / (3*u.mm)).decompose()**-0.1]*2, [1,1e5], 'r:', zorder=-10)
+            pl.gca().set_xlim(*xlims)
+            pl.gca().set_ylim(*ylims)
+            pl.xlabel("3 mm / 6 cm")
+            pl.ylabel("350 $\mu$m / 3 mm")
+
+            fign = f'{catalog_figure_path}/colorcolor_3mm6cm_vs_350um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
+
+            pl.figure(5).clf()
+            # from http://herschel.esac.esa.int/hcss-doc-15.0/load/spire_drg/html/ch06s09.html
+            f350um = (ppcat['Fpeak350um'].quantity * 1.95386e-8*u.sr).to(u.Jy)
+            f500um = (ppcat['Fpeak500um'].quantity * 4.24e-8*u.sr).to(u.Jy)
+            f870um = ppcat['Fint870um'].quantity.to(u.Jy) # (ppcat['Fpeak870um'].quantity * radio_beam.Beam(19.2*u.arcsec).sr).to(u.Jy)
+            f1100um = ppcat['Fint1100um_40as'].quantity.to(u.Jy) * 1.46 # from Aguirre, Gins+ 2011
+
+            pl.loglog(f350um[hm]/f1100um[hm],
+                      f1100um[hm]/ppcat['MUSTANG_dend_flux'][hm].quantity.to(u.Jy),
+                      linestyle='none',
+                      marker='o', alpha=0.8)
+
+            #pl.loglog([flux_limits[350*u.um].to(u.Jy) / flux_limits[1100*u.um].to(u.Jy)]*(hmu.sum()),
+            #           flux_limits[1100*u.um].to(u.Jy)/ppcat['MUSTANG_dend_flux'][hmu].quantity.to(u.Jy),
+            #           linestyle='none',
+            #           marker=[(0,0),(1,-1),(1,-0.25),(1,-1),(0.25,-1)], zorder=-5, alpha=0.8)
+
+            xlims = pl.gca().get_xlim()
+            ylims = pl.gca().get_ylim()
+            xlims = 9,101
+
+            pl.plot([((350*u.um) / (1100*u.um)).decompose()**-x for x in range(1,5)],
+                    [(3*u.mm/(1100*u.um)).decompose().value**x for x in range(1,5)], 'b--', zorder=-10)
+
+            pl.plot(xlims, [(3*u.mm/(1100*u.um)).decompose().value**3]*2, 'k--', zorder=-10)
+            pl.plot(xlims, [(3*u.mm/(1100*u.um)).decompose().value**4]*2, 'k:', zorder=-10)
+            pl.plot(xlims, [(3*u.mm/(1100*u.um)).decompose().value**2]*2, 'k-', zorder=-10)
+            #pl.plot([(6*u.cm / (3*u.mm)).decompose()**2]*2, [1,1e5], 'g--', zorder=-10)
+            pl.plot([((350*u.um) / (1100*u.um)).decompose()**-2]*2, ylims, 'r-', zorder=-10)
+            pl.plot([((350*u.um) / (1100*u.um)).decompose()**-3]*2, ylims, 'r:', zorder=-10)
+            pl.plot([((350*u.um) / (1100*u.um)).decompose()**-4]*2, ylims, 'r--', zorder=-10)
+            pl.plot([((350*u.um) / (1100*u.um)).decompose()**-3.5]*2, ylims, 'r-.', zorder=-10)
+
+            pl.gca().set_xlim(*xlims)
+            pl.gca().set_ylim(*ylims)
+            pl.xlabel("350 $\mu$m / 1100 $\mu$m")
+            pl.ylabel("1100 $\mu$m / 3 mm")
+            pl.text(15, 6, "$\\beta=0$")
+            pl.text(15, 66, "$\\beta=2$")
+            pl.text(50, 3, "$\\beta=1.5$", rotation='vertical', color='r')
+
+            fign = f'{catalog_figure_path}/colorcolor_350um1100um_vs_1100um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
+
+
             break
         break
     break
+raise
 
 fig5 = pl.figure(5, figsize=(15,12))
 
