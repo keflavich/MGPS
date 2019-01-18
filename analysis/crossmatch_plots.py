@@ -13,33 +13,12 @@ import aplpy
 from files import files
 from make_sed_cutout_image import make_sed_plot
 from paths import catalog_figure_path, catalog_path
-
-def makesed(row):
-    frqscols = {#6*u.cm: 'Fint6cm_MAGPIS',
-                6*u.cm: 'Fint6cm_CORNISH',
-                20*u.cm: 'Fint20cm',
-                3*u.mm: 'MUSTANG_dend_flux',
-                350*u.um: 'Fint350um',
-                250*u.um: 'Fint250um',
-                160*u.um: 'Fint160um',
-                70*u.um: 'Fint70um',
-                24*u.um: 'Fint24um',
-                870*u.um: 'Fint870um',
-                1100*u.um: 'Fint1100um_40as',
-                #8*u.um: 'Fint8um',
-                #5.8*u.um: 'Fint5_8um',
-                #4.5*u.um: 'Fint4_5um',
-                #3.6*u.um: 'Fint3_6um',
-               }
-    freqs = sorted(frqscols.keys())
-    values = [row.columns[frqscols[frq]].quantity[row.index] for frq in freqs]
-
-    values = u.Quantity(values)
-    values[values == 0] = np.nan
-    return u.Quantity(freqs), values
+from utils import makesed
 
 flux_limits = {20*u.cm: 2*u.mJy, # MAGPIS: Helfand+ 2006
                6*u.cm: 2.5*u.mJy, # MAGPIS: Giveon+ 2005, CORNISH 2 mjy: Hoare+ 2012
+               70*u.um: 20*u.mJy, # from Fig 3 of Molinari 2016, ~20 MJy/sr rms w/6" beam -> 20 mJy/beam
+               160*u.um: 26*u.mJy, # from Fig 3 of Molinari 2016, ~10 MJy/sr rms w/10" beam -> 26 mJy/beam
               }
 
 
@@ -97,6 +76,7 @@ for regname,fn in files.items():
             pl.savefig(f'{catalog_figure_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_detection_histograms.pdf', bbox_inches='tight')
 
             hm = mgpsdetected & herscheldetected
+            hmu = mgpsdetected & (~herscheldetected)
             cm = mgpsdetected & cmdetected
             cmu = mgpsdetected & ~cmdetected
 
@@ -130,17 +110,16 @@ for regname,fn in files.items():
             pl.ylabel("6 cm / 20 cm")
 
             pl.subplot(2,2,3)
-            cm = mgpsdetected & cmdetected
-            pl.loglog(ppcat['MUSTANG_dend_flux'][cm]/ppcat['Fpeak20cm'][cm]*1000,
-                    ppcat['Fpeak6cm_MAGPIS'][cm]/ppcat['Fint350um'][cm],
-                    linestyle='none',
-                    marker='o')
-            pl.loglog(ppcat['MUSTANG_dend_flux'][cmu]/ppcat['Fpeak20cm'][cmu]*1000,
-                    ppcat['Fpeak6cm_MAGPIS'][cmu]/ppcat['Fint350um'][cmu],
-                    linestyle='none',
-                    marker='^')
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hm]/ppcat['Fpeak20cm'][hm]*1000,
+                      ppcat['Fpeak70um'][hm]/ppcat['MUSTANG_dend_flux'][hm],
+                      linestyle='none',
+                      marker='o')
+            pl.loglog(ppcat['MUSTANG_dend_flux'][hmu]/ppcat['Fpeak20cm'][hmu]*1000,
+                      flux_limits[70*u.um]/ppcat['MUSTANG_dend_flux'][hmu],
+                      linestyle='none',
+                      marker='^')
             pl.xlabel("3 mm / 20 cm")
-            pl.ylabel("6 cm / 350 $\mu$m")
+            pl.ylabel("70 $\mu$m / 3 mm")
 
             pl.subplot(2,2,4)
             cm = mgpsdetected & cmdetected
@@ -152,7 +131,10 @@ for regname,fn in files.items():
             pl.ylabel("3 mm / 350 $\mu$m")
 
 
-            pl.subplots_adjust(hspace=0.3)
+            pl.subplots_adjust(hspace=0.4, wspace=0.4)
+
+            fign = f'{catalog_figure_path}/colorcolor_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
+            pl.savefig(fign)
 
             break
         break
