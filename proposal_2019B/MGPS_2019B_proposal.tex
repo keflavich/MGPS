@@ -1,6 +1,8 @@
 \documentclass[11pt,preprint]{aastex_nofoot}
 \include{preface}
 \include{bib_macros}
+\newcommand{\MUSTANG}{\textsc{MUSTANG-2}\xspace}
+\newcommand{\MGPS}{\textsc{MGPS-3mm}\xspace}
 \begin{document}
 %{\color{red}anyone know how to change the title (not of the tex, but of the webpage?)}
 %{\color{blue}Clicking the inverse triangle in the dash board page and then click "rename".\color{black} {\color{red} Thanks!}
@@ -40,8 +42,8 @@ A 3 mm continuum survey will address the following key questions:
 
 \begin{enumerate}
 
-    \item How much do massive stars accrete once ionization has begun, or practically speaking, how
-        long is the \hchii region phase?
+    \item How much do massive stars accrete once ionization has begun: how long
+        is the \hchii region phase?
     \item How does the dust opacity index $\beta$  vary across the Galaxy?  
 %    \item  What is the
 %        density structure, and therefore the photoevaporation rate, of 
@@ -110,15 +112,16 @@ collapse leading to an accretion rate of order dM/dt $\sim 10^{-3}$ \msun
 As the star contracts onto the main sequence it starts to ionize its
 environment to create an \hchii region.  For a sufficiently dense accretion
 flow, the Strömgren radius of the \hchii regions are bound by the gravity of
-the star, with a radius $R_G \sim$50-100 AU.
+the star, with a radius $R_G \sim$50-100 AU
 \citep{Keto2002a,Keto2003a,Keto2007a}.  These gravitationally bound \hchii
 regions are optically thick at centimeter wavelengths and therefore emit as
 blackbodies at wavelengths $\gtrsim$3~mm, with $S_\nu=21 \textrm{mJy} (d/5
 \textrm{kpc})^{-2} (R/100 \textrm{AU})^2(\nu/90 \textrm{GHz})^2$, which is only
 0.06 mJy at $\nu=5$ GHz, and therefore below the detection limit of many
 existing surveys; they are certainly unremarkable sources at long wavelengths.
-These \hchii regions are bright at 90 GHz but faint at 5 GHz, which is a direct
-means to distinguish them from older ultracompact (\uchii) regions.  Sources
+These \hchii regions are bright at 90 GHz but faint at 5 GHz and lower
+frequencies, which is a direct means to distinguish them from older
+ultracompact (\uchii) regions.  Sources
 with free-free emission that peaks at or just below 3 mm represent the youngest
 high-mass YSOs.
 
@@ -127,7 +130,7 @@ constraint on the accreting lifetime of proto-OB stars.  There is growing
 evidence that, once the stars leave their \hchii phase, their accretion is
 nearly or entirely done \citep[e.g.,][]{Goddi2018a}.  Only once the escape
 velocity and the infall velocity at the radius of the \hchii drops below the
-sound speed in ionized gas, can it begin steady expansion \citep{Keto2006a}.
+sound speed in ionized gas can it begin steady expansion \citep{Keto2006a}.
 The predicted lifetimes of the \hchii state range from a few thousand years to
 a little less than a million years depending on the accretion model
 \citep{Keto2003a,Zhang2018a}.
@@ -136,17 +139,17 @@ test of high-mass star formation theory, as it provides a direct measurement
 how long these stars take to form.
 
 
-A complete search for accreting massive stars is only possible with a blind Galactic
-plane survey.  While the massive clusters targeted in the pilot program are the
-best candidate locations for detecting new sources, and they did indeed provide
-a few of these despite being unable to resolve the crowded centers of
-protoclusters, several of the massive star forming regions that are just now
-turning on were naturally excluded by that ionized-gas-rich sample.  The
-isolated sources we will detect account for the rest of the ongoing star
-formation in the Galaxy, serving as a key counterpart to the highly clustered,
-narrow sample from the pilot program.  These more isolated sources will
-help address the outstanding question of whether high-mass stars are
-capable of forming in isolation.
+A complete search for accreting massive stars is only possible with a blind
+Galactic plane survey at high frequency.  While the massive clusters targeted
+in the pilot program are the best candidate locations for detecting new
+sources, and they did indeed provide a few of these despite being unable to
+resolve the crowded centers of protoclusters, several of the massive star
+forming regions that are just now turning on were naturally excluded from that
+ionized-gas-rich sample.  The isolated sources we will detect account for the
+rest of the ongoing star formation in the Galaxy, serving as a key counterpart
+to the highly clustered, narrow sample from the pilot program.  Identifying
+these more isolated sources will address the outstanding question of whether
+high-mass stars are capable of forming in isolation.
 
 
 
@@ -207,11 +210,14 @@ are forced to assume a fixed $\beta$ index because it is difficult to
 measure; yet it is degenerate with the dust temperature, leading to huge
 uncertainties in its value and therefore in the corresponding dust mass
 \citep[e.g.,][]{Juvela2012a}.  At wavelengths longer than $\sim1$ mm, however,
-measurements are on the Rayleigh-Jeans tail and sensitive only to
-$\beta$, not temperature \citep[e.g.,][]{Rigby2018a}.  \MGPS 3 mm
+measurements are more sensitive to
+$\beta$ and less sensitive to temperature \citep[e.g.,][]{Rigby2018a}.  \MGPS 3 mm
 observations of dust emission will provide the best measurements of this
 parameter \citep{Schnee2014b}, and they will be the first of
 their kind in most of the Galaxy.
+
+% Measurement of dust $\beta$ using 3 mm and 1 mm (e.g., BGPS) emission
+% is far less sensitive to dust temperature variation than shorter wavelength;
 
 % The cold dust observed from $\sim100$ \um to 3 mm is an accurate tracer of
 % the total mass of gas `clumps' that make up the densest part of molecular clouds.
@@ -311,8 +317,9 @@ The 3mm data break degeneracies in the spectral energy distributions
 (SEDs). There are currently no high-resolution ($<30\arcsec$), large-area
 surveys between 5 GHz and 270 GHz.  At shorter and longer wavelengths our
 survey will benefit from a wealth of currently available and ongoing surveys,
-including: MAGPIS \citep[1-5 GHz][]{Helfand2006a}, CORNISH \citep[5 GHz][]{Hoare2012a}, ATLASGAL
-\citep[870 \um][]{Schuller2009a},  Hi-Gal \citep[70-500 \um][]{Molinari2010a}, and the BGPS
+including: MAGPIS \citep[1-5 GHz][]{Helfand2006a}, CORNISH \citep[5
+GHz][]{Hoare2012a}, ATLASGAL \citep[870 \um][]{Schuller2009a},  Hi-Gal
+\citep[70-500 \um][]{Molinari2010a}, and the BGPS
 \citep[1.1 mm][]{Aguirre2011a,Ginsburg2013a}.  More recently, there are incomplete
 surveys that reach $\sim10\arcsec$ resolution at 350 \um with ARTEMIS and
 SHARC2, at 450 and 850 \um with SCUBA-2 on the JCMT, and at 1100\um with
@@ -322,7 +329,7 @@ out of these new surveys, and will therefore motivate the expansion and
 completion of the short-wavelength surveys.
 
 Since the turnover frequency is roughly proportional to electron density,
-surveys in the radio continuum (all in the 1 to 5 GHz range) are strongly
+surveys in the radio continuum (all in the 0.5 to 5 GHz range) are 
 biased against the densest and youngest objects.  These long-wavelength surveys
 will be used to exclude older, extended \uchii regions from our set of
 candidate \hchii's.  The short wavelength surveys constrain the dust masses and
@@ -330,7 +337,7 @@ temperatures and will be used to determine the turnover frequency for detected
 \hchii regions.
 
 The MUSTANG GPS will improve our sensitivity to \hchii regions by orders of
-magnitude. The best available is CORNISH, 3.9 mJy (5$\sigma$) at 5 GHz, which
+magnitude. The best available cm-wave survey is CORNISH, 3.9 mJy (5$\sigma$) at 5 GHz, which
 corresponds to a flux density of 1300 mJy in the MUSTANG band for optically
 thick emission. Our strategy will yield maps 2.5 orders of magnitude more
 sensitive to optically thick \hchii regions.  The JVLA would have to achieve a
@@ -340,11 +347,11 @@ $\sim20$ hours per square degree.
 
 
 
-\MGPS provides zero-spacing continuum information for
+\MGPS provides short-spacing continuum information for
 ALMA 3mm observations.  Our observations will reach a brightness temperature
 sensitivity of 1 mK over a square degree in only an hour of observing with
 better resolution than the ALMA ACA, which would require $\sim100$ hours to
-cover a square degree.
+cover a square degree to similar depth.
 
 \indent\underline{\textbf{\helv Target Selection:}}
 In the pilot program, we mapped selected regions.  We now propose a complete
@@ -356,12 +363,13 @@ the sub-millimeter with Hi-Gal, ATLASGAL, \& BGPS and at
 The dust mass sensitivity of \MGPS is comparable to other surveys assuming the
 dust has an emissivity power-law index of $\alpha=3.5$ ($\beta=1.5$), which is 
 commonly assumed for Galactic plane
-dust.   However, the pilot has revealed that the 3 mm dust emission is much fainter
-in the Galactic plane than predicted from high-frequency surveys,
-but possibly brighter in the Galactic center (Fig \ref{fig:figure}).  This is an immediate
-indication that the dust opacity properties significantly vary with Galactocentric
-radius, or that free-free and synchrotron emission are well-mixed with dust emission
-in the Galactic center.
+dust.
+% However, the pilot has revealed that the 3 mm dust emission is much fainter
+% in the Galactic plane than predicted from high-frequency surveys,
+% but possibly brighter in the Galactic center (Fig \ref{fig:figure}).  This is an immediate
+% indication that the dust opacity properties significantly vary with Galactocentric
+% radius, or that free-free and synchrotron emission are well-mixed with dust emission
+% in the Galactic center.
 
 \indent\underline{\textbf{\helv Sensitivity:}}  Our sensitivity goal is to
 detect a 100 AU radius gravitationally-bound, optically-thick \hii region out to 12 kpc, which requires a
@@ -419,7 +427,7 @@ and free-free measurements (Shirley, Svoboda, Hunter, Brogan, Anderson).
 % MNRAS, 437, 1791-1807
 
 \begin{figure}
-\includegraphics[width=16cm]{W43_RGB_90cm_MGPS_JPS_inset_arrows.png}
+\includegraphics[width=16cm]{W43_RGB_90cm_MGPS_JPS_inset_arrows_SEDfit.png}
 \includegraphics[width=16cm]{SgrB2_RGB_20cm_MGPSplanck_ATLASGAL.png}
 %\includegraphics[width=5.5cm]{MUSTANGwithSCUBA450contoursB.png}
 \caption{
@@ -427,9 +435,13 @@ and free-free measurements (Shirley, Svoboda, Hunter, Brogan, Anderson).
 images of the W43 region ($\ell=30\deg$).  The \MGPS data primarily pick up
 the ionized gas seen at longer wavelengths, with some contribution from the 
 850 \um-bright dust; the inset shows the W43 region in grayscale as seen by
-\MGPS.  There are a few sources (e.g., one identified by an arrow) that are strongly detected at 3 mm but not
-at 850 \um or 90 cm; these are hypercompact \hii regions that represent
-the late stages of accretion in high-mass star formation.
+\MGPS.  There are a few sources (e.g., one identified by an arrow) that are
+strongly detected at 3 mm but not at 850 \um or 20 cm; these are hypercompact
+\hii regions that represent
+the late stages of accretion in high-mass star formation.  The inset SED
+model is a fit to our data plus archival data yielding an $\sim80$ AU 
+dusty hypercompact HII region fit, with a spectral turnover point at $\sim7$
+GHz.
 (bottom) VLA 20 cm (red), \MGPS combined with Planck (green), and ATLASGAL
 870 \um (blue) composite of the Galactic Center, illustrating the much better
 recovery of dust emission at 3 mm in this region and hinting at a change in
