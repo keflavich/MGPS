@@ -8,6 +8,7 @@ from astropy import wcs
 
 from paths import catalog_path
 from files import files
+import constants
 
 higal_catalog = 'http://vialactea.iaps.inaf.it/vialactea/public/HiGAL_clump_catalogue_v1.tar.gz'
 catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
@@ -39,6 +40,8 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                       'J/A+A/591/A149/higalpmw': {'Fint': 'Fint350um', 'Fpeak': 'Fpeak350um'}, # PMW (SPIRE 350um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalplw': {'Fint': 'Fint500um', 'Fpeak': 'Fpeak500um'}, # PMW (SPIRE 350um) band HIGAL Herschel catalog
                       'IRSA:bolocamv21': {'flux': 'Fint1100um', 'flux_40': 'Fint1100um_40as', 'err_flux_40': 'eFint1100um_40as'}, # Jy
+                      'J/A+A/588/A97/catalog': {'alpha': 'alpha_THOR', 'e_alpha': 'e_alpha_THOR',
+                                                'Sp': 'Fpeak20cm_THOR2',} # Jy
                      }
 #magpis_both_catalog = 'J/AJ/130/586'
 
@@ -84,7 +87,7 @@ if __name__ == "__main__":
                                     if ppcat[colname].unit is None and tbl[origcolname].unit is not None:
                                         ppcat[colname].unit = tbl[origcolname].unit
                                         print(f"Set unit for {colname} to {tbl[origcolname].unit}")
-                                    if tbl[origcolname].unit is None:
+                                    if tbl[origcolname].unit is None and 'alpha' not in origcolname:
                                         raise
 
                 herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
@@ -96,6 +99,30 @@ if __name__ == "__main__":
 
                 ppcat['x_cen'].unit = u.deg
                 ppcat['y_cen'].unit = u.deg
+
+                # identify HCHII candidates from criteria:
+                # S_3mm > S_6cm and/or S_20cm, or nondetections at long wavelengths plus an excess over extrapolation from 1mm at beta=3
+                # Dust-detected (but does not need to be a point source)
+                candidate_hchii = (
+                                   (
+                                    ((ppcat['MUSTANG_10as_peak'] > ppcat['Fpeak6cm_MAGPIS']) & (ppcat['Fpeak6cm_MAGPIS'] > 0)) |
+                                    ((ppcat['MUSTANG_10as_peak'] > ppcat['Fpeak20cm_THOR']) & (ppcat['Fpeak20cm_THOR'] > 0)) |
+                                    ((ppcat['MUSTANG_10as_peak'] > ppcat['Fpeak20cm']) & (ppcat['Fpeak20cm'] > 0)) |
+                                    ((ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0))
+                                   ) &
+                                   # 1.46 is the 40as -> Gaussian correction factor
+                                   # 3.0 is the beta=1 case for dust (shallow)
+                                   # This criterion looks for an excess at 3mm over pure dust
+                                   (
+                                    (
+                                     (ppcat['MUSTANG_10as_peak'] / (ppcat['Fint1100um_40as'] * 1.46) < (constants.mustang_central_frequency / (271.1*u.GHz))**(3.0)) &
+                                     # if no 1 mm detection, assume no dust - HCHII unlikely w/o dust
+                                     (ppcat['Fint1100um_40as'] != 0)
+                                    )
+                                   ) &
+                                   (ppcat['rejected'] == 0)
+                                  )
+                ppcat.add_column(Column(name="HCHII_candidate", data=candidate_hchii))
 
                 outfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac'
                 ppcat.write(outfn, format='ascii.ipac')

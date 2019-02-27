@@ -1,7 +1,7 @@
 from astropy import units as u
 
 flux_limits = {20*u.cm: 2*u.mJy, # MAGPIS: Helfand+ 2006
-               (20*u.cm).to(u.um): 2*u.mJy,
+               (20*u.cm).to(u.um): 2*u.mJy, # THOR is 3-7 mJy 7-sigma RMS (Beuther+ 2016)
                6*u.cm: 2.5*u.mJy, # MAGPIS: Giveon+ 2005, CORNISH 2 mjy: Hoare+ 2012
                (6*u.cm).to(u.um): 2.5*u.mJy, # MAGPIS: Giveon+ 2005, CORNISH 2 mjy: Hoare+ 2012
                70*u.um: 20*u.mJy, # from Fig 3 of Molinari 2016, ~20 MJy/sr rms w/6" beam -> 20 mJy/beam

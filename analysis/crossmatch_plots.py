@@ -13,7 +13,7 @@ import aplpy
 from files import files
 from make_sed_cutout_image import make_sed_plot
 from paths import catalog_figure_path, catalog_path
-from utils import makesed
+from utils import makesed, makeuplims
 from catalog_flux_limits import flux_limits
 
 
@@ -196,8 +196,9 @@ for regname,fn in files.items():
             pl.ylabel("350 $\mu$m / 3 mm")
 
             fign = f'{catalog_figure_path}/colorcolor_3mm6cm_vs_350um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
+            pl.savefig(fign)
 
-            pl.figure(5).clf()
+            pl.figure(6).clf()
             # from http://herschel.esac.esa.int/hcss-doc-15.0/load/spire_drg/html/ch06s09.html
             f350um = (ppcat['Fpeak350um'].quantity * 1.95386e-8*u.sr).to(u.Jy)
             f500um = (ppcat['Fpeak500um'].quantity * 4.24e-8*u.sr).to(u.Jy)
@@ -239,12 +240,12 @@ for regname,fn in files.items():
             pl.text(50, 3, "$\\beta=1.5$", rotation='vertical', color='r')
 
             fign = f'{catalog_figure_path}/colorcolor_350um1100um_vs_1100um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
+            pl.savefig(fign)
 
 
             break
         break
     break
-raise
 
 fig5 = pl.figure(5, figsize=(15,12))
 
@@ -256,6 +257,7 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
     #    break
     #ax = fig2.add_subplot(3, 3, int(ii/4) + 1)
     x,y = makesed(row)
+    _,uplims = makeuplims(row)
     #ax.loglog(x, y, 'o-')
 
     mgps_fn = '../GAL_031/GAL031_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits'
@@ -266,9 +268,10 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
 
     ax = fig5.add_subplot(4, 5, 20)
     ax.loglog(x, y, 'o-')
+    ax.loglog(x, uplims, marker='v', color='orange')
     ax.set_aspect('equal', 'box')
     ax.set_xlabel("Wavelength ($\mu$m)")
-    ax.set_ylabel("Flux Density [Jy]")
+    ax.set_ylabel("Flux Density [mJy]")
     name = 'G031_{0}'.format(row['_idx'])
     name = f'{row["SourceName"]}'
     fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')

@@ -123,16 +123,37 @@ G31.581+0.077 \\
 % discrepancy is that this source is variable and has a flickering \hii region.
 
 The brightest source with a Herschel nondetection is G30.711-0.019.  It is in a
-region filled with extended emission.  The 3 mm emission closely matches the 20
-cm emission and 70 \um and shorter-wavelength emission, but does not match the
-longer-wavelength millimeter emission, suggesting that the 3 mm is dominated by
-free-free emission.  The millimeter and centimeter emission are offset from one
-another, which is why there was no catalog source match; the free-free emission
-wraps around the dust emission.
+region filled with extended emission at many wavelengths.  The 3 mm emission
+closely matches the 20 cm emission and 70 \um and shorter-wavelength emission,
+but does not match the longer-wavelength millimeter emission, suggesting that
+the 3 mm is dominated by free-free emission.  The millimeter and centimeter
+emission are offset from one another, which is why there was no catalog source
+match; the free-free emission wraps around the dust emission.  This source is
+therefore just a particularly bright patch of diffuse free-free emission.
 
-One of the aims of this survey is to identify the youngest high-mass protostars.
-Candidates are those with little to no infrared emission and very compact, optically
-thick hypercompact \hii regions.
+One of the aims of this survey is to identify the youngest high-mass
+protostars.  Candidates are those with little to no infrared emission and very
+compact, optically thick hypercompact \hii regions.
+
+Hypercompact \hii regions are defined as $\lesssim0.03$ pc ($\lesssim6000$ AU)
+\hii regions around young stars \citep{Kurtz2005b}.  They have high ionized
+gas density, resulting in a spectrum that remains optically thick to relatively
+high frequency.  For a star to produce an \hii region so compact, it must be
+embedded in a high-density medium.  We therefore select candidate HC\hii regions
+as those fitting these criteria:
+\begin{enumerate}
+    \item $S_{3 \mathrm{mm}} > S_{6 \mathrm{cm}}$ or $S_{3 \mathrm{mm}} > S_{20 \mathrm{cm}}$,
+        or a nondetection at 6 and 20 cm.  This requirement selects free-free sources that are optically
+        thick or moderately optically thick at long wavelengths.
+    \item $S_{3 \mathrm{mm}} / S_{1.1 \mathrm{mm}} < \left(S_{3
+        \mathrm{mm}} / S_{1.1 \mathrm{mm}})^{-3}$,  where $\alpha=-3$ is the
+        spectral index for optically thin dust with an opacity index $\beta=1$.
+        This requirement selects dust-detected sources in which there is some
+        indication of an excess of free-free emission over pure dust emission.
+\end{enumerate}
+
+G29.977-0.047: SED is dust-only, but there is excess at 3 mm plus a bright 70 \um source.  Could be?
+
 
 Source G30.437-0.206 (Figure \ref{fig:sed83}) is detected at 6 cm, 20 cm, and 3
 mm, but has no compact source detections at shorter wavelengths.  There is
