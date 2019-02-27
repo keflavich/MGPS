@@ -268,7 +268,7 @@ for ii,row in enumerate(ppcat[mgpsdetected]):
 
     ax = fig5.add_subplot(4, 5, 20)
     ax.loglog(x, y, 'o-')
-    ax.loglog(x, uplims, marker='v', color='orange')
+    ax.loglog(x, uplims, marker='v', color='orange', linestyle='none')
     ax.set_aspect('equal', 'box')
     ax.set_xlabel("Wavelength ($\mu$m)")
     ax.set_ylabel("Flux Density [mJy]")

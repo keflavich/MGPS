@@ -33,6 +33,7 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                                               '__4.5_': 'Fint4_5um',
                                               '__3.6_': 'Fint3_6um',
                                              },
+                      'J/ApJS/208/11/table1': {'Type': 'RMSClass'}, # RMS Lumsden+ 2013
                       # int: Jy, peak: MJy/sr
                       'J/A+A/591/A149/higalblu': {'Fint': 'Fint70um', 'Fpeak': 'Fpeak70um'}, # Blue (PACS 70um) band HIGAL Herschel catalog
                       'J/A+A/591/A149/higalred': {'Fint': 'Fint160um', 'Fpeak': 'Fpeak160um'}, # Red (PACS 160um) band HIGAL Herschel catalog
@@ -56,7 +57,10 @@ if __name__ == "__main__":
 
                 for vcatname, coldesc in catalogs_to_search.items():
                     for colname in coldesc.values():
-                        ppcat.add_column(Column(name=colname, length=len(ppcat)))
+                        if 'RMSClass' in colname:
+                            ppcat.add_column(Column(name=colname, length=len(ppcat), dtype='S20'))
+                        else:
+                            ppcat.add_column(Column(name=colname, length=len(ppcat)))
 
                 for row in ppcat:
                     if row['rejected'] == 0:
@@ -87,7 +91,9 @@ if __name__ == "__main__":
                                     if ppcat[colname].unit is None and tbl[origcolname].unit is not None:
                                         ppcat[colname].unit = tbl[origcolname].unit
                                         print(f"Set unit for {colname} to {tbl[origcolname].unit}")
-                                    if tbl[origcolname].unit is None and 'alpha' not in origcolname:
+                                    if ('alpha' in origcolname) or ('Type' in origcolname):
+                                        pass
+                                    elif tbl[origcolname].unit is None:
                                         raise
 
                 herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
