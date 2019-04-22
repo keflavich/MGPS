@@ -9,9 +9,72 @@ We report the results of a pilot program for a MUSTANG Galactic Plane survey
 
 \section{Observations}
 
--description of observations, including date, tau, etc table
 
--description of data reduction.  We use the ninkasi mapper.
+
+\begin{table*}[htp]
+\centering
+%\begin{minipage}{130mm}
+\caption{Observation Summary}
+\begin{tabular}{llll}
+    \label{tab:observations}
+Target   &      Time (hr) &       Sessions   &   Notes  \\
+\hline
+W51      &      1.02      &        01        &\\
+W49      &      1.02      &        01, 02    &\\
+SgrB2    &      1.35      &   02, 03, 04, 05 &   1\\
+GAL031   &      1.49      &        02, 03    &\\
+W33      &      1.02      &        03        &\\
+GAL029   &      1.30      &        04,05     &       \\
+GAL034   &     $\sim0.5$  &   05             &   2  \\
+\hline
+\end{tabular}
+\par
+The tabulated times are those in the maps (just in the scans that were used to
+make a given map).  Notes:
+(1) Extra scans from 05 got rid of some early issues
+(2) only 6 of the y scans
+completed so only bottom 1/3 of map has full cross linking - still that is a
+.3x1degree field.  We will not be getting these scans.
+\end{table*}
+
+
+The calibrations were done according to Charles' calibration scripts. Known
+point sources are observed at regular intervals each night.
+
+The calibration procedure is, summarily, as follows:
+\begin{enumerate}
+    \item A calibration for the detector array is found using a skydip and the
+        opacity (at 90 GHz) as given by CLEO (Control Library for Operators and
+        Engineers; \url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}), to get
+        each timestream into
+        antenna temperature.
+    \item A map is made (in azimuth/elevation coordinates) of each calibration
+        (point source) scan in IDL.
+        \begin{enumerate}
+            \item A single 2-D Gaussian is fit to the point source. The centroid and widths are recorded.
+            \item Fixing the centroid as found above, a double Gaussian (two 1-D Gaussians) is fit.
+            \item The beam volume is calculated from the map within a 60"
+                aperture as well as analytically from the double Gaussian. The
+                adopted beam volume is often that from the double Gaussian, but
+                if the fits are poor, the 60" aperture value is generally
+                adopted. If both values are questionable, or some other
+                indicator of reliability fails, the beam volume of that
+                individual scan will be overlooked.
+        \end{enumerate}
+    \item
+        \begin{enumerate}
+            \item The peaks of secondary calibrators are normalized by the mean for each specific secondary calibrator. These peaks are tied into a primary calibrator, whose peak is scaled to the expected peak, in Jy(/beam), which is determined from planetary models if a planet, or from interpolation of ALMA data, if only an ALMA calibrator was accessible in a given night. The scaling is linearly interpolated between calibration scans.
+            \item Conversion to Kelvin accounts for the beam volume. As such, the beam volumes are interpolated between scans.
+        \end{enumerate}
+    \item Calibration to Jy, conversion from Jy/beam to Kelvin, opacities, and pointing offsets are all recorded in an IDL save file, which is read in and applied to the processing of the science scans.
+\end{enumerate}
+
+The absolute accuracy of these calibrations should be reasonable and about 10\%.
+Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
+sources (the ALMA band is different from MUSTANG but there are measurements at
+$\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
+some is from our knowledge of \tau (the sky optical depth) during the observations.
+
 
 
 Effective Central Frequency Table:
