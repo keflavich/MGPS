@@ -37,6 +37,7 @@ completed so only bottom 1/3 of map has full cross linking - still that is a
 .3x1degree field.  We will not be getting these scans.
 \end{table*}
 
+\subsection{Calibration}
 
 The calibrations were done according to Charles' calibration scripts. Known
 point sources are observed at regular intervals each night.
@@ -75,12 +76,84 @@ sources (the ALMA band is different from MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
 some is from our knowledge of \tau (the sky optical depth) during the observations.
 
+\subsection{Map Making}
+Maps were made using the MINKASI algorithm \citep{}.
+We used smoothed power spectra from a singular value decomposition (SVD) of the data on a scan by scan basis to
+obtain a noise model.
+This model has does not work well if there are strong sources,
+so we added features to work around this by subdividing timestreams and taking
+the lowest power spectra from each scan.  We also included a fudge factor for
+lowering the power spectra in the signal band.
+
+We followed an iterative process to obtain the best maps.  A map is made, the
+result then clipped at some level above any artifacts in that iteration and the
+results subtracted from the timestreams.  In each loop, the clipping level was
+reduced and the noise model recalculated.  In the last loops (in which all
+strong signal should have been removed) the full SVD noise model could be used
+(which tended to give better results on faint features. For W33, three
+iterations produced optimal results; the other regions required more
+iterations.
+
+For some fields, notably G34, we only obtained scans in one direction.  Future
+observations filling in the orthogonal scan direction will be needed to eliminate
+the resulting scan-direction striping features.
+
+The map making process assumes the mean incoming intensity is zero.  This assumption
+encodes a large angular scale filter such that angular scales larger than $\sim4.25$\arcmin
+are not present in the data.  This filtering is visible as negative bowls in the images,
+especially in the Sgr B2 / Galactic Center field.
+
+\subsection{Sensitivity and beam size}
+
+The noise in the maps is given per 1" pixel - given there are 80 (Gaussian
+beam) to 140 (variance beam) arcsecond sq per beam one can expect the noise in
+the unsmoothed maps to drop by an order of magnitude when proper smoothing is
+applied.
+
+\begin{table*}[htp]
+    \begin{tabular}{llll}
+TARGET   &    IDL   &   MINKASI & MINKASI 4" smooth\\
+\hline
+GAL029   &      3.7 &     2.6   & 1.1\\
+GAL031   &      6.1 &     4.1   & 1.8\\
+SgrB2    &     8.0  &    7.4    & 2.2\\
+W33      &   8.0    &  2.6      & 1.7\\
+W49      &   6.8    &  3.7      & 1.8\\
+W51      &   4.3    &  4.9      & 1.1\\
+\hline
+    \end{tabular}
+These noise measurements are estimates based on relatively signal-free regions of the maps.
+\end{table*}
+
+The effective beam size in the delivered maps is the convolution of the
+intrinsic FWHM = 8.1\arcsec beam with a 4\arcsec Gaussian kernel, resulting in
+a 9\arcsec beam.
 
 
-Effective Central Frequency Table:
+\subsection{Pointing Accuracy}
+Several corrections to the raw timestream data were required to produce maps.  Individual scans were noted
+to have point sources shifted by up to half a beam ($\sim4\arcsec$), indicating a timing error between
+the MUSTANG-2 pointing data and the true telescope pointing.  To ensure that point sources were coincident
+in the maps, scans were cross-correlated with a first-iteration map, then assigned a new timing offset.
+The timing errors ranged from $\sim10$ to $30$ milliseconds.
 
+Additional half-beam pointing errors were noted in some individual scans, resulting in additional streaking
+artifacts in the data.  Most of these issues disappeared after smoothing the data with the 4\arcsec kernel.
+
+Because several corrections were required, we assume the absolute pointing accuracy is $\sim4\arsec$.
+We therefore cross-correlated the MUSTANG-2 maps with [TODO: BGPS, ATLASGAL, Planck, HiGal are all fine candidates]
+
+\subsection{Effective Central Frequency}
+The MUSTANG-2 bandpass filter is approximately flat over the range XX to YY GHz.
+We convolved the bandpass filter with power law flux density distributions with $S_\nu\propto\nu^{\alpha}$
+to obtain the true effective central frequency of the bandpass for these assumed
+continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
+
+\begin{table*}[htp]
 \begin{tabular}{ll}
+    \label{tab:centralfreq}
 $\alpha$ & Frequency \\
+\hline
 0.0 & 89.72 GHz \\
 0.5 & 90.17 GHz \\
 1.0 & 90.63 GHz \\
@@ -89,8 +162,10 @@ $\alpha$ & Frequency \\
 2.5 & 92.00 GHz \\
 3.0 & 92.44 GHz \\
 3.5 & 92.89 GHz \\
-4.0 & 93.32 GHz 
+4.0 & 93.32 GHz \\
+\hline
 \end{tabular}
+\end{table*}
 
 \section{Catalogs}
 
