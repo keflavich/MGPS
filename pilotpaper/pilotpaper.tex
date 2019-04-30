@@ -13,6 +13,8 @@ We report the results of a pilot program for a MUSTANG Galactic Plane survey
 
 A summary of the reported observations is given in Table \ref{tab:observations}.
 
+The images from this project are released at
+\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910%2FDVN%2FD18I4Y&version=DRAFT}
 
 \begin{table*}[htp]
 \centering
@@ -159,8 +161,8 @@ against and measure the pointing offset.  We probably want to deliver something 
 more of these surveys}
 
 \subsection{Effective Central Frequency}
-The MUSTANG-2 bandpass filter is approximately flat over the range XX to YY GHz.
-We convolved the bandpass filter with power law flux density distributions with $S_\nu\propto\nu^{\alpha}$
+The MUSTANG-2 bandpass filter is approximately flat over the range 75 to 105 GHz.
+We multiplied the bandpass filter by power law flux density distributions with $S_\nu\propto\nu^{\alpha}$
 to obtain the true effective central frequency of the bandpass for these assumed
 continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
 
@@ -190,16 +192,20 @@ hierarchically nested signal, effectively cataloging contoured regions.  For
 the catalog described here, we included only the most compact structures, which
 are the `leaves' in the catalog hierarchy.
 
-To select primarily robust compact sources, we reject sources with a signal-to-noise
+To select primarily robust compact sources, we filter the images to reject
+scales $>45\arcsec$ prior to cataloging.  We used a $4-\sigma$ flux threshold
+and minimum of 100 pixels as the dendrogram parameters; the pixel scale is 1$\arcsec$/pixel,
+so our minimum object size is $\sim1/2$ of beam area.
+We then reject sources with a signal-to-noise
 ratio less than 6.  We compute the noise for each source as the standard deviation
 of pixel values in an aperture starting from 24\arcsec plus the source's major axis
 size to 48\arcsec plus the source's major axis size.  This process was performed with
 \texttt{dendrocat.autoreject}.
 
-We experimented with a range of parameters for the noise threshold, the minimum
-number of pixels, and the minimum $\Delta$ between levels.  While each of these
-parameters significantly changes the total dendrogram structure, only the
-threshold parameter had any effect on the retained leaves.
+% We experimented with a range of parameters for the noise threshold, the minimum
+% number of pixels, and the minimum $\Delta$ between levels.  While each of these
+% parameters significantly changes the total dendrogram structure, only the
+% threshold parameter had any effect on the retained leaves.
 
 \subsection{Catalog cross-matching}
 \label{sec:catalogmatching}
@@ -212,8 +218,9 @@ Matches in these catalogs are included if there is a source within 10\arcsec
 
 \subsection{W43 catalog}
 We use the W43 region as our test area to examine the cataloging process and
-cross-matching in detail.  Cataloging was performed on the file
-\texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.
+cross-matching in detail.
+\todo{The old cataloging was performed on the file
+\texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.}
 
 In W43, most (80\%) of the 108 MUSTANG 3mm sources have a corresponding Herschel
 compact source, 49\% have a centimeter association, and only 19\% have a
@@ -242,7 +249,7 @@ G31.371+0.021 (faint) \\
 
 
 Sources with 3mm and cm-and-longer detections, but no IR or FIR or submm detections:\\
-G30.437-0.206 \\
+#G30.437-0.206 \\
 G31.150-0.189 \\
 G31.387-0.383 \\
 G30.330+0.090 \\
@@ -321,17 +328,20 @@ young hypercompact \hii region.
 
 \begin{figure*}[htp]
     \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
-\caption{Histograms of the MUSTANG 3mm flux density.  In each panel, the colored region shows which
-sources were detected in one or more of the Herschel Hi-Gal (top), Spitzer GLIMPSE or MIPSGAL (middle),
+\caption{Histograms of the MUSTANG 3mm flux density in the W43 field.  In each
+panel, the colored region shows which sources were detected in one or more of
+the Herschel Hi-Gal (top), Spitzer GLIMPSE or MIPSGAL (middle),
 or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
 \label{fig:histogram}
 \end{figure*}
 
 \begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/W43_catalog_overlay.pdf}
-\caption{Image of the W43 region from MUSTANG.  The overplotted symbols show the locations
-of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
-and centimeter and Herschel non-detections in green.}
+    \includegraphics[width=17cm]{figures/G31_overview_withcatalog.pdf}
+\caption{Image of the W43 region from MUSTANG.  The circles show sources from our catalog.
+%The overplotted symbols show the locations
+%of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
+%and centimeter and Herschel non-detections in green.
+}
 \label{fig:w43overview}
 \end{figure*}
 

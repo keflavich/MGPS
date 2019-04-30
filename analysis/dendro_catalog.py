@@ -8,6 +8,7 @@ from astropy.convolution import convolve_fft, Gaussian2DKernel
 from astropy import units as u
 from astropy import coordinates
 from astropy.table import Column
+from astropy.utils.console import ProgressBar
 import regions
 import pylab as pl
 from paths import catalog_figure_path, catalog_path
@@ -30,6 +31,7 @@ def ppcat_to_regions(cat, frame):
     return regs
 
 for regname,fn in files.items():
+    print(f"Starting region {regname}: {fn}")
     fh = fits.open(fn)
     data = fh[0].data
     header = fh[0].header
@@ -42,9 +44,10 @@ for regname,fn in files.items():
     except KeyError:
         pass
     ww = wcs.WCS(header)
+    pixscale = wcs.utils.proj_plane_pixel_area(ww)**0.5*u.deg
     reg = cutout_regions[regname].to_pixel(ww)
     mask = reg.to_mask()
-    data_sm = convolve_fft(data, Gaussian2DKernel(15), allow_huge=True)
+    data_sm = convolve_fft(data, Gaussian2DKernel((45*u.arcsec/pixscale).decompose()), allow_huge=True)
     data_filtered = data-data_sm
     err = mad_std(data_filtered)
     cutout = mask.multiply(data_filtered)
@@ -61,17 +64,20 @@ for regname,fn in files.items():
     cutout_header['TELESCOP'] = 'GBT'
     cutout_header['FREQ'] = mustang_central_frequency.to(u.Hz).value
 
-    for threshold,min_npix in ((4, 20), (4, 15)): # (6, 15), (8, 15), (10, 15)):
+    for threshold,min_npix in ((4, 100),): # (6, 15), (8, 15), (10, 15)):
         for min_delta in (1, ):
+            print("Beginning cataloging")
             radiosource = dendrocat.RadioSource([fits.PrimaryHDU(data=cutout,
                                                                  header=cutout_header)])
             radiosource.nu = mustang_central_frequency
             radiosource.freq_id = 'MUSTANG'
             radiosource.set_metadata()
+            print("Running to_dendrogram")
             radiosource.to_dendrogram(min_value=err*threshold,
                                       min_delta=err*min_delta,
                                       min_npix=min_npix,
                                      )
+            print("Making plot grid")
             radiosource.plot_grid(skip_rejects=False,
                                   outfile=f'{catalog_figure_path}/{regname}_dendrocat_thr{threshold}_minn{min_npix}_mind{min_delta}_prerejection.png',
                                   figurekwargs={'num': 1},
@@ -98,7 +104,8 @@ for regname,fn in files.items():
             pl.imshow(cutout, cmap='gray_r', interpolation='none', origin='lower',
                       vmax=0.01, vmin=-0.001)
             pltr = dend.plotter()
-            for struct in dend.leaves:
+            print("Contouring dendrogram leaves")
+            for struct in ProgressBar(dend.leaves):
                 pltr.plot_contour(ax, structure=struct, colors=['r'],
                                   linewidths=[0.9], zorder=5)
                 if struct.parent:
@@ -136,7 +143,9 @@ for regname,fn in files.items():
             aperture2 = Circle([0, 0], 15*u.arcsec, name='15as', frame=frame.name)
             background = Annulus([0, 0], inner=15*u.arcsec, outer=20*u.arcsec,
                                  name='background', frame=frame.name)
+            print("Beginning photometry ...")
             mastercatalog.photometer(aperture1, aperture2, background)
+            print()
 
             source_center = coordinates.SkyCoord(mastercatalog.catalog['x_cen'],
                                                  mastercatalog.catalog['y_cen'],
@@ -155,4 +164,4 @@ for regname,fn in files.items():
 
 
     # only do G31 for now, since it's hard-coded
-    break
+    #break

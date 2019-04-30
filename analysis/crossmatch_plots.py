@@ -18,13 +18,14 @@ from catalog_flux_limits import flux_limits
 
 
 for regname,fn in files.items():
-    for threshold,min_npix in ((4, 20), ):#(6, 15), (8, 15), (10, 15)):
+    for threshold,min_npix in ((4, 100), ):#(6, 15), (8, 15), (10, 15)):
         for min_delta in (1, ): #2):
             catfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac'
             if not os.path.exists(catfn):
                 # during debugging stages, this can happen...
                 continue
             ppcat = Table.read(catfn, format='ascii.ipac')
+            assert ppcat['Fint20cm'].unit is not None
 
             herscheldetected = ppcat['HerschelDetected'] == 'True'
             spitzerdetected = ppcat['SpitzerDetected'] == 'True'
@@ -241,62 +242,3 @@ for regname,fn in files.items():
 
             fign = f'{catalog_figure_path}/colorcolor_350um1100um_vs_1100um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
             pl.savefig(fign)
-
-
-            break
-        break
-    break
-
-fig5 = pl.figure(5, figsize=(15,12))
-
-fig2 = pl.figure(2)
-fig2.clf()
-mgpsdetected = ppcat['rejected'] == 0
-for ii,row in enumerate(ppcat[mgpsdetected]):
-    #if ii/4+1 > 9:
-    #    break
-    #ax = fig2.add_subplot(3, 3, int(ii/4) + 1)
-    x,y = makesed(row)
-    _,uplims = makeuplims(row)
-    #ax.loglog(x, y, 'o-')
-
-    mgps_fn = '../GAL_031/GAL031_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits'
-    frame = wcs.utils.wcs_to_celestial_frame(wcs.WCS(fits.getheader(mgps_fn)))
-
-    crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame=frame.name, unit=(u.deg, u.deg))
-    make_sed_plot(crd, mgps_fn, figure=fig5, regname='GAL_031')
-
-    ax = fig5.add_subplot(4, 5, 20)
-    ax.loglog(x, y, 'o-')
-    ax.loglog(x, uplims, marker='v', color='orange', linestyle='none')
-    ax.set_aspect('equal', 'box')
-    ax.set_xlabel("Wavelength ($\mu$m)")
-    ax.set_ylabel("Flux Density [mJy]")
-    name = 'G031_{0}'.format(row['_idx'])
-    name = f'{row["SourceName"]}'
-    fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')
-    print(f"finished {name}")
-
-
-galhdr = fits.Header.fromtextfile('../GAL_031/g31gal.hdr')
-data,_ = reproject.reproject_interp(files['G31'], galhdr)
-hdu = fits.PrimaryHDU(data=data, header=galhdr)
-
-pl.figure(4).clf()
-FF = aplpy.FITSFigure(hdu, figure=pl.figure(4))
-FF.show_grayscale()
-
-ppcat['x_cen'].unit = u.deg
-ppcat['y_cen'].unit = u.deg
-coords = coordinates.SkyCoord(ppcat['x_cen'].quantity, ppcat['y_cen'].quantity, frame='icrs').galactic
-
-mask = ((cmdetected) & (mgpsdetected))
-FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='w', facecolor='w', marker='x', linewidth=1)
-mask = ((herscheldetected) & (mgpsdetected))
-FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='c', facecolor='c', marker='+', linewidth=1)
-mask = ((cmdetected) & (~herscheldetected) & (mgpsdetected))
-FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='r')
-mask = ((~cmdetected) & (~herscheldetected) & (mgpsdetected))
-FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='lime')
-
-FF.savefig(f'{catalog_figure_path}/W43_catalog_overlay.pdf')

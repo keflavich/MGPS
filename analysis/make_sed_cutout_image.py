@@ -58,7 +58,12 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
     images = {x:y for x,y in images.items() if y is not None}
     images['mgps'] = [mgps_cutout]
 
+    regdir = os.path.join(paths.basepath, regname)
+    if not os.path.exists(regdir):
+        os.mkdir(regdir)
     higaldir = os.path.join(paths.basepath, regname, 'HiGalCutouts')
+    if not os.path.exists(higaldir):
+        os.mkdir(higaldir)
     if not any([os.path.exists(f"{higaldir}/{coordname}_{wavelength}.fits")
                 for wavelength in map(int, HiGal.HIGAL_WAVELENGTHS.values())]):
         print(f"Retrieving HiGal data for {coordname} ({coordinate.to_string()} {coordinate.frame.name})")
@@ -74,10 +79,12 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
                 hgim = fits.open(hgfn)
                 images['HiGal{0}'.format(hgim[0].header['WAVELEN'])] = hgim
 
-    # redundant, save some space for a SED plot
-    del images['gpsmsx2']
-    # too low-res to be useful
-    del images['gps90']
+    if 'gpsmsx2' in images:
+        # redundant, save some space for a SED plot
+        del images['gpsmsx2']
+    if 'gps90' in images:
+        # too low-res to be useful
+        del images['gps90']
 
     if figure is None:
         figure = pl.figure(figsize=(15,12))

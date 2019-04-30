@@ -48,13 +48,21 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
 
 if __name__ == "__main__":
     for regname,fn in files.items():
+        print(f"Crossmatching region {regname}, file {fn}")
         header = fits.getheader(fn)
         ww = wcs.WCS(header)
         frame = wcs.utils.wcs_to_celestial_frame(ww)
-        for threshold,min_npix in ((4, 20), (4, 15)): #(6, 15), (8, 15), (10, 15)):
+
+        # loop over each catalog (we ended up with one, but early on we had
+        # others to test with)
+        for threshold,min_npix in ((4, 100),):# (4, 15)): #(6, 15), (8, 15), (10, 15)):
             for min_delta in (1, ): #2):
+
                 ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}.ipac', format='ascii.ipac')
 
+                # for each table, we need to add the column from the search
+                # target.  The RMS catalog gets special-cased because the first
+                # attempt resulted in string lengths that were too short
                 for vcatname, coldesc in catalogs_to_search.items():
                     for colname in coldesc.values():
                         if 'RMSClass' in colname:
@@ -62,12 +70,17 @@ if __name__ == "__main__":
                         else:
                             ppcat.add_column(Column(name=colname, length=len(ppcat)))
 
+                # for each non-rejected data point in the catalog, do the searches
                 for row in ppcat:
                     if row['rejected'] == 0:
                         crd = coordinates.SkyCoord(row['x_cen'], row['y_cen'],
                                                    frame=frame.name,
                                                    unit=(u.deg, u.deg))
+
+                        # for each catalog we're going to search, run the query
                         for vcat,coldesc in catalogs_to_search.items():
+
+                            # IRSA and Vizier are the two cases we're searching
                             if 'IRSA' in vcat:
                                 rslt = Irsa.query_region(crd,
                                                          radius=10*u.arcsec,
@@ -78,9 +91,16 @@ if __name__ == "__main__":
                                 rslt = Vizier.query_region(crd,
                                                            radius=10*u.arcsec,
                                                            catalog=vcat)
-                            if len(rslt) >= 1:
-                                pass
-                                #print(rslt)
+
+                            #this block does nothing: we already just cut to the 0'th
+                            # # if there are multiple hits, we don't have any way
+                            # # to decide between them, so we just skip it
+                            # # (this isn't great; ideally we'd like to do something about this...)
+                            # if len(rslt) > 1:
+                            #     print(f"WARNING: cropping result down from {rslt} to {rslt[:1]}")
+                            #     rslt = rslt[:1]
+                            #     #pass
+                            #     #print(rslt)
 
                             if len(rslt) == 1:
                                 # convert from tabledict to table
@@ -88,6 +108,8 @@ if __name__ == "__main__":
                                 tblrow = tbl[0]
                                 for origcolname,colname in coldesc.items():
                                     row[colname] = tblrow[origcolname]
+
+                                    # make sure we get the units set correctly
                                     if ppcat[colname].unit is None and tbl[origcolname].unit is not None:
                                         ppcat[colname].unit = tbl[origcolname].unit
                                         print(f"Set unit for {colname} to {tbl[origcolname].unit}")
@@ -96,12 +118,28 @@ if __name__ == "__main__":
                                     elif tbl[origcolname].unit is None:
                                         raise
 
+                                    # sanity check; turns out we can't reach
+                                    # this because there are no hits for some
+                                    # fields (not all fields overlap w/the
+                                    # survey)
+                                    if 'Fint20cm' in (colname, origcolname):
+                                        assert tbl[origcolname].unit is not None
+                                        assert ppcat[colname].unit is not None
+
                 herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
                 spitzerdetected = (ppcat['Fint8um', 'Fint3_6um', 'Fint4_5um', 'Fint5_8um', 'Fint24um'].as_array().view('float').reshape(len(ppcat),5) > 0).any(axis=1)
                 cmdetected = (ppcat['Fint6cm_CORNISH', 'Fpeak6cm_MAGPIS','Fint20cm', 'Fint20cm_THOR'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
                 ppcat.add_column(Column(name='HerschelDetected', data=herscheldetected))
                 ppcat.add_column(Column(name='SpitzerDetected', data=spitzerdetected))
                 ppcat.add_column(Column(name='cmDetected', data=cmdetected))
+
+                # special case: what if there are _no_ hits?  Unfortunately this might have to be done for multiple columns across the different fields
+                if ppcat['Fint20cm'].unit is None:
+                    ppcat['Fint20cm'].unit = u.Jy
+                if ppcat['Fint6cm_CORNISH'].unit is None:
+                    ppcat['Fint6cm_CORNISH'].unit = u.Jy
+                if ppcat['Fpeak6cm_MAGPIS'].unit is None:
+                    ppcat['Fpeak6cm_MAGPIS'].unit = u.Jy
 
                 ppcat['x_cen'].unit = u.deg
                 ppcat['y_cen'].unit = u.deg
@@ -133,5 +171,6 @@ if __name__ == "__main__":
                 outfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac'
                 ppcat.write(outfn, format='ascii.ipac')
                 print(f"Completed file {outfn}")
+
 
     #ds9 W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr10_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr4_minn20_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr6_minn15_mind2.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind1.reg W43/GAL_031_precon_2_arcsec_pass_9.fits -region load tables/G31_dend_contour_thr8_minn15_mind2.reg
