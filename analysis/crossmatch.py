@@ -158,14 +158,17 @@ if __name__ == "__main__":
                 # S_3mm > S_6cm and/or S_20cm, or nondetections at long wavelengths plus an excess over extrapolation from 1mm at beta=3
                 # Dust-detected (but does not need to be a point source)
                 candidate_hchii = (
+                                   ((ppcat['rejected'] == 0) | (ppcat['rejected'] == 'False')) &
                                    (
+                                   ( # cm slope > -0.1
                                     ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fpeak6cm_MAGPIS']) & (ppcat['Fpeak6cm_MAGPIS'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fint6cm_CORNISH']) & (ppcat['Fint6cm_CORNISH'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm_THOR']) & (ppcat['Fpeak20cm_THOR'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm']) & (ppcat['Fpeak20cm'] > 0))
                                    ) | 
-                                   # 3mm excess, but no 6cm/20cm detection
-                                   ((ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0) &
+                                   # 3mm excess over 1mm extrapolation, but no 6cm/20cm detection
+                                   (
+                                       (ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0) &
                                    # 1.46 is the 40as -> Gaussian correction factor
                                    # 3.0 is the beta=1 case for dust (shallow)
                                    # This criterion looks for an excess at 3mm over pure dust
@@ -174,8 +177,19 @@ if __name__ == "__main__":
                                      # if no 1 mm detection, assume no dust - HCHII unlikely w/o dust
                                      (ppcat['Fint1100um_40as'] != 0)
                                     )
-                                   ) &
-                                   ((ppcat['rejected'] == 0) | (ppcat['rejected'] == 'False'))
+                                   ) |
+                                   (
+                                   # 3mm excess over 870um extrapolation, but no 6cm/20cm detection
+                                       (ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0) &
+                                   # 3.0 is the beta=1 case for dust (shallow)
+                                   # This criterion looks for an excess at 3mm over pure dust
+                                    (
+                                     (ppcat['MUSTANG_10as_peak'] / (ppcat['Fint870um']) > (constants.mustang_central_frequency / (350*u.GHz))**(3.0)) &
+                                     # if no 870 um detection, assume no dust - HCHII unlikely w/o dust
+                                     (ppcat['Fint870um'] != 0)
+                                    )
+                                   )
+                                   )
                                   )
                 ppcat.add_column(Column(name="HCHII_candidate", data=candidate_hchii))
 

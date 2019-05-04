@@ -1,4 +1,6 @@
 import astrodendro
+import json
+import os
 import dendrocat
 from dendrocat.aperture import Circle, Annulus
 from astropy import wcs
@@ -31,7 +33,17 @@ def ppcat_to_regions(cat, frame):
     return regs
 
 def dendrocatify(regname, fn, threshold=4, min_npix=100, min_delta=1,
-                 cutout=None, cutout_header=None, snr_threshold=5):
+                 cutout=None, cutout_header=None, snr_threshold=5,
+                 noiselevel_table='noise_levels.json'):
+
+    noisefilepath = f"{catalog_path}/{noiselevel_table}"
+    if os.path.exists(noisefilepath):
+        with open(noisefilepath, 'r') as fh:
+            noiselevel_table = json.load(fh)
+    else:
+        noiselevel_table = {}
+
+
     print(f"Starting region {regname}: {fn}")
     if cutout_header is None or cutout is None:
         fh = fits.open(fn)
@@ -68,8 +80,11 @@ def dendrocatify(regname, fn, threshold=4, min_npix=100, min_delta=1,
 
         avg_noise = mad_std(data, ignore_nan=True)
         filt_avg_noise = mad_std(cutout, ignore_nan=True)
+        noiselevel_table[regname] = {'noise': avg_noise, 'filtered_noise': filt_avg_noise}
+        with open(noisefilepath, 'w') as fh:
+            json.dump(noiselevel_table, fh)
 
-    print(f"Beginning cataloging.  Noise is {avg_noise:0.3f} before and {filt_avg_noise:0.3f} after filtering")
+    print(f"Beginning cataloging.  Noise is {avg_noise:0.4f} before and {filt_avg_noise:0.4f} after filtering")
     radiosource = dendrocat.RadioSource([fits.PrimaryHDU(data=cutout,
                                                          header=cutout_header)])
     radiosource.nu = mustang_central_frequency

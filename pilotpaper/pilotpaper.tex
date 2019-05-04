@@ -4,6 +4,8 @@
 
 \def\todo#1{{\textcolor{red}{TODO: #1}}}
 
+\input{nsources}
+
 \input{nhiicandidates}
 
 \begin{document}
@@ -196,8 +198,8 @@ are the `leaves' in the catalog hierarchy.
 
 To select primarily robust compact sources, we filter the images to reject
 scales $>45\arcsec$ prior to cataloging.  We used a $4-\sigma$ flux threshold
-and minimum of 100 pixels as the dendrogram parameters; the pixel scale is 1$\arcsec$/pixel,
-so our minimum object size is $\sim1/2$ of beam area.
+and minimum of 100 pixels as the dendrogram parameters; the pixel scale is
+1$\arcsec$/pixel, so our minimum object size is $\sim1/2$ of beam area.
 We then reject sources with a peak signal-to-noise
 ratio less than 5.  We compute the noise for each source as the standard deviation
 of pixel values in an aperture starting from 24\arcsec plus the source's major axis
@@ -210,6 +212,8 @@ emission that had peaks that met the threshold criteria but are not distinct sou
 The extended objects are a particularly prominent component of the Galactic center
 field.
 
+A total of \nsources sources were identified across the seven fields.
+
 % We experimented with a range of parameters for the noise threshold, the minimum
 % number of pixels, and the minimum $\Delta$ between levels.  While each of these
 % parameters significantly changes the total dendrogram structure, only the
@@ -219,10 +223,34 @@ field.
 \label{sec:catalogmatching}
 We cross-match the resulting catalog with the Herschel HiGal
 \citep{Elia2017a}, Spitzer GLIMPSE and MIPSGAL
-\citep{Churchwell2009a,Gutermuth2015a}, and MAGPIS 6cm and 20cm
+\citep{Churchwell2009a,Gutermuth2015a},
+Bolocam BGPS \citep{Aguirre2011a,Rosolowsky2010a,Ginsburg2013a}, LABOCA ATLASGAL
+\citep{Urquhart2014c},
+and MAGPIS 6cm and 20cm
 \citep{Giveon2005a,Hoare2006a} and CORNISH 6cm \citep{Hoare2012a} catalogs.
 Matches in these catalogs are included if there is a source within 10\arcsec
 (approximately the MUSTANG beam FWHM) of the MGPS catalog entry.
+
+Of the \nsources total MUSTANG sources, \mmdetections had millimeter/submillimeter
+matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
+had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
+had no match in the millimeter or centimeter catalogs.
+
+Figure \ref{fig:fullcathist} shows the histogram of MUSTANG-measured fluxes
+in the catalog.  Because the typical noise level was $\sim1$ mJy, the catalog
+has few sources below 5 mJy.  The overlaid histogram shows the subset of
+the sample with no detections at other wavelengths; this subset is much
+fainter than the overall distribution, suggesting that the majority
+of these sources were either below the detection limit or the confusion
+limit of the other surveys.
+
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/full_catalog_histogram.pdf}
+    \caption{Histogram...}
+\label{fig:fullcathist}
+\end{figure*}
+
 
 \subsection{W43 catalog}
 We use the W43 region as our test area to examine the cataloging process and
@@ -326,11 +354,9 @@ as those fitting these criteria:
 
 These criteria provide a small sample of \nhiicand candidate HCHII regions
 across the seven target regions.  Of this sample, all turned out to be known
-ultracompact HII regions (e.g., W49A, W51 IRS2), diffuse and extended regions,
-or in one case, an OH/IR star.
+ultracompact or hypercompact HII regions (e.g., W49A, W51 IRS2, W51 e2),
+diffuse and extended regions, or in one case, an OH/IR star.
 
-\todo{What of the known HCHII regions?  They better have been recovered.  wtf
-G49.489-0.386 was rejected.}
 
 
 

@@ -27,6 +27,7 @@ for regname,fn in files.items():
             ppcat = Table.read(catfn, format='ascii.ipac')
             assert ppcat['Fint20cm'].unit is not None
 
+            bolocamdetected = ppcat['Fint1100um'] > 0
             herscheldetected = ppcat['HerschelDetected'] == 'True'
             spitzerdetected = ppcat['SpitzerDetected'] == 'True'
             cmdetected = ppcat['cmDetected'] == 'True'
@@ -75,6 +76,8 @@ for regname,fn in files.items():
 
             pl.savefig(f'{catalog_figure_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_detection_histograms.pdf', bbox_inches='tight')
 
+            bm = mgpsdetected & bolocamdetected
+            bmu = mgpsdetected & ~bolocamdetected
             hm = mgpsdetected & herscheldetected
             hmu = mgpsdetected & (~herscheldetected)
             cm = mgpsdetected & cmdetected
@@ -245,4 +248,40 @@ for regname,fn in files.items():
             pl.text(50, 3, "$\\beta=1.5$", rotation='vertical', color='r')
 
             fign = f'{catalog_figure_path}/colorcolor_350um1100um_vs_1100um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
+            pl.savefig(fign)
+
+            pl.figure(5).clf()
+            pl.loglog(ppcat['MUSTANG_dend_flux'][bm & cm]/ppcat['Fpeak6cm_MAGPIS'][bm & cm]*1000,
+                      f1100um[bm & cm]/ppcat['MUSTANG_dend_flux'][bm & cm],
+                      linestyle='none',
+                      marker='o', alpha=0.8)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][bmu & cm]/ppcat['Fpeak20cm'][bmu & cm]*1000,
+                      flux_limits[1100*u.um].to(u.Jy)/ppcat['MUSTANG_dend_flux'][bmu & cm],
+                      linestyle='none',
+                      marker='v', alpha=0.8, zorder=-3)
+
+            # these are candidate HCHIIs: they have dust (because they're Hershel-detected)
+            pl.loglog(ppcat['MUSTANG_dend_flux'][bm & cmu]/flux_limits[6*u.cm].to(u.Jy),
+                      f1100um[bm & cmu]/ppcat['MUSTANG_dend_flux'][bm & cmu],
+                      linestyle='none',
+                      marker='>', zorder=5, alpha=0.8)
+
+            pl.loglog(ppcat['MUSTANG_dend_flux'][bmu & cmu]/flux_limits[6*u.cm].to(u.Jy),
+                      flux_limits[1100*u.um].to(u.Jy)/ppcat['MUSTANG_dend_flux'][bmu & cmu],
+                      linestyle='none',
+                      marker=[(0,0),(1,-1),(1,-0.25),(1,-1),(0.25,-1)], zorder=-5, alpha=0.8)
+
+            xlims = pl.gca().get_xlim()
+            ylims = pl.gca().get_ylim()
+            pl.plot([1e-3, 1e3], [(3*u.mm/(1100*u.um)).decompose().value**3]*2, 'k--', zorder=-10)
+            pl.plot([1e-3, 1e3], [(3*u.mm/(1100*u.um)).decompose().value**4]*2, 'k:', zorder=-10)
+            pl.plot([1e-3, 1e3], [(3*u.mm/(1100*u.um)).decompose().value**2]*2, 'k-', zorder=-10)
+            #pl.plot([(6*u.cm / (3*u.mm)).decompose()**2]*2, [1,1e5], 'g--', zorder=-10)
+            pl.plot([(6*u.cm / (3*u.mm)).decompose()**-0.1]*2, [1,1e5], 'r:', zorder=-10)
+            pl.gca().set_xlim(*xlims)
+            pl.gca().set_ylim(*ylims)
+            pl.xlabel("3 mm / 6 cm")
+            pl.ylabel("1100 $\mu$m / 3 mm")
+
+            fign = f'{catalog_figure_path}/colorcolor_3mm6cm_vs_1100um3mm_{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.pdf'
             pl.savefig(fign)

@@ -68,4 +68,11 @@ cand_qual = {
     'G0.529-0.084': 'diffuse',
     'G0.169+0.150': 'diffuse',
     'G34.257+0.155': 'HII',
+    'G49.394-0.483': 'W51e2/e8',
+    'G0.117+0.085': 'diffuse',
 }
+
+for row in candidate_table:
+    if row['SourceName'] not in cand_qual:
+        print(row['SourceName'])
+
