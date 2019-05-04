@@ -1,3 +1,4 @@
+import numpy as np
 import os
 import pylab as pl
 import reproject
@@ -133,6 +134,9 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
         ax = figure.add_subplot(4, 5, ii+1, projection=outwcs)
         ax.set_title("{0}: {1}".format(survey, wlmap[survey]))
 
+        if not np.any(np.isfinite(new_img)):
+            print(f"SKIPPING {survey}")
+            continue
 
         norm = visualization.ImageNormalize(new_img,
                                             interval=visualization.PercentileInterval(99.95),

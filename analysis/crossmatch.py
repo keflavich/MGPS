@@ -1,3 +1,4 @@
+import numpy as np
 from astropy.table import Table, Column
 from astroquery.vizier import Vizier
 from astroquery.irsa import Irsa
@@ -72,7 +73,7 @@ if __name__ == "__main__":
 
                 # for each non-rejected data point in the catalog, do the searches
                 for row in ppcat:
-                    if row['rejected'] == 0:
+                    if row['rejected'] == 0 or row['rejected'] == 'False':
                         crd = coordinates.SkyCoord(row['x_cen'], row['y_cen'],
                                                    frame=frame.name,
                                                    unit=(u.deg, u.deg))
@@ -140,31 +141,41 @@ if __name__ == "__main__":
                     ppcat['Fint6cm_CORNISH'].unit = u.Jy
                 if ppcat['Fpeak6cm_MAGPIS'].unit is None:
                     ppcat['Fpeak6cm_MAGPIS'].unit = u.Jy
+                for key in (70,160,250,350,500):
+                    if ppcat[f'Fpeak{key}um'].unit is None:
+                        ppcat[f'Fpeak{key}um'].unit = u.Jy/u.sr
 
                 ppcat['x_cen'].unit = u.deg
                 ppcat['y_cen'].unit = u.deg
+
+                ppcat['3mm20cmindex_THOR'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fpeak20cm_THOR'])) / np.log(constants.mustang_central_frequency / (20*u.cm).to(u.GHz, u.spectral()))
+                ppcat['3mm20cmindex'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fpeak20cm'])) / np.log(constants.mustang_central_frequency / (20*u.cm).to(u.GHz, u.spectral()))
+                ppcat['3mm1mmindex'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fint1100um_40as'] * 1.46)) / np.log(constants.mustang_central_frequency / (271.1*u.GHz))
+                ppcat['3mm6cmindex_MAGPIS'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fpeak6cm_MAGPIS'].quantity.to(u.Jy).value)) / np.log(constants.mustang_central_frequency / (5*u.GHz))
+                ppcat['3mm6cmindex_CORNISH'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fint6cm_CORNISH'].quantity.to(u.Jy).value)) / np.log(constants.mustang_central_frequency / (5*u.GHz))
 
                 # identify HCHII candidates from criteria:
                 # S_3mm > S_6cm and/or S_20cm, or nondetections at long wavelengths plus an excess over extrapolation from 1mm at beta=3
                 # Dust-detected (but does not need to be a point source)
                 candidate_hchii = (
                                    (
-                                    ((ppcat['MUSTANG_10as_peak'] > ppcat['Fpeak6cm_MAGPIS']) & (ppcat['Fpeak6cm_MAGPIS'] > 0)) |
-                                    ((ppcat['MUSTANG_10as_peak'] > ppcat['Fpeak20cm_THOR']) & (ppcat['Fpeak20cm_THOR'] > 0)) |
-                                    ((ppcat['MUSTANG_10as_peak'] > ppcat['Fpeak20cm']) & (ppcat['Fpeak20cm'] > 0)) |
-                                    ((ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0))
-                                   ) &
+                                    ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fpeak6cm_MAGPIS']) & (ppcat['Fpeak6cm_MAGPIS'] > 0)) |
+                                    ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fint6cm_CORNISH']) & (ppcat['Fint6cm_CORNISH'] > 0)) |
+                                    ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm_THOR']) & (ppcat['Fpeak20cm_THOR'] > 0)) |
+                                    ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm']) & (ppcat['Fpeak20cm'] > 0))
+                                   ) | 
+                                   # 3mm excess, but no 6cm/20cm detection
+                                   ((ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0) &
                                    # 1.46 is the 40as -> Gaussian correction factor
                                    # 3.0 is the beta=1 case for dust (shallow)
                                    # This criterion looks for an excess at 3mm over pure dust
-                                   (
                                     (
-                                     (ppcat['MUSTANG_10as_peak'] / (ppcat['Fint1100um_40as'] * 1.46) < (constants.mustang_central_frequency / (271.1*u.GHz))**(3.0)) &
+                                     (ppcat['MUSTANG_10as_peak'] / (ppcat['Fint1100um_40as'] * 1.46) > (constants.mustang_central_frequency / (271.1*u.GHz))**(3.0)) &
                                      # if no 1 mm detection, assume no dust - HCHII unlikely w/o dust
                                      (ppcat['Fint1100um_40as'] != 0)
                                     )
                                    ) &
-                                   (ppcat['rejected'] == 0)
+                                   ((ppcat['rejected'] == 0) | (ppcat['rejected'] == 'False'))
                                   )
                 ppcat.add_column(Column(name="HCHII_candidate", data=candidate_hchii))
 

@@ -30,7 +30,11 @@ for regname,fn in files.items():
             herscheldetected = ppcat['HerschelDetected'] == 'True'
             spitzerdetected = ppcat['SpitzerDetected'] == 'True'
             cmdetected = ppcat['cmDetected'] == 'True'
-            mgpsdetected = ppcat['rejected'] == 0
+            try:
+                mgpsdetected = ppcat['rejected'] == 0
+                assert len(mgpsdetected) == len(ppcat)
+            except (AssertionError,TypeError):
+                mgpsdetected = ppcat['rejected'] == 'False'
 
             print("Herschel-detected: {0} / {1} = {2}%".format((herscheldetected & mgpsdetected).sum(),
                                                                mgpsdetected.sum(),
