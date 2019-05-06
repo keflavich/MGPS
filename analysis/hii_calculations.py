@@ -72,7 +72,8 @@ cand_qual = {
     'G0.117+0.085': 'diffuse',
 }
 
+print("The following sources have not been classified by hand:")
 for row in candidate_table:
     if row['SourceName'] not in cand_qual:
         print(row['SourceName'])
-
+print("If there are no sources above, that means you're done.")

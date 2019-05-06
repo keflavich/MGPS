@@ -24,17 +24,18 @@ The images from this project are released at
 \centering
 %\begin{minipage}{130mm}
 \caption{Observation Summary}
-\begin{tabular}{lll}
+\begin{tabular}{llll}
     \label{tab:observations}
-Target   &      Time (hr) &       Sessions   \\
+Target   &      Time (hr) &       Sessions   &  Estimated Noise (mJy)\\
 \hline
-W51      &      1.02      &        01        \\
-W49      &      1.02      &        01, 02    \\
-SgrB2    &      1.35      &   02, 03, 04, 05 \\
-GAL031   &      1.49      &        02, 03    \\
-W33      &      1.02      &        03        \\
-GAL029   &      1.30      &        04,05     \\
-GAL034   &     $\sim0.5$  &   05             \\
+\input{obstable_data}
+%W51      &      1.02      &        01        \\
+%W49      &      1.02      &        01, 02    \\
+%SgrB2    &      1.35      &   02, 03, 04, 05 \\
+%GAL031   &      1.49      &        02, 03    \\
+%W33      &      1.02      &        03        \\
+%GAL029   &      1.30      &        04,05     \\
+%GAL034   &     $\sim0.5$  &   05             \\
 \hline
 \end{tabular}
 \par
@@ -201,10 +202,14 @@ scales $>45\arcsec$ prior to cataloging.  We used a $4-\sigma$ flux threshold
 and minimum of 100 pixels as the dendrogram parameters; the pixel scale is
 1$\arcsec$/pixel, so our minimum object size is $\sim1/2$ of beam area.
 We then reject sources with a peak signal-to-noise
-ratio less than 5.  We compute the noise for each source as the standard deviation
-of pixel values in an aperture starting from 24\arcsec plus the source's major axis
-size to 48\arcsec plus the source's major axis size.  This process was performed with
-\texttt{dendrocat.autoreject}.
+ratio less than 5, where we used the average noise level across the field.
+We report the noise level estimated using the median absolute deviation
+scaled to the standard deviation for each field in table \ref{tab:observations}.
+
+% We compute the noise for each source as the standard deviation
+% of pixel values in an aperture starting from 24\arcsec plus the source's major axis
+% size to 48\arcsec plus the source's major axis size.  This process was performed with
+% \texttt{dendrocat.autoreject}.
 
 The resulting catalog includes all of the significant pointlike sources in each
 field of view.  However, this catalog also includes components of extended

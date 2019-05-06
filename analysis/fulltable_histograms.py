@@ -24,4 +24,5 @@ pl.hist(full_table['MUSTANG_dend_flux'][cm_mm_nondetection],
 pl.semilogx()
 pl.legend(loc='best')
 pl.xlabel("MUSTANG source flux $S_{3 \mathrm{mm}}$ [Jy]")
+pl.ylabel("Number of Sources")
 pl.savefig(f'{catalog_figure_path}/full_catalog_histogram.pdf')
