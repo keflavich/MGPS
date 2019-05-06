@@ -7,6 +7,7 @@
 \input{nsources}
 
 \input{nhiicandidates}
+\input{distribution_alphas}
 
 \begin{document}
 The MUSTANG Galactic Plane Survey (MGPS90) pilot
@@ -24,9 +25,9 @@ The images from this project are released at
 \centering
 %\begin{minipage}{130mm}
 \caption{Observation Summary}
-\begin{tabular}{llll}
+\begin{tabular}{llllll}
     \label{tab:observations}
-Target   &      Time (hr) &       Sessions   &  Estimated Noise (mJy)\\
+Target   &      Time (hr) &       Sessions   &  Estimated Noise (mJy) & $\ell$ offset (\arcsec) & $b$ offset (\arcsec) \\
 \hline
 \input{obstable_data}
 %W51      &      1.02      &        01        \\
@@ -160,10 +161,22 @@ Additional half-beam pointing errors were noted in some individual scans, result
 artifacts in the data.  Most of these issues disappeared after smoothing the data with the 4\arcsec kernel.
 
 Because several corrections were required, we assume the absolute pointing
-accuracy is $\sim4\arcsec$.  We therefore cross-correlated the MUSTANG-2 maps
-with \todo{BGPS, ATLASGAL, Planck, HiGal are all fine candidates to cross-correlate
-against and measure the pointing offset.  We probably want to deliver something consistent with one or
-more of these surveys}
+accuracy is $\sim4\arcsec$.  We compared the MUSTANG-2 maps with Bolocam
+Galactic Plane Survey \citep[BGPS][]{Ginsburg2013a} images to measure pointing
+offsets, since the Bolocam data are the closest in frequency to MUSTANG of the
+available data sets and since those images were cross-calibrated against the
+Herschel Hi-Gal images.  We use the \texttt{image-registration}\footnote{\url{http://image-registration.rtfd.org}}
+toolkit to cross-correlate the MUSTANG images convolved to Bolocam resolution
+with the Bolocam images and use a fourier-domain upsampling approach to obtain
+sub-pixel positional offsets.  The measured offsets are reported in Table
+\ref{tab:observations} and show the offset of the Bolocam data with respect to
+the MUSTANG data.  These offsets should not be regarded as genuine pointing errors,
+as there are substantial morphological differences between the MUSTANG and Bolocam
+data; notably, the W51 image may have an incorrectly high reported offset because
+the dust in this region, which is brighter at 1.1 mm, is systematically shifted
+to the north of the free-free emission, which is brighter at 3 mm.
+The generally good agreement, with offsets $\lesssim4\arcsec$ in either direction,
+is confirmation that the MUSTANG pointing correction approach was successful.
 
 \subsection{Effective Central Frequency}
 The MUSTANG-2 bandpass filter is approximately flat over the range 75 to 105 GHz.
@@ -239,7 +252,9 @@ Matches in these catalogs are included if there is a source within 10\arcsec
 Of the \nsources total MUSTANG sources, \mmdetections had millimeter/submillimeter
 matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
-had no match in the millimeter or centimeter catalogs.
+had no match in the millimeter or centimeter catalogs.  There were
+\mmdetectionscmnondetections sources cross-matched at shorter wavelengths
+but not at longer wavelengths.
 
 Figure \ref{fig:fullcathist} shows the histogram of MUSTANG-measured fluxes
 in the catalog.  Because the typical noise level was $\sim1$ mJy, the catalog
@@ -247,31 +262,36 @@ has few sources below 5 mJy.  The overlaid histogram shows the subset of
 the sample with no detections at other wavelengths; this subset is much
 fainter than the overall distribution, suggesting that the majority
 of these sources were either below the detection limit or the confusion
-limit of the other surveys.
+limit of the other surveys.  We fit cut-off power-law distributions
+to each of these histograms\citep{Clauset2007a,Alstott2014a}, finding a slope
+$\alpha=\plalphaall\pm\plsigmaall$ for the full distribution and
+$\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
 
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/full_catalog_histogram.pdf}
-    \caption{Histogram...}
+    \caption{Histogram of the source catalog.  Blue shows all sources,
+    while orange (overlaid on top) shows only those sources that have
+    no matches at cm or mm wavelengths in the searched surveys.}
 \label{fig:fullcathist}
 \end{figure*}
 
 
-\subsection{W43 catalog}
-We use the W43 region as our test area to examine the cataloging process and
-cross-matching in detail.
-\todo{The old cataloging was performed on the file
-\texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.}
-
-In W43, most (80\%) of the 108 MUSTANG 3mm sources have a corresponding Herschel
-compact source, 49\% have a centimeter association, and only 19\% have a
-Spitzer association.  Visual inspection of the Spitzer maps revealed that there are likely
-infrared sources associated with the majority of the MUSTANG sources, but many
-of these infrared sources are extended objects that were not included in the
-Spitzer GLIMPSE and MIPSGAL catalogs.
-
-The breakdown of match fraction as a function of flux density is shown in histograms
-in Figure \ref{fig:histogram}.
+% \subsection{W43 catalog}
+% We use the W43 region as our test area to examine the cataloging process and
+% cross-matching in detail.
+% \todo{The old cataloging was performed on the file
+% \texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.}
+% 
+% In W43, most (80\%) of the 108 MUSTANG 3mm sources have a corresponding Herschel
+% compact source, 49\% have a centimeter association, and only 19\% have a
+% Spitzer association.  Visual inspection of the Spitzer maps revealed that there are likely
+% infrared sources associated with the majority of the MUSTANG sources, but many
+% of these infrared sources are extended objects that were not included in the
+% Spitzer GLIMPSE and MIPSGAL catalogs.
+% 
+% The breakdown of match fraction as a function of flux density is shown in histograms
+% in Figure \ref{fig:histogram}.
 
 % \subsubsection{Individual sources}
 % While most MUSTANG sources are detected at either millimeter and submillimeter
@@ -362,6 +382,20 @@ across the seven target regions.  Of this sample, all turned out to be known
 ultracompact or hypercompact HII regions (e.g., W49A, W51 IRS2, W51 e2),
 diffuse and extended regions, or in one case, an OH/IR star.
 
+However, the majority of sources in our catalog do not have
+centimeter-wavelength detections and therefore were not
+eligible to be selected based on the above criteria.  HCHII regions that are optically
+thick up to $\sim3$ mm, those that are extremely compact and dense,
+would be below the detection threshold of the centimeter surveys
+\citep[$\approx2.5$ mJy at 6 cm][]{Given2005a,Hoare2012a}.  While we would
+expect some excess above the extrapolated dust emissivity for these sources,
+it is plausible that the excess is not enough to modify the spectral index
+to meet our selection criteria.  Sources that have millimeter detections (since
+they must be surrounded by gas and dust) and not centimeter detections
+therefore remain candidate HCHII regions.  This large sample of
+\mmdetectionscmnondetections additional candidates can be further investigated
+with future deeper centimeter surveys of the Galactic plane.
+
 
 
 
@@ -379,25 +413,14 @@ diffuse and extended regions, or in one case, an OH/IR star.
 % young hypercompact \hii region.
 
 
-\begin{figure*}[htp]
-    \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
-\caption{Histograms of the MUSTANG 3mm flux density in the W43 field.  In each
-panel, the colored region shows which sources were detected in one or more of
-the Herschel Hi-Gal (top), Spitzer GLIMPSE or MIPSGAL (middle),
-or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
-\label{fig:histogram}
-\end{figure*}
-
-\begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/G31_overview_withcatalog.pdf}
-\caption{Image of the W43 region from MUSTANG.  The circles show sources from our catalog.
-%The overplotted symbols show the locations
-%of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
-%and centimeter and Herschel non-detections in green.
-}
-\label{fig:w43overview}
-\end{figure*}
-
+% \begin{figure*}[htp]
+%     \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
+% \caption{Histograms of the MUSTANG 3mm flux density in the W43 field.  In each
+% panel, the colored region shows which sources were detected in one or more of
+% the Herschel Hi-Gal (top), Spitzer GLIMPSE or MIPSGAL (middle),
+% or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
+% \label{fig:histogram}
+% \end{figure*}
 
 
 % no longer exists
@@ -426,53 +449,68 @@ or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
 % \end{figure*}
 
 
-\begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/SED_plot_G30.437-0.206.png}
-    \caption{SED plot for Source G30.437-0.206 from W43.  The panels are
-    labeled with the survey and frequency used for the plot.  The data come
-    from the MAGPIS cutout server (\url{https://third.ucllnl.org/gps/}) and the
-    Herschel Hi-Gal image server (\url{https://tools.ssdc.asi.it/HiGAL.jsp});
-    references are given in the text.  The bottom-right panel shows an SED
-    constructed from the sources matched from the catalogs described in Section
-    \ref{sec:catalogmatching}.  This source is detected only at 3 mm and longer
-    wavelengths.  It is likely a hypercompact \hii region.}
-\label{fig:sed83}
-\end{figure*}
+% \begin{figure*}[htp]
+%     \includegraphics[width=17cm]{figures/SED_plot_G30.437-0.206.png}
+%     \caption{SED plot for Source G30.437-0.206 from W43.  The panels are
+%     labeled with the survey and frequency used for the plot.  The data come
+%     from the MAGPIS cutout server (\url{https://third.ucllnl.org/gps/}) and the
+%     Herschel Hi-Gal image server (\url{https://tools.ssdc.asi.it/HiGAL.jsp});
+%     references are given in the text.  The bottom-right panel shows an SED
+%     constructed from the sources matched from the catalogs described in Section
+%     \ref{sec:catalogmatching}.  This source is detected only at 3 mm and longer
+%     wavelengths.  It is likely a hypercompact \hii region.}
+% \label{fig:sed83}
+% \end{figure*}
 
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G01_overview_withcatalog.pdf}
-\caption{OverviewFigure}
+\caption{MUSTANG image of the G01 field, centered on Sgr B2.  The circles show
+sources from our catalog.  }
 \label{fig:g49overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G12_overview_withcatalog.pdf}
-\caption{OverviewFigure}
+\caption{MUSTANG image of the G12 field, including the W33 star-forming region.}
 \label{fig:g49overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G29_overview_withcatalog.pdf}
-\caption{OverviewFigure}
+\caption{MUSTANG image of the G29 field.}
 \label{fig:g49overview}
 \end{figure*}
 
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/G31_overview_withcatalog.pdf}
+\caption{MUSTANG image of the G31 field containing W43.
+%The overplotted symbols show the locations
+%of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
+%and centimeter and Herschel non-detections in green.
+}
+\label{fig:w43overview}
+\end{figure*}
+
+
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G34_overview_withcatalog.pdf}
-\caption{OverviewFigure}
+\caption{MUSTANG image of the G34 field.}
 \label{fig:g49overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G43_overview_withcatalog.pdf}
-\caption{OverviewFigure}
+\caption{MUSTANG image of the G43 field, which contains the 
+W49 star-forming complex.}
 \label{fig:g49overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G49_overview_withcatalog.pdf}
-\caption{OverviewFigure}
+\caption{MUSTANG image of the G49 field, which contains the W51 star-forming
+complex.}
 \label{fig:g49overview}
 \end{figure*}
 

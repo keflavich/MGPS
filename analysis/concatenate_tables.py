@@ -26,6 +26,7 @@ higaldetected = full_table['HerschelDetected'] == 'True'
 cmdetected = full_table['cmDetected'] == 'True'
 mmdetected = bolocamdetected | atlasgaldetected | higaldetected
 cm_mm_nondetection = (~cmdetected) & (~mmdetected)
+cm_no_mm_yes = (~cmdetected) & (mmdetected)
 
 print(f"Bolocam: {bolocamdetected.sum()}")
 print(f"ATLASGAL: {atlasgaldetected.sum()}")
@@ -38,6 +39,7 @@ with open('../pilotpaper/nsources.tex', 'w') as fh:
     fh.write(r"\newcommand{\cmdetections}{"+str(cmdetected.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\mmdetections}{"+str(mmdetected.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\cmmmnondetections}{"+str(cm_mm_nondetection.sum())+r"\xspace}""\n")
+    fh.write(r"\newcommand{\mmdetectionscmnondetections}{"+str(cm_no_mm_yes.sum())+r"\xspace}""\n")
 
 print("Brightest nondetections:")
 print(full_table[cm_mm_nondetection & (full_table['MUSTANG_dend_flux'] > 0.1)]['SourceName','RMSClass'])
