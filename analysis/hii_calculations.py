@@ -19,9 +19,11 @@ tau5 = HII_model.tnu(8500*u.K, 5*u.GHz, emission_measure)
 
 print(f"Optical depth at 5 GHz with EM={emission_measure} = {tau5}")
 
-fL,fC,fW = HII_model.inufit(em=7e7*u.cm**-6*u.pc)([1, 5,100]*u.GHz)
+fL,fC,fW = HII_model.inufit(em=emission_measure)([1, 5, 100]*u.GHz)
 print(f"Ratio of W-band 100 GHz to L-band 1 GHz: {fW/fL} (alpha={np.log(fW/fL)/np.log(100/1)})")
 print(f"Ratio of W-band 100 GHz to C-band 5 GHz: {fW/fC} (alpha={np.log(fW/fC)/np.log(100/5)})")
+
+
 
 
 

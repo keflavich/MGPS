@@ -352,47 +352,74 @@ $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
 % match; the free-free emission wraps around the dust emission.  This source is
 % therefore just a particularly bright patch of diffuse free-free emission.
 
-\subsection{HCHII region identification}
+\subsection{\hchii region identification}
 One of the aims of this survey is to identify the youngest high-mass
 protostars.  Candidates are those sources with little to no infrared emission
 and very compact, optically thick hypercompact \hii regions.
 
-Hypercompact \hii regions are defined as $\lesssim0.03$ pc ($\lesssim6000$ AU)
-\hii regions around young stars \citep{Kurtz2005b}.  They have high ionized
-gas density, resulting in a spectrum that remains optically thick to relatively
-high frequency.  For a star to produce an \hii region so compact, it must be
-embedded in a high-density medium.  We therefore select candidate HC\hii regions
+Massive stars form in the middle of ultra-dense cores undergoing gravitational
+collapse leading to an accretion rate of order $\dot{M} \sim 10^{-3}$ \msun
+\peryr such that a 100 \msun star takes about $10^5$ years to accrete its mass.
+As the star contracts onto the main sequence it starts to ionize its
+environment to create an \hchii region.  For a sufficiently dense accretion
+flow, the Strömgren radius of the \hchii regions are bound by the gravity of
+the star, with a radius $R_G \sim$50-100 AU
+\citep{Keto2002a,Keto2003a,Keto2007a}.  These gravitationally bound \hchii
+regions are optically thick at centimeter wavelengths and therefore emit as
+blackbodies at wavelengths $\lambda\gtrsim$3~mm, with 
+\begin{equation}
+    S_\nu=21 \textrm{mJy} \left(\frac{d}{5
+    \textrm{kpc}}\right)^{-2} \left(\frac{R}{100 \textrm{AU}}\right)^2 \left(\frac{\nu}{90 \textrm{GHz}}\right)^2
+\end{equation}
+which is only
+0.06 mJy at $\nu=5$ GHz, and therefore below the detection limit of many
+existing surveys; they are certainly unremarkable sources at long wavelengths.
+These \hchii regions are bright at 90 GHz but faint at 5 GHz and lower
+frequencies, which is a direct means to distinguish them from older
+ultracompact (\uchii) regions.  Sources
+with free-free emission that peaks at or just below 3 mm represent the youngest
+high-mass YSOs.  The dense cores surrounding these sources will be bright
+in the millimeter regime, since they will have high dust column densities and
+temperatures.
+
+% Hypercompact \hii regions are defined as $\lesssim0.03$ pc ($\lesssim6000$ AU)
+% \hii regions around young stars \citep{Kurtz2005b}.  They have high ionized
+% gas density, resulting in a spectrum that remains optically thick to relatively
+% high frequency.
+We therefore select candidate HC\hii regions
 as those fitting these criteria:
 \begin{enumerate}
-    \item $S_{3 \mathrm{mm}} > 1.75 S_{6 \mathrm{cm}}$.% or $S_{3 \mathrm{mm}} > S_{20 \mathrm{cm}}$.
-        This requirement selects free-free sources that are optically
-        thick at $\lambda>{6 \mathrm{cm}}$.
+    \item $S_{3 \mathrm{mm}} > 1.75 S_{6 \mathrm{cm}}$.  % or $S_{3 \mathrm{mm}} > S_{20 \mathrm{cm}}$.
+        This requirement selects free-free sources that have $\tau_{ff}=1$
+        at $\lambda = {6 \mathrm{cm}}$.  It corresponds to an emission
+        measure ${EM=7\ee{7}~\mathrm{cm}^{-6}~\mathrm{pc}}$.
     \item
         The source is not detected at 6 and 20 cm, is detected at 1.1 mm, and has
-        $S_{3 \mathrm{mm}} / S_{1.1 \mathrm{mm}} < \left(S_{3 \mathrm{mm}} /
-        S_{1.1 \mathrm{mm}})^{-3}\right)$,  where $\alpha=3$ is the spectral
+        $$\frac{S_{3 \mathrm{mm}}}{S_{1.1 \mathrm{mm}}} > \left(\frac{\lambda_{3 \mathrm{mm}}}
+        {\lambda_{1.1 \mathrm{mm}}}\right)^{-\alpha} = 0.038$$
+        where $\alpha=3$ is the spectral
         index for optically thin dust with an opacity index $\beta=1$.  This
         requirement selects dust-detected sources in which there is some
         indication of an excess of free-free emission over pure dust emission
         at 3 mm.
 \end{enumerate}
 
-These criteria provide a small sample of \nhiicand candidate HCHII regions
+These criteria provide a small sample of \nhiicand candidate \hchii regions
 across the seven target regions.  Of this sample, all turned out to be known
 ultracompact or hypercompact HII regions (e.g., W49A, W51 IRS2, W51 e2),
 diffuse and extended regions, or in one case, an OH/IR star.
 
 However, the majority of sources in our catalog do not have
 centimeter-wavelength detections and therefore were not
-eligible to be selected based on the above criteria.  HCHII regions that are optically
+eligible to be selected based on the above criteria.  \hchii regions that are optically
 thick up to $\sim3$ mm, those that are extremely compact and dense,
 would be below the detection threshold of the centimeter surveys
-\citep[$\approx2.5$ mJy at 6 cm][]{Given2005a,Hoare2012a}.  While we would
+\citep[$\approx2.5$ mJy at 6 cm;][]{Giveon2005a,Hoare2012a}.  While we would
 expect some excess above the extrapolated dust emissivity for these sources,
 it is plausible that the excess is not enough to modify the spectral index
 to meet our selection criteria.  Sources that have millimeter detections (since
 they must be surrounded by gas and dust) and not centimeter detections
-therefore remain candidate HCHII regions.  This large sample of
+therefore remain candidate \hchii regions.  This large sample of
 \mmdetectionscmnondetections additional candidates can be further investigated
 with future deeper centimeter surveys of the Galactic plane.
 

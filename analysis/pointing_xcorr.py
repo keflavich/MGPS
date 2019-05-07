@@ -28,7 +28,6 @@ Magpis.cache_location = '/Volumes/external/mgps/cache/'
 HiGal.cache_location = '/Volumes/external/mgps/cache/'
 
 print("WARNING: This script requires big downloads.")
-print("As of April 29, this didn't seem to work all that well.")
 
 offset = {}
 
@@ -41,6 +40,14 @@ bolocam_filename_map = {
     'G34': 'v2.1_ds2_l035_13pca_map20_crop.fits',
     'G43': 'v2.1_ds2_l040_13pca_map20.fits',
     'G49': 'v2.1_ds2_l050_13pca_map20_crop.fits',
+}
+# override central coordinate for MGPS cutout because sometimes they're too small and exclude the important flux
+center_coordinate = {
+    'G49': coordinates.SkyCoord(49.5, -0.4, frame='galactic', unit=(u.deg, u.deg)),
+}
+gps20_override = {
+    'G49': '/Users/adam/work/w51/vla_old/W51-LBAND_Darray.fits',
+    'G01': '/Users/adam/work/gc/20cm_0.fits',
 }
 
 def download_bolocam_file(region, dlpath=Magpis.cache_location):
@@ -68,22 +75,29 @@ mgps_beam = radio_beam.Beam(10*u.arcsec)
 for regname,fn in files.items():
     fh = fits.open(fn)[0]
 
+    if regname == 'G34':
+        # fix bad stripe by removing it
+        fh.data[:,2052:2060] = np.nan
+
     offset[regname] = {}
 
     ww = WCS(fh.header)
     center = ww.wcs_pix2world(fh.data.shape[1]/2, fh.data.shape[0]/2, 0)
     mgps_pixscale = wcsutils.proj_plane_pixel_area(ww)**0.5*u.deg
 
-    coordinate = coordinates.SkyCoord(center[0], center[1], unit=(u.deg, u.deg),
-                                      frame=wcsutils.wcs_to_celestial_frame(ww))
+    if regname in center_coordinate:
+        coordinate = center_coordinate[regname]
+    else:
+        coordinate = coordinates.SkyCoord(center[0], center[1], unit=(u.deg, u.deg),
+                                          frame=wcsutils.wcs_to_celestial_frame(ww))
     radius = np.max(fh.data.shape) * wcsutils.proj_plane_pixel_area(ww)**0.5*u.deg
-    if radius > 1*u.deg:
-        radius = 1*u.deg
+    if radius > 1.25*u.deg:
+        radius = 1.25*u.deg
 
     print(f"region {regname} file {fn}")
     for survey in Magpis.list_surveys():
         #if not ('atlasgal' in survey or 'bolocam' in survey):
-        if survey != 'bolocam':
+        if survey not in ('bolocam','gps20new'):
             continue
         offset[regname][survey] = {}
 
@@ -94,6 +108,10 @@ for regname,fn in files.items():
         else:
             magpis_fn = os.path.join(Magpis.cache_location, f'{survey}_{regname}_MAGPIS.fits')
             if os.path.exists(magpis_fn):
+                data = fits.open(magpis_fn)
+                print(f"Loaded {magpis_fn} from disk")
+            elif survey == 'gps20new' and regname in gps20_override:
+                magpis_fn = gps20_override[regname]
                 data = fits.open(magpis_fn)
                 print(f"Loaded {magpis_fn} from disk")
             else:
@@ -109,15 +127,22 @@ for regname,fn in files.items():
         hdu = data[0]
         # ditch everything but WCS to force celestial
         magpis_ww = WCS(hdu.header).celestial
+        hdu.data = hdu.data.squeeze()
         hdu.header = magpis_ww.to_header()
+
+        assert hdu.header['NAXIS'] == 2
+        assert hdu.data.ndim == 2
 
         pixscale = wcsutils.proj_plane_pixel_area(magpis_ww)**0.5*u.deg
 
         # convolve MGPS to atlasgal/bolocam resolution
-        convbeam = radio_beam.Beam(beams[survey]).deconvolve(mgps_beam)
-        print(f"Convolving MGPS data to {survey} resoln with convolving beam {str(convbeam)}")
-        convdata = convolution.convolve_fft(fh.data, convbeam.as_kernel(mgps_pixscale), allow_huge=True)
-        convfh = fits.PrimaryHDU(data=convdata, header=fh.header)
+        if survey in beams:
+            convbeam = radio_beam.Beam(beams[survey]).deconvolve(mgps_beam)
+            print(f"Convolving MGPS data to {survey} resoln with convolving beam {str(convbeam)}")
+            convdata = convolution.convolve_fft(fh.data, convbeam.as_kernel(mgps_pixscale), allow_huge=True)
+            convfh = fits.PrimaryHDU(data=convdata, header=fh.header)
+        else:
+            convfh = fh
 
         if survey == 'bolocam':
             print(f"Projecting {survey} to MGPS")
@@ -130,16 +155,16 @@ for regname,fn in files.items():
             proj_image2, proj_image1, header = \
                     image_registration.FITS_tools.match_fits(convfh, hdu,
                                                              header=target_header,
-                                                             return_header=True,
-                                                             sigma_cut=2)
+                                                             return_header=True
+                                                            )
             fits.PrimaryHDU(data=proj_image2, header=target_header).writeto(f"{Magpis.cache_location}/MGPS_{regname}_smBolo.fits", overwrite=True)
         else:
             # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
             print(f"Projecting MGPS to {survey}")
             proj_image1, proj_image2, header = \
                     image_registration.FITS_tools.match_fits(hdu, convfh,
-                                                             return_header=True,
-                                                             sigma_cut=2)
+                                                             return_header=True
+                                                            )
 
         #raise ValueError()
 
@@ -150,30 +175,34 @@ for regname,fn in files.items():
 
         offset[regname][survey]['nomeansub'] = xcorr, xcorr*pixscale.to(u.arcsec)
 
-        print(f"MAGPIS {survey} = {xcorr}")
+        print(f"MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
         #dx,dy,wdx,wdy,edx,edy,ewdx,ewdy,cr1,cr2,shf = xcorr
         #raise ValueError("STOP HERE")
         #dx,dy,wdx,wdy,edx,edy,ewdx,ewdy = xcorr
         xcorr = image_registration.chi2_shift(proj_image1, proj_image2,
                                               zeromean=True, return_error=True,
                                               upsample_factor=100.)
-        print(f"zero-mean MAGPIS {survey} = {xcorr}")
+        print(f"zero-mean MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
 
         offset[regname][survey]['meansub'] = xcorr, xcorr*pixscale.to(u.arcsec)
 
         # annoyingly necessary diagnostics
         pl.figure(1).clf()
         pl.subplot(2,2,1).imshow(proj_image1, origin='lower', norm=matplotlib.colors.LogNorm())
-        pl.subplot(2,2,1).contour(proj_image1>stats.mad_std(proj_image1, ignore_nan=True)*2, colors=['k']*2, levels=[0.5])
+        #pl.subplot(2,2,1).contour(proj_image1>stats.mad_std(proj_image1, ignore_nan=True)*2, colors=['k']*2, levels=[0.5])
         pl.subplot(2,2,2).imshow(proj_image2, origin='lower', norm=matplotlib.colors.LogNorm())
-        pl.subplot(2,2,2).contour(proj_image2>stats.mad_std(proj_image2, ignore_nan=True)*2, colors=['k']*2, levels=[0.5])
+        #pl.subplot(2,2,2).contour(proj_image2>stats.mad_std(proj_image2, ignore_nan=True)*2, colors=['k']*2, levels=[0.5])
         pky,pkx = np.unravel_index(np.nanargmax(proj_image1), proj_image1.shape)
         npix = 50
+        if pky < npix:
+            pky = npix
+        if pkx < npix:
+            pky = npix
         pl.subplot(2,2,3).imshow(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
-        pl.subplot(2,2,3).contour(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix])
+        pl.subplot(2,2,3).contour(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['w']*10)
         pl.subplot(2,2,4).imshow(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
-        pl.subplot(2,2,4).contour(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix])
-        pl.savefig(f'{diagnostic_figure_path}/{regname}_xcorr_diagnostics.png', bbox_inches='tight')
+        pl.subplot(2,2,4).contour(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['w']*10)
+        pl.savefig(f'{diagnostic_figure_path}/{regname}_{survey}_xcorr_diagnostics.png', bbox_inches='tight')
 
     #try:
     #    HiGal.TIMEOUT = 300
@@ -191,10 +220,14 @@ for regname,fn in files.items():
 
 print("bolocam zeromean")
 for reg in offset:
-    print(f"{reg:5s}: {offset[reg]['bolocam']['meansub'][1]}")
-print("bolocam no zeromean")
+    print(f"{reg:5s}: {offset[reg]['bolocam']['meansub'][1][:2]}")
+
+print("gps20new zeromean")
 for reg in offset:
-    print(f"{reg:5s}: {offset[reg]['bolocam']['nomeansub'][1]}")
+    print(f"{reg:5s}: {offset[reg]['gps20new']['meansub'][1][:2]}")
+#print("bolocam no zeromean")
+#for reg in offset:
+#    print(f"{reg:5s}: {offset[reg]['bolocam']['nomeansub'][1]}")
 #print("atlasgal")
 #for reg in offset:
 #    print(f"{reg:5s}: {offset[reg]['atlasgal']['meansub'][1]}")
@@ -202,6 +235,8 @@ for reg in offset:
 for key in offset:
     offset[key]['bolocam']['meansub'] = offset[key]['bolocam']['meansub'][0],list(offset[key]['bolocam']['meansub'][1].value)
     offset[key]['bolocam']['nomeansub'] = offset[key]['bolocam']['nomeansub'][0],list(offset[key]['bolocam']['nomeansub'][1].value)
+    offset[key]['gps20new']['meansub'] = offset[key]['gps20new']['meansub'][0],list(offset[key]['gps20new']['meansub'][1].value)
+    offset[key]['gps20new']['nomeansub'] = offset[key]['gps20new']['nomeansub'][0],list(offset[key]['gps20new']['nomeansub'][1].value)
 with open(f"{catalog_path}/position_offsets.json", "w") as fh:
     json.dump(offset, fh)
 
