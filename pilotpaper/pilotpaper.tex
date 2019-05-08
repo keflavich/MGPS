@@ -202,6 +202,20 @@ $\alpha$ & Frequency \\
 \end{tabular}
 \end{table*}
 
+\subsection{Combination with Planck data}
+The largest angular scale recovered by MUSTANG is approximately the array
+size, about an arcminute.  The large angular scale structure is therefore
+missing.  To recover those missing scales, we combine the MUSTANG data with
+Planck 100 GHz data (with an effective central frequency of 104.225 GHz
+assuming a spectral index $\alpha=3$) scaled to the MUSTANG central frequency
+of 92.44 GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
+as implemented in the \texttt{uvcombine}
+\footnote{\url{https://github.com/radio-astro-tools/uvcombine}} package.
+Planck's spatial resolution is $\approx10\arcmin$, substantially larger
+than the largest scale recovered in the MGPS data, so intermediate-scale
+structures (1-10\arcmin) are likely to be poorly recovered.
+The resulting FITS images are provided in the data repository.
+
 \section{Catalogs}
 
 We use \texttt{astrodendro} via the \texttt{dendrocat} wrapper to extract a

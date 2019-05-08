@@ -1,6 +1,6 @@
 # latex Makefile
 ifndef texpath
-texpath=/usr/texbin/
+texpath=/Library/TeX/texbin/
 endif
 PDFLATEX=${texpath}pdflatex -halt-on-error -synctex=1 --interaction=nonstopmode
 SKIPERR=${texpath}pdflatex --interaction=nonstopmode
