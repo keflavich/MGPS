@@ -73,11 +73,13 @@ beams = {'bolocam': 33*u.arcsec,
 mgps_beam = radio_beam.Beam(10*u.arcsec)
 
 for regname,fn in files.items():
+#DEBUG for regname,fn in (('G01',files['G01']),):
     fh = fits.open(fn)[0]
 
     if regname == 'G34':
         # fix bad stripe by removing it
         fh.data[:,2052:2060] = np.nan
+        fh.data[2125:2140,2045:2060] = np.nan
 
     offset[regname] = {}
 
@@ -159,12 +161,24 @@ for regname,fn in files.items():
                                                             )
             fits.PrimaryHDU(data=proj_image2, header=target_header).writeto(f"{Magpis.cache_location}/MGPS_{regname}_smBolo.fits", overwrite=True)
         else:
+            if regname == 'G01':
+                # special case for 20cm data...
+                # flag out Sgr A
+                hdu.data[2150-1781:2204-1781,2656-1534:2721-1534] = np.nan
+                print("Removed Sgr A*")
             # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
             print(f"Projecting MGPS to {survey}")
             proj_image1, proj_image2, header = \
                     image_registration.FITS_tools.match_fits(hdu, convfh,
                                                              return_header=True
                                                             )
+            if regname == 'G01':
+                assert np.all(np.isnan(hdu.data[2150:2204,2656:2721]))
+                assert np.all(np.isnan(proj_image1[2150:2204,2656:2721]))
+            # just to be EXTRA sure...
+            ok = np.isfinite(proj_image1) & np.isfinite(proj_image2)
+            proj_image1[~ok] = np.nan
+            proj_image2[~ok] = np.nan
 
         #raise ValueError()
 
@@ -199,9 +213,9 @@ for regname,fn in files.items():
         if pkx < npix:
             pky = npix
         pl.subplot(2,2,3).imshow(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
-        pl.subplot(2,2,3).contour(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['w']*10)
+        pl.subplot(2,2,3).contour(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['k']*10)
         pl.subplot(2,2,4).imshow(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
-        pl.subplot(2,2,4).contour(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['w']*10)
+        pl.subplot(2,2,4).contour(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['k']*10)
         pl.savefig(f'{diagnostic_figure_path}/{regname}_{survey}_xcorr_diagnostics.png', bbox_inches='tight')
 
     #try:
