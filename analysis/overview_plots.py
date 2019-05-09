@@ -26,7 +26,7 @@ for regname,fn in files.items():
         for min_delta in (1, ):
             print(f"{regname}, {fn}")
 
-            catalog = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
+            catalog = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfit.ipac', format='ascii.ipac')
 
             fig = pl.figure(1)
             fig.clf()
@@ -91,7 +91,8 @@ for regname,fn in files.items():
 
 
 
-            kept = catalog['rejected'] == 0
+            kept = (catalog['rejected'] == 0) & (catalog['MorphologyClass'] == 'C')
+
             keptpts, = ax.plot(catalog['x_cen'][kept & (mmdetected & cmdetected)], catalog['y_cen'][kept & (mmdetected & cmdetected)],
                                marker='^', linestyle='none',
                                markerfacecolor='none', markeredgecolor='m',
