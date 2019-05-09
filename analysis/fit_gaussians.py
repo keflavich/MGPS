@@ -6,7 +6,7 @@ from astropy.stats import mad_std
 from astropy.convolution import convolve_fft, Gaussian2DKernel
 from astropy import units as u
 from astropy import coordinates
-from astropy.table import Column, Table
+from astropy.table import Column, Table, join
 import regions
 import pylab as pl
 from paths import catalog_figure_path, catalog_path, overview_figure_path
@@ -67,5 +67,9 @@ for regname,fn in files.items():
 
             # IPAC compatibility
             gfit_tbl.rename_column("chi2/n", "chi2_n")
+            gfit_tbl.rename_column("Name", "SourceName")
 
-            gfit_tbl.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac', format='ascii.ipac', overwrite=True)
+            merge_tbl = join(catalog, gfit_tbl, join_type='left', keys='SourceName')
+
+            merge_tbl.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac',
+                            format='ascii.ipac', overwrite=True)

@@ -148,8 +148,8 @@ These noise measurements are estimates based on relatively signal-free regions o
 \end{table*}
 
 The effective beam size in the delivered maps is the convolution of the
-intrinsic FWHM = 8.1\arcsec beam with a 4\arcsec Gaussian kernel, resulting in
-a 9\arcsec beam.
+intrinsic FWHM = 8.1\arcsec beam with a FWHM = 4\arcsec Gaussian kernel,
+resulting in a 9\arcsec beam.
 
 
 \subsection{Pointing Accuracy}
@@ -219,9 +219,9 @@ $\alpha$ & Frequency \\
 \end{table*}
 
 \subsection{Combination with Planck data}
-The largest angular scale recovered by MUSTANG is approximately the array
-size, about an arcminute.  The large angular scale structure is therefore
-missing.  To recover those missing scales, we combine the MUSTANG data with
+The largest angular scale recovered by MUSTANG is approximately 4.25\arcmin.
+The large angular scale structure is therefore missing.  To recover those
+missing scales, we combine the MUSTANG data with
 Planck 100 GHz data (with an effective central frequency of 104.225 GHz
 assuming a spectral index $\alpha=3$) scaled to the MUSTANG central frequency
 of 92.44 GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
@@ -229,7 +229,7 @@ as implemented in the \texttt{uvcombine}
 \footnote{\url{https://github.com/radio-astro-tools/uvcombine}} package.
 Planck's spatial resolution is $\approx10\arcmin$, substantially larger
 than the largest scale recovered in the MGPS data, so intermediate-scale
-structures (1-10\arcmin) are likely to be poorly recovered.
+structures (4-10\arcmin) are likely to be poorly recovered.
 The resulting FITS images are provided in the data repository.
 
 \section{Catalogs}
