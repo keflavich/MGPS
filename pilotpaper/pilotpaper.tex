@@ -40,11 +40,13 @@ Target   &      Time (hr) &       Sessions   &  Estimated Noise (mJy) & $\ell$ o
 \hline
 \end{tabular}
 \par
-\todo{Clean up formatting, add dates of sessions}
+\todo{Add dates of sessions}
 The tabulated times are those in the maps (just in the scans that were used to
-make a given map).  Notes:
+make a given map).
 In GAL034, only 6 of the constant-latitude scans were completed, so only the bottom
 1/3 of map has full cross linking
+The $\ell$ and $b$ offsets are measured offsets from cross-correlation with
+the BGPS as discussed in Section \ref{sec:pointing}.
 \end{table*}
 
 \subsection{Calibration}
@@ -151,13 +153,17 @@ a 9\arcsec beam.
 
 
 \subsection{Pointing Accuracy}
-Several corrections to the raw timestream data were required to produce maps.  Individual scans were noted
-to have point sources shifted by up to half a beam ($\sim4\arcsec$), indicating a timing error between
-the MUSTANG-2 pointing data and the true telescope pointing.  To ensure that point sources were coincident
-in the maps, scans were cross-correlated with a first-iteration map, then assigned a new timing offset.
-The timing errors ranged from $\sim10$ to $30$ milliseconds.
+\label{sec:pointing}
+Several corrections to the raw timestream data were required to produce maps.
+Individual scans were noted to have point sources shifted by up to half a beam
+($\sim4\arcsec$), indicating a timing error between the MUSTANG-2 pointing data
+and the true telescope pointing.  To ensure that point sources were coincident
+in the maps, scans were cross-correlated with a first-iteration map, then
+assigned a new timing offset.  The timing errors ranged from $\sim10$ to $30$
+milliseconds.
 
-Additional half-beam pointing errors were noted in some individual scans, resulting in additional streaking
+Additional half-beam pointing errors were noted in some individual scans,
+resulting in additional streaking
 artifacts in the data.  Most of these issues disappeared after smoothing the data with the 4\arcsec kernel.
 
 Because several corrections were required, we assume the absolute pointing
@@ -177,6 +183,16 @@ the dust in this region, which is brighter at 1.1 mm, is systematically shifted
 to the north of the free-free emission, which is brighter at 3 mm.
 The generally good agreement, with offsets $\lesssim4\arcsec$ in either direction,
 is confirmation that the MUSTANG pointing correction approach was successful.
+
+We also attempted cross-correlation matching with VLA 20 cm maps, but this approach
+was mostly unsuccessful because morphological differences in the data caused systematic
+errors in the cross-correlation.  Nonetheless, by-eye examination revealed no clear
+offsets between the images, suggesting that any pointing offset is less than the resolution
+of our data.  \todo{note to team: this paragraph is very weak, so it may be removed.
+The 20 cm data generally agree excellently with the dominant morphology in each of the
+maps, suggesting that the MGPS data are free-free-dominated, but xcorr doesn't work
+very well when there are whopping bright synchrotron sources that are not seen at
+all at 3mm.}
 
 \subsection{Effective Central Frequency}
 The MUSTANG-2 bandpass filter is approximately flat over the range 75 to 105 GHz.
@@ -259,7 +275,7 @@ We cross-match the resulting catalog with the Herschel HiGal
 Bolocam BGPS \citep{Aguirre2011a,Rosolowsky2010a,Ginsburg2013a}, LABOCA ATLASGAL
 \citep{Urquhart2014c},
 and MAGPIS 6cm and 20cm
-\citep{Giveon2005a,Hoare2006a} and CORNISH 6cm \citep{Hoare2012a} catalogs.
+\citep{Giveon2005a} and CORNISH 6cm \citep{Hoare2012a} catalogs.
 Matches in these catalogs are included if there is a source within 10\arcsec
 (approximately the MUSTANG beam FWHM) of the MGPS catalog entry.
 
@@ -268,7 +284,9 @@ matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
 had no match in the millimeter or centimeter catalogs.  There were
 \mmdetectionscmnondetections sources cross-matched at shorter wavelengths
-but not at longer wavelengths.
+but not at longer wavelengths.  The overview figures, Figures \ref{fig:g01overview}-\ref{fig:g49overview},
+show these sources overlaid on the images, color and shape coded by their
+crossmatched detections.
 
 Figure \ref{fig:fullcathist} shows the histogram of MUSTANG-measured fluxes
 in the catalog.  Because the typical noise level was $\sim1$ mJy, the catalog
@@ -409,8 +427,10 @@ as those fitting these criteria:
         measure ${EM=7\ee{7}~\mathrm{cm}^{-6}~\mathrm{pc}}$.
     \item
         The source is not detected at 6 and 20 cm, is detected at 1.1 mm, and has
-        $$\frac{S_{3 \mathrm{mm}}}{S_{1.1 \mathrm{mm}}} > \left(\frac{\lambda_{3 \mathrm{mm}}}
-        {\lambda_{1.1 \mathrm{mm}}}\right)^{-\alpha} = 0.038$$
+        \begin{equation}
+            \frac{S_{3 \mathrm{mm}}}{S_{1.1 \mathrm{mm}}} > \left(\frac{\lambda_{3 \mathrm{mm}}}
+            {\lambda_{1.1 \mathrm{mm}}}\right)^{-\alpha} = 0.038
+        \end{equation}\\
         where $\alpha=3$ is the spectral
         index for optically thin dust with an opacity index $\beta=1$.  This
         requirement selects dust-detected sources in which there is some
@@ -506,21 +526,24 @@ with future deeper centimeter surveys of the Galactic plane.
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G01_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G01 field, centered on Sgr B2.  The circles show
-sources from our catalog.  }
-\label{fig:g49overview}
+\caption{MUSTANG image of the G01 field, centered on Sgr B2.  The green squares show
+sources with millimeter/submillimeter counterparts, blue circles show those
+with centimeter counterparts, purple triangle show sources with \emph{both} millimeter
+and centimeter counterparts, and orange diamonds show those with no millimeter
+or centimeter counterparts.}
+\label{fig:g01overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G12_overview_withcatalog.pdf}
 \caption{MUSTANG image of the G12 field, including the W33 star-forming region.}
-\label{fig:g49overview}
+\label{fig:g12overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G29_overview_withcatalog.pdf}
 \caption{MUSTANG image of the G29 field.}
-\label{fig:g49overview}
+\label{fig:g29overview}
 \end{figure*}
 
 
@@ -538,14 +561,14 @@ sources from our catalog.  }
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G34_overview_withcatalog.pdf}
 \caption{MUSTANG image of the G34 field.}
-\label{fig:g49overview}
+\label{fig:g34overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G43_overview_withcatalog.pdf}
 \caption{MUSTANG image of the G43 field, which contains the 
 W49 star-forming complex.}
-\label{fig:g49overview}
+\label{fig:g43overview}
 \end{figure*}
 
 \begin{figure*}[htp]
