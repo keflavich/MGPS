@@ -260,6 +260,18 @@ emission that had peaks that met the threshold criteria but are not distinct sou
 The extended objects are a particularly prominent component of the Galactic center
 field.
 
+
+To eliminate some of the extended strucutres, we then fit Gaussian profiles to
+each of the dendrogram-identified sources using the \texttt{gaussfit\_catalog}
+package\footnote{\url{https://github.com/radio-astro-tools/gaussfit_catalog/}}.
+Profiles were restricted to have major and minor axes FWHM$<27\arcsec$,
+restricting the fits to be within a factor of three of the beam size.  Fits
+were performed to a 30\arcsec radius around each source.  If a second source
+was present in that radius, it was masked out with a single-beam-FWMH circle.
+We classified sources as `compact' if they have major axes $r_{maj}<14\arcsec$,
+`extended' if they have major axis $r_{maj}>14\arcsec$, and `filamentary' if
+they have $r_{maj}/r_{min}>1.5$.
+
 A total of \nsources sources were identified across the seven fields.
 
 % We experimented with a range of parameters for the noise threshold, the minimum

@@ -59,6 +59,8 @@ for regname,fn in files.items():
                 prefix = ''
 
             gfit_dat = gaussfit_catalog(fn, reglist, radius=30*u.arcsec,
+                                        max_radius_in_beams=3,
+                                        max_offset_in_beams=0.5,
                                         savepath=diagnostics_dir,
                                         prefix=prefix,
                                        )
