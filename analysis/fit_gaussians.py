@@ -72,15 +72,23 @@ for regname,fn in files.items():
             gfit_tbl.rename_column("chi2/n", "chi2_n")
             gfit_tbl.rename_column("Name", "SourceName")
 
+
             merge_tbl = join(catalog, gfit_tbl, join_type='left', keys='SourceName')
 
-            extended = merge_tbl['fwhm_major'] > 14
-            compact = merge_tbl['fwhm_major'] < 14
-            filamentary = merge_tbl['fwhm_major'] / merge_tbl['fwhm_minor'] > 1.5
+            extended = merge_tbl['fwhm_major'].quantity > 14*u.arcsec
+            compact = merge_tbl['fwhm_major'].quantity < 14*u.arcsec
+            aspect_ratio = merge_tbl['fwhm_major'].quantity / merge_tbl['fwhm_minor'].quantity
+            merge_tbl.add_column(Column(name='AspectRatio', data=aspect_ratio))
+            filamentary = aspect_ratio > 1.5
             labelcol = np.array(['E']*len(extended))
             labelcol[compact] = 'C'
             labelcol[filamentary] = 'F'
             merge_tbl.add_column(Column(name='MorphologyClass', data=labelcol))
+
+            # add further criteria...
+            contrast = merge_tbl['MUSTANG_15as_peak'] / merge_tbl['MUSTANG_background_median']
+            merge_tbl['rejected'][contrast < 2] = 1
+            merge_tbl['success'][merge_tbl['amplitude'] / merge_tbl['e_amplitude'] > 2] = False
 
             merge_tbl.write(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac',
                             format='ascii.ipac', overwrite=True)

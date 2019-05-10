@@ -27,7 +27,8 @@ The images from this project are released at
 \caption{Observation Summary}
 \begin{tabular}{llllll}
     \label{tab:observations}
-Target   &      Time (hr) &       Sessions   &  Estimated Noise (mJy) & $\ell$ offset (\arcsec) & $b$ offset (\arcsec) \\
+Target   &      Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
+         &        hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
 \hline
 \input{obstable_data}
 %W51      &      1.02      &        01        \\
@@ -131,21 +132,22 @@ beam) to 140 (variance beam) arcsecond sq per beam one can expect the noise in
 the unsmoothed maps to drop by an order of magnitude when proper smoothing is
 applied.
 
-\begin{table*}[htp]
-    \begin{tabular}{llll}
-TARGET   &    IDL   &   MINKASI & MINKASI 4\arcsec smooth\\
-\hline
-GAL029   &      3.7 &     2.6   & 1.1\\
-GAL031   &      6.1 &     4.1   & 1.8\\
-SgrB2    &     8.0  &    7.4    & 2.2\\
-W33      &   8.0    &  2.6      & 1.7\\
-W49      &   6.8    &  3.7      & 1.8\\
-W51      &   4.3    &  4.9      & 1.1\\
-\hline
-    \end{tabular}
-These noise measurements are estimates based on relatively signal-free regions of the maps.
-\todo{Decide whether to keep the left two columns or just report the MINKASI noise}
-\end{table*}
+%  old noise table
+% \begin{table*}[htp]
+%     \begin{tabular}{llll}
+% TARGET   &    IDL   &   MINKASI & MINKASI 4\arcsec smooth\\
+% \hline
+% GAL029   &      3.7 &     2.6   & 1.1\\
+% GAL031   &      6.1 &     4.1   & 1.8\\
+% SgrB2    &     8.0  &    7.4    & 2.2\\
+% W33      &   8.0    &  2.6      & 1.7\\
+% W49      &   6.8    &  3.7      & 1.8\\
+% W51      &   4.3    &  4.9      & 1.1\\
+% \hline
+%     \end{tabular}
+% These noise measurements are estimates based on relatively signal-free regions of the maps.
+% \todo{Decide whether to keep the left two columns or just report the MINKASI noise}
+% \end{table*}
 
 The effective beam size in the delivered maps is the convolution of the
 intrinsic FWHM = 8.1\arcsec beam with a FWHM = 4\arcsec Gaussian kernel,
@@ -273,6 +275,11 @@ We classified sources as `compact' if they have major axes $r_{maj}<14\arcsec$,
 they have $r_{maj}/r_{min}>1.5$.
 
 A total of \nsources sources were identified across the seven fields.
+Of these, the majority, \nextended were resolved (at least 14\arcsec major axis),
+of which \nfilamentary had aspect ratios $\sigma_{maj}/\sigma_{min} > 1.5$.
+Only \ncompact sources were compact or unresolved.  Note that any confused or
+clustered sources, e.g., two compact sources within $\sim5-20\arcsec$ of one
+another, would likely be classified as extended.
 
 % We experimented with a range of parameters for the noise threshold, the minimum
 % number of pixels, and the minimum $\Delta$ between levels.  While each of these
@@ -296,9 +303,10 @@ matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
 had no match in the millimeter or centimeter catalogs.  There were
 \mmdetectionscmnondetections sources cross-matched at shorter wavelengths
-but not at longer wavelengths.  The overview figures, Figures \ref{fig:g01overview}-\ref{fig:g49overview},
-show these sources overlaid on the images, color and shape coded by their
-crossmatched detections.
+but not at longer wavelengths.  The overview figures, Figures
+\ref{fig:g01overview}-\ref{fig:g49overview}, show the morphologically
+compact subset of these sources overlaid on the images, with color and shape
+indicating whether they had detections at other wavelengths.
 
 Figure \ref{fig:fullcathist} shows the histogram of MUSTANG-measured fluxes
 in the catalog.  Because the typical noise level was $\sim1$ mJy, the catalog
@@ -312,6 +320,7 @@ $\alpha=\plalphaall\pm\plsigmaall$ for the full distribution and
 $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
 
 
+% fulltable_histograms
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/full_catalog_histogram.pdf}
     \caption{Histogram of the source catalog.  Blue shows all sources,
@@ -451,9 +460,10 @@ as those fitting these criteria:
 \end{enumerate}
 
 These criteria provide a small sample of \nhiicand candidate \hchii regions
-across the seven target regions.  Of this sample, all turned out to be known
+across the seven target regions.  Only \ncompacthiicand of these candidates
+were morphologically compact. Of this sample, all turned out to be known
 ultracompact or hypercompact HII regions (e.g., W49A, W51 IRS2, W51 e2),
-diffuse and extended regions, or in one case, an OH/IR star.
+diffuse and extended regions, or in one case, an OH/IR star. 
 
 However, the majority of sources in our catalog do not have
 centimeter-wavelength detections and therefore were not
@@ -466,8 +476,9 @@ it is plausible that the excess is not enough to modify the spectral index
 to meet our selection criteria.  Sources that have millimeter detections (since
 they must be surrounded by gas and dust) and not centimeter detections
 therefore remain candidate \hchii regions.  This large sample of
-\mmdetectionscmnondetections additional candidates can be further investigated
-with future deeper centimeter surveys of the Galactic plane.
+\mmdetectionscmnondetections additional candidates, especially the
+\mmdetectionscmnondetectionscompact that are compact, can be further investigated
+with future deeper centimeter observations.
 
 
 

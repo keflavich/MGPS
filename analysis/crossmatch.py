@@ -22,6 +22,9 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                       'J/ApJS/205/1/catalog': {'Sint': 'Fint6cm_CORNISH',
                                                'e_Sint': 'eFint6cm_CORNISH',
                                               },
+                      'J/ApJS/91/347/table2': {'Sp5GHz': 'Fpeak6cm_Becker',
+                                               #'Si5GHz': 'Fint6cm_Becker',
+                                              },
                       'J/A+A/568/A41/atl-csc': {'Fint': 'Fint870um',
                                                 'e_Fint': 'e_Fint870um',},
                       #'J/MNRAS/473/1059/table5': {'Fint': 'Fint870um', # Jy
@@ -129,7 +132,7 @@ if __name__ == "__main__":
 
                 herscheldetected = (ppcat['Fint70um', 'Fint160um', 'Fint250um', 'Fint350um'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
                 spitzerdetected = (ppcat['Fint8um', 'Fint3_6um', 'Fint4_5um', 'Fint5_8um', 'Fint24um'].as_array().view('float').reshape(len(ppcat),5) > 0).any(axis=1)
-                cmdetected = (ppcat['Fint6cm_CORNISH', 'Fpeak6cm_MAGPIS','Fint20cm', 'Fint20cm_THOR'].as_array().view('float').reshape(len(ppcat),4) > 0).any(axis=1)
+                cmdetected = (ppcat['Fint6cm_CORNISH', 'Fpeak6cm_Becker', 'Fpeak6cm_MAGPIS','Fint20cm', 'Fint20cm_THOR'].as_array().view('float').reshape(len(ppcat),5) > 0).any(axis=1)
                 ppcat.add_column(Column(name='HerschelDetected', data=herscheldetected))
                 ppcat.add_column(Column(name='SpitzerDetected', data=spitzerdetected))
                 ppcat.add_column(Column(name='cmDetected', data=cmdetected))
@@ -139,6 +142,10 @@ if __name__ == "__main__":
                     ppcat['Fint20cm'].unit = u.Jy
                 if ppcat['Fint6cm_CORNISH'].unit is None:
                     ppcat['Fint6cm_CORNISH'].unit = u.Jy
+                #if ppcat['Fint6cm_Becker'].unit is None:
+                #    ppcat['Fint6cm_Becker'].unit = u.mJy
+                if ppcat['Fpeak6cm_Becker'].unit is None:
+                    ppcat['Fpeak6cm_Becker'].unit = u.mJy
                 if ppcat['Fpeak6cm_MAGPIS'].unit is None:
                     ppcat['Fpeak6cm_MAGPIS'].unit = u.Jy
                 for key in (70,160,250,350,500):
@@ -153,6 +160,7 @@ if __name__ == "__main__":
                 ppcat['3mm1mmindex'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fint1100um_40as'] * 1.46)) / np.log(constants.mustang_central_frequency / (271.1*u.GHz))
                 ppcat['3mm6cmindex_MAGPIS'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fpeak6cm_MAGPIS'].quantity.to(u.Jy).value)) / np.log(constants.mustang_central_frequency / (5*u.GHz))
                 ppcat['3mm6cmindex_CORNISH'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fint6cm_CORNISH'].quantity.to(u.Jy).value)) / np.log(constants.mustang_central_frequency / (5*u.GHz))
+                ppcat['3mm6cmindex_Becker'] = np.log(ppcat['MUSTANG_10as_peak'] / (ppcat['Fpeak6cm_Becker'].quantity.to(u.Jy).value)) / np.log(constants.mustang_central_frequency / (5*u.GHz))
 
                 # identify HCHII candidates from criteria:
                 # S_3mm > S_6cm and/or S_20cm, or nondetections at long wavelengths plus an excess over extrapolation from 1mm at beta=3
@@ -163,6 +171,7 @@ if __name__ == "__main__":
                                    ( # cm slope > -0.1
                                     ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fpeak6cm_MAGPIS']) & (ppcat['Fpeak6cm_MAGPIS'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fint6cm_CORNISH']) & (ppcat['Fint6cm_CORNISH'] > 0)) |
+                                    ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fpeak6cm_Becker']) & (ppcat['Fpeak6cm_Becker'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm_THOR']) & (ppcat['Fpeak20cm_THOR'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm']) & (ppcat['Fpeak20cm'] > 0))
                                    ) | 

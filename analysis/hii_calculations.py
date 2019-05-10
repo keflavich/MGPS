@@ -29,6 +29,7 @@ print(f"Ratio of W-band 100 GHz to C-band 5 GHz: {fW/fC} (alpha={np.log(fW/fC)/n
 
 
 nhiicand = 0
+ncompacthiicand = 0
 candidate_names = {}
 candidate_table_ = []
 
@@ -36,16 +37,19 @@ for regname,fn in files.items():
     for threshold,min_npix in ((4, 100),):# (4, 15)): #(6, 15), (8, 15), (10, 15)):
         for min_delta in (1, ): #2):
 
-            ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
+            ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac', format='ascii.ipac')
 
+            compact = (ppcat['MorphologyClass'] == 'C')
             candidate_mask = (ppcat['HCHII_candidate'] == 'True')
             this_ncand = candidate_mask.sum()
-            print(f"{regname} has {this_ncand} HCHII region candidates")
+            this_ncand_compact = (candidate_mask & compact).sum()
+            print(f"{regname} has {this_ncand} HCHII region candidates, of which {this_ncand_compact} are compact")
             candidate_names[regname] = (ppcat['SourceName'][candidate_mask])
             if this_ncand > 0:
                 candidate_table_.append(ppcat[candidate_mask])
 
             nhiicand += this_ncand
+            ncompacthiicand += this_ncand_compact
 
 candidate_table = table.vstack(candidate_table_)
 
@@ -54,12 +58,14 @@ print(f"Total of {nhiicand} HCHII region candidates")
 with open('../pilotpaper/nhiicandidates.tex', 'w') as fh:
     # latex and f-strings and \n's don't mix!
     fh.write(r"\newcommand{\nhiicand}{"+str(nhiicand)+r"\xspace}")
+    fh.write(r"\newcommand{\ncompacthiicand}{"+str(ncompacthiicand)+r"\xspace}")
 
 
 # manual IDs
 cand_qual = {
     'G30.764-0.033': 'Extended HII region',
     'G30.944+0.035': 'OH/IR star', # index is 2.99....
+    'G30.943+0.035': 'OH/IR star', # index is 2.99....
     'G43.165-0.028': 'W49A South',
     'G43.148+0.014': 'W49',
     'G43.166+0.012': 'W49',

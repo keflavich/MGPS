@@ -26,7 +26,7 @@ for regname,fn in files.items():
         for min_delta in (1, ):
             print(f"{regname}, {fn}")
 
-            catalog = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfit.ipac', format='ascii.ipac')
+            catalog = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac', format='ascii.ipac')
 
             fig = pl.figure(1)
             fig.clf()

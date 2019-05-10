@@ -17,6 +17,18 @@ from catalog_flux_limits import flux_limits
 
 
 
+szinch = (15,12)
+fig = pl.figure(5, figsize=szinch)
+pl.pause(0.1)
+for ii in range(5):
+    fig.set_size_inches(szinch[0], szinch[1])
+    pl.pause(0.1)
+    try:
+        assert np.all(fig.get_size_inches() == np.array(szinch))
+        break
+    except AssertionError:
+        continue
+
 
 for regname,fn in files.items():
     print(f"region {regname} file {fn}")
@@ -25,13 +37,14 @@ for regname,fn in files.items():
 
             mgps_fn = fn
 
-            catfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac'
+            catfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac'
             if not os.path.exists(catfn):
                 # during debugging stages, this can happen...
                 continue
             ppcat = Table.read(catfn, format='ascii.ipac')
 
-            fig5 = pl.figure(5, figsize=(15,12))
+            fig5 = pl.figure(5, figsize=szinch)
+            assert np.all(fig.get_size_inches() == np.array(szinch))
 
             fig2 = pl.figure(2)
             fig2.clf()
