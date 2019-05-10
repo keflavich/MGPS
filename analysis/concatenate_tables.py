@@ -36,7 +36,7 @@ filamentary = full_table['fwhm_major'] / full_table['fwhm_minor'] > 1.5
 labelcol = np.array(['E']*len(extended))
 labelcol[compact] = 'C'
 labelcol[filamentary] = 'F'
-full_table.add_column(Column(name='MorphologyClass', data=labelcol))
+#full_table.add_column(Column(name='MorphologyClass', data=labelcol))
 
 print(f"Bolocam: {bolocamdetected.sum()}")
 print(f"ATLASGAL: {atlasgaldetected.sum()}")
