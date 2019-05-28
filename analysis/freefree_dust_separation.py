@@ -21,11 +21,14 @@ import files
 from make_sed_cutout_image import wlmap, getimg
 from constants import mgps_beam, mustang_central_frequency
 
+import warnings
+warnings.filterwarnings('ignore')
+
 beam_map = {'atlasgal': 19.2*u.arcsec}
 
 
 assumed_temperature = 25*u.K
-assumed_dustbeta = 1.75
+assumed_dustbeta = 1.5
 
 
 def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
@@ -73,6 +76,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
 
         # assumes "surv" is dust
         surv_to_mgps = new_img * dust_pred[1]/dust_pred[0]
+        print(f"{regname} {survey}")
         print(f"agal to mgps ratio: {dust_pred[1]/dust_pred[0]}")
 
         dusty = surv_to_mgps / tgt_bm.sr.value
@@ -80,17 +84,18 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         print(img[0].data.max(), mgps_sm.max())
         print(np.nanmax(dusty), np.nanmax(freefree), np.nanmax(mgps_reproj / mgps_beam.sr.value))
 
-        norm = visualization.ImageNormalize(dusty,
-                                            interval=visualization.ManualInterval(np.percentile(dusty, 0.05),
-                                                                                  np.percentile(dusty, 99.95)),
-                                            stretch=visualization.AsinhStretch(),
+        norm = visualization.ImageNormalize(freefree,
+                                            interval=visualization.ManualInterval(np.nanpercentile(freefree, 0.5),
+                                                                                  np.nanpercentile(freefree, 99.9)),
+                                            stretch=visualization.LogStretch(),
                                            )
         mgpsnorm = visualization.ImageNormalize(mgps_cutout.data,
                                                 interval=visualization.PercentileInterval(99.95),
-                                                stretch=visualization.AsinhStretch(),)
+                                                stretch=visualization.LogStretch(),)
+        print(f"interval: {norm.interval.vmin}, {norm.interval.vmax}")
 
         ax0 = figure.add_subplot(1, 3, 1, projection=mgps_cutout.wcs)
-        ax0.imshow(mgps_cutout.data, origin='lower', interpolation='none', norm=mgpsnorm)
+        ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
         ax0.set_title("3 mm")
         ax1 = figure.add_subplot(1, 3, 2, projection=outwcs)
         ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
@@ -136,9 +141,9 @@ if __name__ == "__main__":
 
         for regname, mgpsfile in files.files.items():
 
-            hdr = fits.getheader(mgpsfile)
+            ww = wcs.WCS(fits.getheader(mgpsfile))
 
-            if hdr_contains_coord(hdr, reg.center):
+            if ww.footprint_contains(reg.center):
 
                 make_hiidust_plot(reg.center, mgpsfile, width=reg.radius, regname=regname)
                 tgtname = reg.meta['label']
