@@ -64,7 +64,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         else:
             outwcs = img[0].wcs
 
-        tgt_bm = Beam(beam_map[survey])
+        agal_bm = tgt_bm = Beam(beam_map[survey])
         convbm = tgt_bm.deconvolve(mgps_beam)
 
         mgps_sm = convolution.convolve_fft(mgps_cutout.data, convbm.as_kernel(mgps_pixscale))
@@ -77,7 +77,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         # assumes "surv" is dust
         surv_to_mgps = new_img * dust_pred[1]/dust_pred[0]
         print(f"{regname} {survey}")
-        print(f"agal to mgps ratio: {dust_pred[1]/dust_pred[0]}")
+        print(f"{survey} to mgps ratio: {dust_pred[1]/dust_pred[0]}")
 
         dusty = surv_to_mgps / tgt_bm.sr.value
         freefree = (mgps_reproj / mgps_beam.sr.value - dusty)
@@ -94,19 +94,21 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
                                                 stretch=visualization.LogStretch(),)
         print(f"interval: {norm.interval.vmin}, {norm.interval.vmax}")
 
-        ax0 = figure.add_subplot(1, 3, 1, projection=mgps_cutout.wcs)
+        Magpis.cache_location = '/Volumes/external/mgps/cache/'
+
+        ax0 = figure.add_subplot(1, 5, 1, projection=mgps_cutout.wcs)
         ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
         ax0.set_title("3 mm")
-        ax1 = figure.add_subplot(1, 3, 2, projection=outwcs)
+        ax1 = figure.add_subplot(1, 5, 2, projection=outwcs)
         ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
         ax1.set_title("Dust")
-        ax2 = figure.add_subplot(1, 3, 3, projection=outwcs)
+        ax2 = figure.add_subplot(1, 5, 3, projection=outwcs)
         ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
         ax2.set_title("Free-Free")
 
         for ax in (ax0, ax1, ax2):
-            ax.set_xlabel("RA")
-            ax.set_ylabel("Dec")
+            ax.set_xlabel("Galactic Longitude")
+            ax.set_ylabel("Galactic Latitude")
             ax.tick_params(direction='in')
             ax.tick_params(color='w')
 
@@ -117,6 +119,42 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         ax2.coords[1].set_ticklabel_visible(False)
 
         pl.subplots_adjust(hspace=0, wspace=0)
+
+    if 'G01' in regname:
+        gps20im = fits.open('/Users/adam/work/gc/20cm_0.fits',)
+    elif 'G49' in regname:
+        gps20im = fits.open('/Users/adam/work/w51/vla_old/W51-LBAND-feathered_ABCD.fits')
+    else:
+        gps20im = getimg(coordinate, image_size=width*2, survey='gps20new')
+
+    reproj_gps20,_ = reproject.reproject_interp((gps20im[0].data.squeeze(),
+                                                 wcs.WCS(gps20im[0].header).celestial),
+                                                mgps_fh.header)
+
+    gps20cutout = Cutout2D(reproj_gps20, #gps20im[0].data.squeeze(),
+                           coordinate.transform_to(frame.name), size=width*2,
+                           wcs=wcs.WCS(mgps_fh.header))
+                           #wcs.WCS(gps20im[0].header).celestial)
+    ax3 = figure.add_subplot(1, 5, 4, projection=gps20cutout.wcs)
+
+
+    norm20 = visualization.ImageNormalize(gps20cutout.data,
+                                        interval=visualization.ManualInterval(np.nanpercentile(gps20cutout.data, 0.5),
+                                                                              np.nanpercentile(gps20cutout.data, 99.9)),
+                                        stretch=visualization.LogStretch(),
+                                       )
+
+    ax3.imshow(gps20cutout.data, origin='lower', interpolation='none', norm=norm20)
+    ax3.set_title("20cm")
+    ax3.set_xlabel("Galactic Longitude")
+    ax3.coords[1].set_axislabel("")
+    ax3.coords[1].set_ticklabel_visible(False)
+
+
+    gps_bm = Beam.from_fits_header(gps20im[0].header)
+
+    ax4 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
+    ax4.imshow(freefree / (gps20cutout.data / gps_bm.sr), origin='lower', interpolation='none', vmin=-1, vmax=2)
 
     pl.tight_layout()
 
@@ -140,6 +178,9 @@ if __name__ == "__main__":
     for reg in regs:
 
         for regname, mgpsfile in files.files.items():
+
+            mgpsfile = os.path.join('/Volumes/external/mgps/Feb5_2019/',
+                                    os.path.split(mgpsfile.replace(".fits","_PlanckCombined.fits"))[-1])
 
             ww = wcs.WCS(fits.getheader(mgpsfile))
 
