@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import requests
+import regions
 import json
 import shutil
 import image_registration
@@ -13,6 +14,10 @@ from astropy import units as u, coordinates
 from astropy import convolution
 from astropy.utils.data import download_file
 from astropy import stats
+from astropy.visualization import (MinMaxInterval, AsinhStretch,
+                                   PercentileInterval,
+                                   ImageNormalize)
+
 import radio_beam
 
 import pylab as pl
@@ -161,24 +166,34 @@ for regname,fn in files.items():
                                                             )
             fits.PrimaryHDU(data=proj_image2, header=target_header).writeto(f"{Magpis.cache_location}/MGPS_{regname}_smBolo.fits", overwrite=True)
         else:
-            if regname == 'G01':
-                # special case for 20cm data...
-                # flag out Sgr A
-                hdu.data[2150-1781:2204-1781,2656-1534:2721-1534] = np.nan
-                print("Removed Sgr A*")
+            #if regname == 'G01':
+            #    # special case for 20cm data...
+            #    # flag out Sgr A
+            #    hdu.data[2150-1781:2204-1781,2656-1534:2721-1534] = np.nan
+            #    print("Removed Sgr A*")
+            reg = regions.read_ds9(f'/Users/adam/work/mgps/regions/freefreemask_{regname}.reg')
+            ww = WCS(hdu.header)
+            pixreg = [rr.to_pixel(ww) for rr in reg]
+            rmasks = [rr.to_mask() for rr in pixreg]
+            mask = np.zeros(hdu.data.shape, dtype='bool')
+            for rm in rmasks:
+                mask[rm.bbox.slices] += rm.data.astype('bool')
+
             # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
             print(f"Projecting MGPS to {survey}")
             proj_image1, proj_image2, header = \
                     image_registration.FITS_tools.match_fits(hdu, convfh,
                                                              return_header=True
                                                             )
-            if regname == 'G01':
-                assert np.all(np.isnan(hdu.data[2150:2204,2656:2721]))
-                assert np.all(np.isnan(proj_image1[2150:2204,2656:2721]))
+            #if regname == 'G01':
+            #    assert np.all(np.isnan(hdu.data[2150:2204,2656:2721]))
+            #    assert np.all(np.isnan(proj_image1[2150:2204,2656:2721]))
             # just to be EXTRA sure...
             ok = np.isfinite(proj_image1) & np.isfinite(proj_image2)
             proj_image1[~ok] = np.nan
             proj_image2[~ok] = np.nan
+            proj_image1[~mask] = np.nan
+            proj_image2[~mask] = np.nan
 
         #raise ValueError()
 
@@ -217,6 +232,16 @@ for regname,fn in files.items():
         pl.subplot(2,2,4).imshow(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
         pl.subplot(2,2,4).contour(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['k']*10)
         pl.savefig(f'{diagnostic_figure_path}/{regname}_{survey}_xcorr_diagnostics.png', bbox_inches='tight')
+
+        pl.figure(2).clf()
+        diffim = (proj_image1/np.nanpercentile(proj_image1, 99) -
+                  proj_image2/np.nanpercentile(proj_image2, 99))
+        asinhnorm = ImageNormalize(diffim,
+                                   interval=PercentileInterval(99.5),
+                                   stretch=AsinhStretch())
+
+        pl.subplot(1,1,1).imshow(diffim,
+                                 origin='lower', norm=asinhnorm)
 
     #try:
     #    HiGal.TIMEOUT = 300

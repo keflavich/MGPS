@@ -150,11 +150,13 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
     ax3.coords[1].set_axislabel("")
     ax3.coords[1].set_ticklabel_visible(False)
 
+    # TODO: VERIFY THIS WORKS
+    freefree_proj,_ = reproject.reproject_interp((freefree, outwcs), gps20cutout.wcs, shape_out=gps20cutout.data.shape)
 
     gps_bm = Beam.from_fits_header(gps20im[0].header)
 
     ax4 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
-    ax4.imshow(freefree / (gps20cutout.data / gps_bm.sr), origin='lower', interpolation='none', vmin=-1, vmax=2)
+    ax4.imshow(freefree_proj / (gps20cutout.data / gps_bm.sr), origin='lower', interpolation='none', vmin=-1, vmax=2)
 
     pl.tight_layout()
 

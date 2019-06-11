@@ -218,15 +218,19 @@ to the north of the free-free emission, which is brighter at 3 mm.
 The generally good agreement, with offsets $\lesssim4\arcsec$ in either direction,
 is confirmation that the MUSTANG pointing correction approach was successful.
 
-We also attempted cross-correlation matching with VLA 20 cm maps, but this approach
+We also attempted cross-correlation matching with VLA 20 cm maps.  The direct cross-correlation approach
+failed because of synchrotron sources appearing at 20 cm and absent at 3 mm,  so we masked these out...
+
+but this approach
 was mostly unsuccessful because morphological differences in the data caused systematic
 errors in the cross-correlation.  Nonetheless, by-eye examination revealed no clear
 offsets between the images, suggesting that any pointing offset is less than the resolution
-of our data.  \todo{note to team: this paragraph is very weak, so it may be removed.
-The 20 cm data generally agree excellently with the dominant morphology in each of the
-maps, suggesting that the MGPS data are free-free-dominated, but xcorr doesn't work
-very well when there are whopping bright synchrotron sources that are not seen at
-all at 3mm.}
+of our data.
+% \todo{note to team: this paragraph is very weak, so it may be removed.
+% The 20 cm data generally agree excellently with the dominant morphology in each of the
+% maps, suggesting that the MGPS data are free-free-dominated, but xcorr doesn't work
+% very well when there are whopping bright synchrotron sources that are not seen at
+% all at 3mm.}
 
 \subsection{Cross-validation with ALMA calibrator catalog}
 \todo{Find if there are any ALMA calibrators in any of our target fields that
