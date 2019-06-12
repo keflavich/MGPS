@@ -49,7 +49,7 @@ bolocam_filename_map = {
 # override central coordinate for MGPS cutout because sometimes they're too small and exclude the important flux
 center_coordinate = {
     'G49': coordinates.SkyCoord(49.5, -0.4, frame='galactic', unit=(u.deg, u.deg)),
-    'G12': coordinates.SkyCoord(12.6, -0.15, frame='galactic', unit=(u.deg, u.deg)),
+    'G12': coordinates.SkyCoord(12.7, -0.15, frame='galactic', unit=(u.deg, u.deg)),
 }
 gps20_override = {
     'G49': '/Users/adam/work/w51/vla_old/W51-LBAND_Darray.fits',
@@ -227,7 +227,7 @@ for regname,fn in files.items():
         if pky < npix:
             pky = npix
         if pkx < npix:
-            pky = npix
+            pkx = npix
         pl.subplot(2,2,3).imshow(proj_image1[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
         pl.subplot(2,2,3).contour(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], linewidths=[0.1]*10, colors=['k']*10)
         pl.subplot(2,2,4).imshow(proj_image2[pky-npix:pky+npix,pkx-npix:pkx+npix], origin='lower', norm=matplotlib.colors.LogNorm())
