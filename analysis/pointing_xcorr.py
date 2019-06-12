@@ -49,6 +49,7 @@ bolocam_filename_map = {
 # override central coordinate for MGPS cutout because sometimes they're too small and exclude the important flux
 center_coordinate = {
     'G49': coordinates.SkyCoord(49.5, -0.4, frame='galactic', unit=(u.deg, u.deg)),
+    'G12': coordinates.SkyCoord(12.6, -0.15, frame='galactic', unit=(u.deg, u.deg)),
 }
 gps20_override = {
     'G49': '/Users/adam/work/w51/vla_old/W51-LBAND_Darray.fits',
