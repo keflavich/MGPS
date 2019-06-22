@@ -275,37 +275,90 @@ structures (4-10\arcmin) are likely to be poorly recovered.
 The resulting FITS images are provided in the data repository.
 
 \subsection{Free-free separation}
-\todo{You may want to steal some of this section text for the intro} The MGPS90 data have contributions from (thermal) free-free, thermal dust continuum, and (nonthermal) synchrotron emission.  We describe here our decomposition of the MGPS90 data into these components.
+\todo{You may want to steal some of this section text for the intro} The MGPS90
+data have contributions from (thermal) free-free, thermal dust continuum, and
+(nonthermal) synchrotron emission.  We describe here our decomposition of the
+MGPS90 data into these components.
 
-The flux density from optically thin free-free emission is roughly flat as a function of frequency, $S_{\nu, ff} \propto \nu^{-0.12}$.  Because most of the MGPS90 fields in this initial data release cover locations of active massive star formation with many \hii\ regions, we expect free-free emission to be the dominant source of 90\,GHz flux.
+The flux density from optically thin free-free emission is roughly flat as a
+function of frequency, $S_{\nu, ff} \propto \nu^{-0.12}$.  Because most of the
+MGPS90 fields in this initial data release cover locations of active massive
+star formation with many \hii\ regions, we expect free-free emission to be the
+dominant source of 90\,GHz flux.
 
-Thermally-emitting dust follows a Planck function of typical temperature 30\,K.; its intensity therefore peaks near 3\,THz.  At 90\,GHz, the dust flux density is set by the dust column density $N_d$, the dust temperature $T_d$, and the dust opacity $\kappa_\nu$:
+Thermally-emitting dust follows a Planck function of typical temperature
+30\,K.; its intensity therefore peaks near 3\,THz.  At 90\,GHz, the dust flux
+density is set by the dust column density $N_d$, the dust temperature $T_d$,
+and the dust opacity $\kappa_\nu$:
 \begin{equation}
     S_{\nu, d} \propto \kappa_\nu B_\nu(T_d) N_d,
     \label{eq:dust}
 \end{equation}
-where $B_\nu(T_d)$ is the Planck function.  The dust opacity as a function of frequency can be modeled as a power law: $\kappa_\nu \propto \nu^{\beta}$, where $\beta$ is the dust emmisivity index.  %Therefore, $S_{\nu, d} \propto \nu^\beta$.  
-Ongoing and future massive star formation is associated with dust emission, and we expect to see dust emission at 90\,GHz in the MGPS90 fields.  
+where $B_\nu(T_d)$ is the Planck function.  The dust opacity as a function of
+frequency can be modeled as a power law: $\kappa_\nu \propto \nu^{\beta}$,
+where $\beta$ is the dust emissivity index.
+%Therefore, $S_{\nu, d} \propto \nu^\beta$.  
+Ongoing and future massive star formation is associated with dust emission, and
+we expect to see dust emission at 90\,GHz in the MGPS90 fields.  
 
-Synchrotron emission generally has a steep negative spectral index and so decreases in intensity as a function of increasing frequency, $S_{\nu, synch.}\propto \nu^{-\alpha}$, with $\alpha\simeq 1-2$.  At 90\,GHz, we expect to detect synchrotron emission from Galactic supernova remanants, nonthermal filaments (in the Galactic center), and extragalactic sources. 
+Synchrotron emission generally has a steep negative spectral index and so
+decreases in intensity as a function of increasing frequency, $S_{\nu,
+synch.}\propto \nu^{-\alpha}$, with $\alpha\simeq 1-2$.  At 90\,GHz, we expect
+to detect synchrotron emission from Galactic supernova remanants, nonthermal
+filaments (in the Galactic center), and extragalactic sources. 
 
-We can separate the MGPS90 emission into contributions from dust and the combined signal from free-free and synchrotron (hereafter ``ff+s'') if we can estimate the contribution from dust alone.  We use the ATLASGAL 870\,$\mu$m data \citep{Schuller2009a} for this purpose since at 870\,$\mu$m essentially all emission is from dust.  
-%In using the ATLASGAL data, we are only concerned with the extrapolation of the intensity between 870\,$\mu$m and 90\,GHz; the only free-parameter we therefore need is the dust emissivity index.  Separating the individual free-free and synchrotron signals would require an estimate of the respective spectral indices, which we cannot do with accuracy with only the 90\,GHz and 20\,cm data.
-We estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data, assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm 90GHz} \simeq 0.15 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We subtract the 90\,GHz dust signal found by scaling the ATLASGAL data from the MGPS90 data and thereby produce 90\,GHz maps of contributions from dust and ff+s.  We perform this subtraction on the feathered MGPS90 and Planck data (Section~\ref{sec:feather}).
+We can separate the MGPS90 emission into contributions from dust and the
+combined signal from free-free and synchrotron (hereafter ``ff+s'') if we can
+estimate the contribution from dust alone.  We use the ATLASGAL 870\,$\mu$m
+data \citep{Schuller2009a} for this purpose since at 870\,$\mu$m essentially
+all emission is from dust.  
+%In using the ATLASGAL data, we are only concerned with the extrapolation of
+%the intensity between 870\,$\mu$m and 90\,GHz; the only free-parameter we
+%therefore need is the dust emissivity index.  Separating the individual
+%free-free and synchrotron signals would require an estimate of the respective
+%spectral indices, which we cannot do with accuracy with only the 90\,GHz and
+%20\,cm data.
+We estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data,
+assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the
+ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
+90GHz} \simeq 0.15 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We subtract
+the 90\,GHz dust signal found by scaling the ATLASGAL data from the MGPS90 data
+and thereby produce 90\,GHz maps of contributions from dust and ff+s.  We
+perform this subtraction on the feathered MGPS90 and Planck data
+(Section~\ref{sec:feather}).
 
 We compare the resultant ff+s maps with those at 20\,cm to gain insight into the relative contributions from free-free and synchrotron emission.  
 %Sources with negative spectral indices will appear brighter at 20\,cm than at 90\,GHz.
-For most fields, we use 20\,cm MAGPIS data \citep{Helfand2006a}, which has an angular resolution of $\sim\!6\arcsec$ and a point source sensitivity of $1-2$\,mJy.  MAGPIS does not have coverage in the Galactic center or for $\ell>48^\circ$, and so we use other data in these zones. In the Galactic center, we use... for the W51 field....\todo{Adam, fill in info here from other data used}.
+For most fields, we use 20\,cm MAGPIS data \citep{Helfand2006a}, which has an
+angular resolution of $\sim\!6\arcsec$ and a point source sensitivity of
+$1-2$\,mJy.  MAGPIS does not cover the Galactic center or 
+$\ell>48^\circ$, and so we use other data in these zones. In the Galactic
+center, we use the multi-configuration 20 cm map from \citet{Yusef-Zadeh2004a},
+and in the W51 field we use the multi-configuration map from
+\citet{Mehringer1994a}.
 
-We show the results of the decomposition for one example field in Figure~\ref{fig:sgrb2_freefree}; the rest of the MGPS90 fields are in the Appendix.  Figure~\ref{fig:sgrb2_freefree} contains panels of the MGPS90 data, the contribution to the MGPS90 data from thermal dust, the contribution to the MGPS90data from ff+s, 20\,cm data, and the MGPS90 to 20\,cm ratio.  The ratio map  gives an indication of the ff+s spectral index, and can allow one to separate thermal and nonthermal emission.  We expect that the ratio $S_{\rm 90GHz}/S_{\rm 20cm} \simeq 0.25$ for optically-thin free-free emission and is less than this value for synchrotron emission.
+We show the results of the decomposition for one example field in
+Figure~\ref{fig:sgrb2_freefree}; the rest of the MGPS90 fields are in the
+Appendix.  Figure~\ref{fig:sgrb2_freefree} contains panels of the MGPS90 data,
+the contribution to the MGPS90 data from thermal dust, the contribution to the
+MGPS90 data from ff+s, 20\,cm data, and the MGPS90 to 20\,cm ratio.  The ratio
+map  gives an indication of the ff+s spectral index, and can allow one to
+separate thermal and nonthermal emission.  We expect that the ratio $S_{\rm
+90GHz}/S_{\rm 20cm} \simeq 0.25$ for optically-thin free-free emission and is
+less than this value for synchrotron emission.
 
-We see in Figure~\ref{fig:sgrb2_freefree} the complicated interplay between the various contributions to the emission at 90\,GHz....
+We see in Figure~\ref{fig:sgrb2_freefree} the complicated interplay between the
+various contributions to the emission at 90\,GHz....
 
 %To get a better sense of what is detected, we do the stuff in freefree\_dust\_separation.py
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G01_sgrb2.pdf}
-    \caption{Decomposition of the MGPS90 data in the xxx field.  (left) MGPS90 data}
+    \caption{Decomposition of the MGPS90 data in the Sgr B2 field.  (left)
+    MGPS90 (left middle) ATLASGAL 870 \um  (right middle) MGPS90 - scaled
+    ATLASGAL (right) VLA 20 cm continuum.  The negative region just north
+    of center implies that a steeper dust emissivity spectral index
+    ($\beta>1.5$) may be more appropriate in the vicinity of Sgr B2.}
 \label{fig:sgrb2_freefree}
 \end{figure*}
 
