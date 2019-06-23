@@ -79,7 +79,7 @@ make a given map).
 In GAL034, only 6 of the constant-latitude scans were completed, so only the bottom
 1/3 of map has full cross linking
 The $\ell$ and $b$ offsets are measured offsets from cross-correlation with
-the BGPS as discussed in Section \ref{sec:pointing}.
+20 cm VLA images as discussed in Section \ref{sec:pointing}.
 \end{table*}
 
 \subsection{Calibration}
@@ -201,31 +201,44 @@ resulting in additional streaking
 artifacts in the data.  Most of these issues disappeared after smoothing the data with the 4\arcsec kernel.
 
 Because several corrections were required, we assume the absolute pointing
-accuracy is $\sim4\arcsec$.  We compared the MUSTANG-2 maps with Bolocam
-Galactic Plane Survey \citep[BGPS][]{Ginsburg2013a} images to measure pointing
-offsets, since the Bolocam data are the closest in frequency to MUSTANG of the
-available data sets and since those images were cross-calibrated against the
-Herschel Hi-Gal images.  We use the \texttt{image-registration}\footnote{\url{http://image-registration.rtfd.org}}
-toolkit to cross-correlate the MUSTANG images convolved to Bolocam resolution
-with the Bolocam images and use a fourier-domain upsampling approach to obtain
+accuracy is $\sim4\arcsec$.  
+%We compared the MUSTANG-2 maps with Bolocam
+%Galactic Plane Survey \citep[BGPS][]{Ginsburg2013a} images to measure pointing
+%offsets, since the Bolocam data are the closest in frequency to MUSTANG of the
+%available data sets and since those images were cross-calibrated against the
+%Herschel Hi-Gal images.
+We compared the MUSTANG-2 maps with 20 cm images from the MAGPIS Galactic Plane survey [CITE]
+and from other sources \citep{Mehringer1994a,Yusef-Zadeh2004a} to measure pointing offsets,
+since these images showed the closest morphological match to the MGPS90 data.
+However, there are substantial regions in each field, particularly the Galactic center,
+that are synchrotron-dominated at 20 cm and have no corresponding features at 3 mm; we masked
+out these features.
+We use the \texttt{image-registration}\footnote{\url{http://image-registration.rtfd.org}}
+toolkit to cross-correlate the MUSTANG images with the 20 cm
+%convolved to Bolocam resolution with the Bolocam
+images and use a fourier-domain upsampling approach to obtain
 sub-pixel positional offsets.  The measured offsets are reported in Table
-\ref{tab:observations} and show the offset of the Bolocam data with respect to
-the MUSTANG data.  These offsets should not be regarded as genuine pointing errors,
-as there are substantial morphological differences between the MUSTANG and Bolocam
-data; notably, the W51 image may have an incorrectly high reported offset because
-the dust in this region, which is brighter at 1.1 mm, is systematically shifted
-to the north of the free-free emission, which is brighter at 3 mm.
-The generally good agreement, with offsets $\lesssim4\arcsec$ in either direction,
-is confirmation that the MUSTANG pointing correction approach was successful.
+\ref{tab:observations} and show the offset of the 20 cm data with respect to
+the MUSTANG data.
 
-We also attempted cross-correlation matching with VLA 20 cm maps.  The direct cross-correlation approach
-failed because of synchrotron sources appearing at 20 cm and absent at 3 mm,  so we masked these out...
+\todo{Draw conclusions.  Fix pointing based on these measurements.  W51 and W49, at least, seem to have real offsets of order a full beam!}
 
-but this approach
-was mostly unsuccessful because morphological differences in the data caused systematic
-errors in the cross-correlation.  Nonetheless, by-eye examination revealed no clear
-offsets between the images, suggesting that any pointing offset is less than the resolution
-of our data.
+%These offsets should not be regarded as genuine pointing errors,
+%as there are substantial morphological differences between the MUSTANG and Bolocam
+%data; notably, the W51 image may have an incorrectly high reported offset because
+%the dust in this region, which is brighter at 1.1 mm, is systematically shifted
+%to the north of the free-free emission, which is brighter at 3 mm.
+%The generally good agreement, with offsets $\lesssim4\arcsec$ in either direction,
+%is confirmation that the MUSTANG pointing correction approach was successful.
+
+%We also attempted cross-correlation matching with VLA 20 cm maps.  The direct cross-correlation approach
+%failed because of synchrotron sources appearing at 20 cm and absent at 3 mm,  so we masked these out...
+%
+%but this approach
+%was mostly unsuccessful because morphological differences in the data caused systematic
+%errors in the cross-correlation.  Nonetheless, by-eye examination revealed no clear
+%offsets between the images, suggesting that any pointing offset is less than the resolution
+%of our data.
 % \todo{note to team: this paragraph is very weak, so it may be removed.
 % The 20 cm data generally agree excellently with the dominant morphology in each of the
 % maps, suggesting that the MGPS data are free-free-dominated, but xcorr doesn't work

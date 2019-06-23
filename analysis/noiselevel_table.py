@@ -24,8 +24,10 @@ obstable = {
 for key in obstable:
     altkey = obstable[key]['altname']
     obstable[key]['noiselevel'] = noise_levels[altkey]['noise']
-    obstable[key]['offsets_ell'] = offsets[altkey]['bolocam']['nomeansub'][1][0]
-    obstable[key]['offsets_b'] = offsets[altkey]['bolocam']['nomeansub'][1][1]
+    obstable[key]['offsets_ell_bolo'] = offsets[altkey]['bolocam']['nomeansub'][1][0]
+    obstable[key]['offsets_b_bolo'] = offsets[altkey]['bolocam']['nomeansub'][1][1]
+    obstable[key]['offsets_ell_20cm'] = offsets[altkey]['gps20new']['nomeansub'][1][0]
+    obstable[key]['offsets_b_20cm'] = offsets[altkey]['gps20new']['nomeansub'][1][1]
 
 
 keys_sorted = sorted(obstable, key=lambda x: obstable[x]['altname'])
@@ -33,4 +35,10 @@ keys_sorted = sorted(obstable, key=lambda x: obstable[x]['altname'])
 with open(f'{pilotpaperpath}/obstable_data.tex', 'w') as fh:
     for key in keys_sorted:
         row = obstable[key]
-        fh.write(f"{key:10s} & {row['time']:10.1f} & {row['sessions']:20s} & {row['noiselevel']*1000:10.1f} & {row['offsets_ell']:10.1f} & {row['offsets_b']:10.1f} \\\\\n")
+        fh.write(f"{key:10s} & {row['time']:10.1f} & {row['sessions']:20s} &"
+                 " {row['noiselevel']*1000:10.1f} &"
+                 #" {row['offsets_ell_bolo']:10.1f} &"
+                 #" {row['offsets_b_bolo']:10.1f}"
+                 " {row['offsets_ell_20cm']:10.1f} &"
+                 " {row['offsets_b_20cm']:10.1f}"
+                 " \\\\\n")
