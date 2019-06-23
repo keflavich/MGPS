@@ -221,7 +221,12 @@ sub-pixel positional offsets.  The measured offsets are reported in Table
 \ref{tab:observations} and show the offset of the 20 cm data with respect to
 the MUSTANG data.
 
-\todo{Draw conclusions.  Fix pointing based on these measurements.  W51 and W49, at least, seem to have real offsets of order a full beam!}
+In several cases, the measured offset is comparable to the MUSTANG beam.  We
+therefore correct these images for the offset, assuming the VLA 20 cm data
+have correct pointing.  \todo{The original pointing centers are recorded in the FITS
+headers of the published images with names \texttt{CRVALnA} so that the original
+pointing centers can be used if needed.}
+\todo{Fix pointing based on these measurements.}
 
 %These offsets should not be regarded as genuine pointing errors,
 %as there are substantial morphological differences between the MUSTANG and Bolocam
