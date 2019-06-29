@@ -82,6 +82,12 @@ for regname,fn in files.items():
 #DEBUG for regname,fn in (('G01',files['G01']),):
     fh = fits.open(fn)[0]
 
+    # calculate offsets against original pointing before
+    # "apply_pointing_corrections" is applied
+    if 'CRVAL1A' in fh.header:
+        fh.header['CRVAL1'] = fh.header['CRVAL1A']
+        fh.header['CRVAL2'] = fh.header['CRVAL2A']
+
     if regname == 'G34':
         # fix bad stripe by removing it
         fh.data[:,2052:2060] = np.nan
