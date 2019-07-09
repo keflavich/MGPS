@@ -62,6 +62,7 @@ The images from this project are released at
 Target   &      Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
          &        hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
 \hline
+\hline
 \input{obstable_data}
 %W51      &      1.02      &        01        \\
 %W49      &      1.02      &        01, 02    \\
@@ -71,9 +72,32 @@ Target   &      Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $
 %GAL029   &      1.30      &        04,05     \\
 %GAL034   &     $\sim0.5$  &   05             \\
 \hline
+\hline
 \end{tabular}
+\caption{Observing Session Dates and Lengths}
+\begin{tabular}{lll}
+    \label{tab:observations}
+Session Number   & Session Start & Session Length \\
+    & & hours \\
+\hline
+\hline
+01 & Mar 24 2018 08:00 UT & 3.50 \\
+02 & Mar 31 2018 07:30 UT & 4.50 \\
+04 & May 01 2018 06:15 UT & 4.25 \\
+03 & Jun 15 2018 05:30 UT & 3.25 \\
+05 & Jan 31 2019 11:45 UT & 2.75 \\
+% Jun 15 05:30 UT
+% Jan 31 11:45 UT
+% May 01 06:15 UT
+% May 01 09:00 UT
+% Mar 24 08:00 UT
+% Mar 31 07:30 UT
+% Mar 31 09:00 UT
+\hline
+\hline
+\end{tabular}
+
 \par
-\todo{Add dates of sessions}
 The tabulated times are those in the maps (just in the scans that were used to
 make a given map).
 In GAL034, only 6 of the constant-latitude scans were completed, so only the bottom
@@ -230,10 +254,12 @@ the MUSTANG data.
 
 In several cases, the measured offset is comparable to the MUSTANG beam.  We
 therefore correct these images for the offset, assuming the VLA 20 cm data
-have correct pointing.  \todo{The original pointing centers are recorded in the FITS
+have correct pointing.  The original pointing centers are recorded in the FITS
 headers of the published images with names \texttt{CRVALnA} so that the original
-pointing centers can be used if needed.}
-\todo{Fix pointing based on these measurements.}
+pointing centers can be used if needed.
+\todo{Coauthors: if you could, please look at the data an ensure (1) that you're
+looking at an image that has CRVAL1A/CRVAL2A in the headers and (2) that the image
+appears to match well to other data sets you have.}
 
 %These offsets should not be regarded as genuine pointing errors,
 %as there are substantial morphological differences between the MUSTANG and Bolocam
@@ -268,6 +294,7 @@ to obtain the true effective central frequency of the bandpass for these assumed
 continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
 
 \begin{table*}[htp]
+    \caption{Central Frequencies}
 \begin{tabular}{ll}
     \label{tab:centralfreq}
 $\alpha$ & Frequency \\
@@ -300,10 +327,11 @@ structures (4-10\arcmin) are likely to be poorly recovered.
 The resulting FITS images are provided in the data repository.
 
 \subsection{Free-free separation}
-\todo{You may want to steal some of this section text for the intro} The MGPS90
+The MGPS90
 data have contributions from (thermal) free-free, thermal dust continuum, and
 (nonthermal) synchrotron emission.  We describe here our decomposition of the
-MGPS90 data into these components.
+MGPS90 data into free-free and dust emission; the non-thermal emission was not
+separated from the free-free emission.
 
 The flux density from optically thin free-free emission is roughly flat as a
 function of frequency, $S_{\nu, ff} \propto \nu^{-0.12}$.  Because most of the
@@ -312,7 +340,7 @@ star formation with many \hii\ regions, we expect free-free emission to be the
 dominant source of 90\,GHz flux.
 
 Thermally-emitting dust follows a Planck function of typical temperature
-30\,K.; its intensity therefore peaks near 3\,THz.  At 90\,GHz, the dust flux
+30\,K; its intensity therefore peaks near 3\,THz.  At 90\,GHz, the dust flux
 density is set by the dust column density $N_d$, the dust temperature $T_d$,
 and the dust opacity $\kappa_\nu$:
 \begin{equation}
@@ -328,7 +356,7 @@ we expect to see dust emission at 90\,GHz in the MGPS90 fields.
 
 Synchrotron emission generally has a steep negative spectral index and so
 decreases in intensity as a function of increasing frequency, $S_{\nu,
-synch.}\propto \nu^{-\alpha}$, with $\alpha\simeq 1-2$.  At 90\,GHz, we expect
+synch.}\propto \nu^{\alpha}$, with $\alpha\simeq -1 \mathrm{~to~} -2$.  At 90\,GHz, we expect
 to detect synchrotron emission from Galactic supernova remanants, nonthermal
 filaments (in the Galactic center), and extragalactic sources. 
 
