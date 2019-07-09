@@ -84,12 +84,16 @@ The $\ell$ and $b$ offsets are measured offsets from cross-correlation with
 
 \subsection{Calibration}
 
-The calibrations were done according to Charles' calibration scripts. Known
-point sources are observed at regular intervals each night.
+%The calibrations were done according to Charles' calibration scripts. Known
+%point sources are observed at regular intervals each night.
 
-The calibration procedure is, summarily, as follows:
+%The calibration procedure is, summarily, as follows:
+A consistent calibration procedure was carried out for each observation.
+Known point sources were observed at regular intervals each night.
+
 \begin{enumerate}
-    \item A calibration for the detector array is found using a skydip and the
+    \item A calibration for the detector array (i.e., relative calibration between
+        the individual receivers) is found using a skydip and the
         opacity (at 90 GHz) as given by CLEO (Control Library for Operators and
         Engineers; \url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}), to get
         each timestream into
@@ -97,29 +101,31 @@ The calibration procedure is, summarily, as follows:
     \item A map is made (in azimuth/elevation coordinates) of each calibration
         (point source) scan in IDL.
         \begin{enumerate}
-            \item A single 2-D Gaussian is fit to the point source. The centroid and widths are recorded.
-            \item Fixing the centroid as found above, a double Gaussian (two 1-D Gaussians) is fit.
+            \item A single 2-D Gaussian is fit to the point source. The
+                centroid and widths are recorded.
+            \item Fixing the centroid as found above, a double Gaussian (two
+                1-D Gaussians) is fit.
             \item The beam volume is calculated from the map within a 60"
                 aperture as well as analytically from the double Gaussian. The
                 adopted beam volume is often that from the double Gaussian, but
                 if the fits are poor, the 60" aperture value is generally
                 adopted. If both values are questionable, or some other
                 indicator of reliability fails, the beam volume of that
-                individual scan will be overlooked.
+                individual scan will be excluded.
         \end{enumerate}
     \item
         \begin{enumerate}
             \item The peaks of secondary calibrators are normalized by the mean
                 for each specific secondary calibrator. These peaks are tied
                 into a primary calibrator, whose peak is scaled to the expected
-                peak, in Jy(/beam), which is determined from planetary models
+                peak, in Jy \perbeam, which is determined from planetary models
                 if a planet, or from interpolation of ALMA data, if only an
                 ALMA calibrator was accessible in a given night. The scaling is
                 linearly interpolated between calibration scans.
             \item Conversion to Kelvin accounts for the beam volume. As such,
                 the beam volumes are interpolated between scans.
         \end{enumerate}
-    \item Calibration to Jy, conversion from Jy/beam to Kelvin, opacities, and
+    \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities, and
         pointing offsets are all recorded in an IDL save file, which is read in
         and applied to the processing of the science scans.
 \end{enumerate}
@@ -131,8 +137,9 @@ $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA a
 some is from our knowledge of $\tau$ (the sky optical depth) during the observations.
 
 \subsection{Map Making}
-Maps were made using the MINKASI algorithm \citep{}\todo{Simon: could you fill in a citation here?}.
-We used smoothed power spectra from a singular value decomposition (SVD) of the data on a scan by scan basis to
+Maps were made using the MINKASI algorithm \citep{}\todo{Simon: could you fill
+in a citation here?}.  We used smoothed power spectra from a singular value
+decomposition (SVD) of the data on a scan by scan basis to
 obtain a noise model.
 This model has does not work well if there are strong sources,
 so we added features to work around this by subdividing timestreams and taking
@@ -144,7 +151,7 @@ result then clipped at some level above any artifacts in that iteration and the
 results subtracted from the timestreams.  In each loop, the clipping level was
 reduced and the noise model recalculated.  In the last loops (in which all
 strong signal should have been removed) the full SVD noise model could be used
-(which tended to give better results on faint features. For W33, three
+(which tended to give better results on faint features). For W33, three
 iterations produced optimal results; the other regions required more
 iterations.
 
