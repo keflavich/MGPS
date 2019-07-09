@@ -46,6 +46,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
     # we're treating 'width' as a radius elsewhere, here it's a full width
     images = {survey:getimg(coordinate, image_size=width*2, survey=survey) for survey in surveys}
     images = {x:y for x,y in images.items() if y is not None}
+    assert len(images) > 0
     #images['mgps'] = [mgps_cutout]
 
     # coordinate stuff so images can be reprojected to same frame
@@ -101,10 +102,10 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         ax0.set_title("3 mm")
         ax1 = figure.add_subplot(1, 5, 2, projection=outwcs)
         ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
-        ax1.set_title("Dust")
+        ax1.set_title("3mm Dust")
         ax2 = figure.add_subplot(1, 5, 3, projection=outwcs)
         ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
-        ax2.set_title("Free-Free")
+        ax2.set_title("3mm Free-Free")
 
         for ax in (ax0, ax1, ax2):
             ax.set_xlabel("Galactic Longitude")
@@ -151,12 +152,30 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
     ax3.coords[1].set_ticklabel_visible(False)
 
     # TODO: VERIFY THIS WORKS
+    # Probably need to convolve both images to same resolution and then get them in the same units
+    # MAGPIS data are high-resolution (comparable to but better than MGPS)
+    # Zadeh data are low-resolution, 30ish arcsec
     freefree_proj,_ = reproject.reproject_interp((freefree, outwcs), gps20cutout.wcs, shape_out=gps20cutout.data.shape)
 
-    gps_bm = Beam.from_fits_header(gps20im[0].header)
+    gps20_bm = Beam.from_fits_header(gps20im[0].header)
 
     ax4 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
-    ax4.imshow(freefree_proj / (gps20cutout.data / gps_bm.sr), origin='lower', interpolation='none', vmin=-1, vmax=2)
+
+    freefree_3mm_to_20cm = 1/(90/1.4)**-0.12
+    empirical_factor = 3 # freefree was coming out way too high, don't understand why yet
+    synchro = gps20cutout.data * (mgps_beam.sr / gps20_bm.sr) - freefree_proj * freefree_3mm_to_20cm / empirical_factor
+    #return gps20cutout.data, freefree_proj, synchro
+    normsynchro = visualization.ImageNormalize(gps20cutout.data,
+                                               interval=visualization.ManualInterval(np.nanpercentile(synchro,
+                                                                                                      0.5),
+                                                                                     np.nanpercentile(synchro,
+                                                                                                      99.9)),
+                                               stretch=visualization.LogStretch(),)
+
+    ax4.imshow(synchro, origin='lower', interpolation='none', norm=normsynchro)
+    ax4.coords[1].set_axislabel("")
+    ax4.coords[1].set_ticklabel_visible(False)
+               #/ (gps20cutout.data / gps_bm.sr), origin='lower', interpolation='none', vmin=-1, vmax=2)
 
     pl.tight_layout()
 
@@ -181,7 +200,8 @@ if __name__ == "__main__":
 
         for regname, mgpsfile in files.files.items():
 
-            mgpsfile = os.path.join('/Volumes/external/mgps/Feb5_2019/',
+            #mgpsfile = os.path.join('/Volumes/external/mgps/Feb5_2019/',
+            mgpsfile = os.path.join('/Users/adam/work/mgps/Feb5_2019/',
                                     os.path.split(mgpsfile.replace(".fits","_PlanckCombined.fits"))[-1])
 
             ww = wcs.WCS(fits.getheader(mgpsfile))
@@ -191,4 +211,4 @@ if __name__ == "__main__":
                 make_hiidust_plot(reg.center, mgpsfile, width=reg.radius, regname=regname)
                 tgtname = reg.meta['label']
 
-                pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}.pdf', bbox_inches='tight')
+                pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_5panel.pdf', bbox_inches='tight')
