@@ -143,7 +143,7 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
                                             stretch=visualization.AsinhStretch(),
                                            )
 
-        ax.imshow(new_img, origin='lower', interpolation='none', norm=norm)
+        ax.imshow(new_img, origin='lower', interpolation='none', cmap='gray', norm=norm)
         ax.set_xticklabels([])
         ax.set_yticklabels([])
         ax.xaxis.set_ticklabels('')

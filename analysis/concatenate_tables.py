@@ -12,6 +12,7 @@ for regname,fn in files.items():
         for min_delta in (1, ): #2):
 
             ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac', format='ascii.ipac')
+            ppcat.add_column(Column(name='FieldID', data=[regname]*len(ppcat)))
             tables_.append(ppcat)
 
 
@@ -42,7 +43,7 @@ extended = full_table['MorphologyClass'] == 'E'
 filamentary = full_table['MorphologyClass'] == 'F'
 compact = full_table['MorphologyClass'] == 'C'
 
-compact_cm_no_mm_yes = (~cmdetected) & (mmdetected) & compact
+compact_nocm_yesmm = (~cmdetected) & (mmdetected) & compact
 
 print(f"Bolocam: {bolocamdetected.sum()}")
 print(f"ATLASGAL: {atlasgaldetected.sum()}")
@@ -56,16 +57,16 @@ with open('../pilotpaper/nsources.tex', 'w') as fh:
     fh.write(r"\newcommand{\mmdetections}{"+str(mmdetected.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\cmmmnondetections}{"+str(cm_mm_nondetection.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\mmdetectionscmnondetections}{"+str(cm_no_mm_yes.sum())+r"\xspace}""\n")
-    fh.write(r"\newcommand{\mmdetectionscmnondetectionscompact}{"+str(compact_cm_no_mm_yes.sum())+r"\xspace}""\n")
+    fh.write(r"\newcommand{\mmdetectionscmnondetectionscompact}{"+str(compact_nocm_yesmm.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\ncompact}{"+str(compact.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\nextended}{"+str(extended.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\nfilamentary}{"+str(filamentary.sum())+r"\xspace}""\n")
 
-print("Brightest nondetections:")
+print("Brightest cm nondetections:")
 print(full_table[cm_mm_nondetection & (full_table['MUSTANG_dend_flux'] > 0.1)]['SourceName','RMSClass','MorphologyClass'])
 
-print("Compact nondetections: ")
-print(full_table[compact_cm_no_mm_yes]['SourceName','RMSClass','MorphologyClass'])
+print("Compact cm nondetections: ")
+print(full_table[compact_nocm_yesmm]['SourceName','RMSClass','MorphologyClass'])
 
 
 candidates = {

@@ -683,7 +683,7 @@ eligible to be selected based criterion 1 above, and the BGPS 1.1 mm data,
 with only 30 \arcsec resolution, could be confused and therefore too bright for
 a 3 mm excess to be detected, preventing selection by criterion 2. 
 
-While we would expect some excess above the extrapolated dust emissivity for
+While we would expect some excess above the extrapolated dust emission for
 dusty HCHII regions, it is plausible that the excess is not enough to modify
 the spectral index to meet our selection criterion 2.  Sources that have
 millimeter detections (since they must be surrounded by gas and dust) and not
@@ -827,8 +827,22 @@ dust-only source, OH/IR star, whatever) along with the cutout mosaic.}
 % G12.332-0.180: DHII ?
 % G12.889+0.490: deeply embedded, no free-free: candidate HCHII?
 % G12.908-0.260: star?
-% G29.578-0.267: full SED.  Star?  Coordinate offset evident; check if this one is fixed w/re-cataloging
-%  CLEAR pointing offset in G29 means cataloging needs to be redone
+% G29.578-0.267: full SED.  Star?  Coordinate offset evident; check if this one is fixed w/re-cataloging.  CONFIRMED planetary nebula
+%  CLEAR pointing offset in G29 means cataloging needs to be redone [I did that]
+% G30.530+0.132: 
+
+\begin{figure*}[htp]
+\includegraphics[width=17cm]{figures/SED_plot_G29_G29.578-0.268.png}
+\caption{SED of source G29.578-0.268, a planetary nebula.  The individual panels show cutouts from 
+various surveys hosted on the MAGPIS cutout service
+(\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal cutout service
+(\url{https://tools.ssdc.asi.it/HiGAL.jsp}); individual survey references are in Section \ref{sec:catalogmatching}.
+Short wavelengths ($<24$ \um) are not included in the SED, the rest are included in the cross-matched catalog.}
+\label{fig:g29pn}
+\end{figure*}
+
+
+
 
 \input{solobib.tex}
 \end{document}

@@ -9,7 +9,7 @@ import HII_model
 imp.reload(HII_model)
 from astropy import units as u
 from astropy import table
-from astropy.table import Table
+from astropy.table import Table, Column
 from paths import catalog_path
 from files import files
 
@@ -38,6 +38,7 @@ for regname,fn in files.items():
         for min_delta in (1, ): #2):
 
             ppcat = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac', format='ascii.ipac')
+            ppcat.add_column(Column(name='FieldID', data=[regname]*len(ppcat)))
 
             compact = (ppcat['MorphologyClass'] == 'C')
             candidate_mask = (ppcat['HCHII_candidate'] == 'True')
@@ -83,5 +84,9 @@ cand_qual = {
 print("The following sources have not been classified by hand:")
 for row in candidate_table:
     if row['SourceName'] not in cand_qual:
-        print(row['SourceName'])
+        print(f"{row['SourceName']}")
+print(" ".join([
+      f"figures/cataloging/seds/SED_plot_{row['FieldID']}_{row['SourceName']}.png"
+      for row in candidate_table
+      if row['SourceName'] not in cand_qual]))
 print("If there are no sources above, that means you're done.")
