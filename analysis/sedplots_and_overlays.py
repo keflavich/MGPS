@@ -79,7 +79,7 @@ for regname,fn in files.items():
                 ax.yaxis.set_label_position("right")
                 ax.yaxis.tick_right()
                 
-                fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')
+                fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.pdf', bbox_inches='tight')
                 print(f"finished {name}")
 
 

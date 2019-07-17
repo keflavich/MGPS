@@ -304,11 +304,13 @@ headers of the published images with names \texttt{CRVALnA} so that the original
 pointing centers can be used if needed.
 \todo{Coauthors: if you could, please look at the data an ensure (1) that you're
 looking at an image that has CRVAL1A/CRVAL2A in the headers and (2) that the image
-appears to match well to other data sets you have.}
+appears to match well to other data sets you have.  Please see
+\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HPATJB&version=DRAFT},
+which should be the July 11 version of the data release.}
 
-\todo{GAL029 did not get a good enough pointing correction; there are clear offsets
-in the point sources.  I don't know why this has happened and it's pretty painful
-to investigate.}
+%\todo{GAL029 did not get a good enough pointing correction; there are clear offsets
+%in the point sources.  I don't know why this has happened and it's pretty painful
+%to investigate.}
 
 %These offsets should not be regarded as genuine pointing errors,
 %as there are substantial morphological differences between the MUSTANG and Bolocam
@@ -853,7 +855,7 @@ YSO that is a candidate \hchii region with no centimeter detection (Fig.
 
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/SED_plot_G29_G29.578-0.268.png}
+\includegraphics[width=17cm]{figures/SED_plot_G29_G29.578-0.268.pdf}
 \caption{SED of source G29.578-0.268, a planetary nebula.  The individual panels show cutouts from 
 various surveys hosted on the MAGPIS cutout service
 (\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal cutout service
@@ -864,7 +866,7 @@ Short wavelengths ($<24$ \um) are not included in the SED, the rest are included
 
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/SED_plot_G12_G12.026-0.031.png}
+\includegraphics[width=17cm]{figures/SED_plot_G12_G12.026-0.031.pdf}
 \caption{SED of source G12.026-0.031, a candidate \hchii region and likely high-mass YSO identified in the RMS
 survey \citep{Lumsden2013a}.  This compact source failed the criteria in Section \ref{sec:hiireg},
 indicating that no clear excess of free-free emission is detected at 3 mm, and suggesting that if an \hchii region is
@@ -876,7 +878,7 @@ forming high-mass stars.}
 
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/SED_plot_G31_G30.944+0.035.png}
+\includegraphics[width=17cm]{figures/SED_plot_G31_G30.944+0.035.pdf}
 \caption{SED of source G30.944+0.035, an OH/IR star.  The dusty SED with no
 detected radio emission made this source a candidate hypercompact HII region
 based on the criteria in Section \ref{sec:hiireg}, though it only barely passed
@@ -885,11 +887,14 @@ the second criterion.}
 \end{figure*}
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/SED_plot_G34_G34.257+0.153.png}
+\includegraphics[width=17cm]{figures/SED_plot_G34_G34.257+0.153.pdf}
 \caption{SED of source G34.257+0.153, which contains several \hchii regions
 within the MGPS90 beam.  The source passed the selection criteria in Section
 \ref{sec:hiireg}, confirming that these are useful criteria for identifying
-relatively isolated \hchii regions.}
+relatively isolated \hchii regions. The intermediate Herschel wavelengths (160,
+250, 350 \um) appear as upper limits because the HiGal catalogs broke this
+source into several, none of which match the MGPS90 centroid to within
+10\arcsec.}
 \label{fig:g34hchii}
 \end{figure*}
 

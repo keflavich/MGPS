@@ -174,7 +174,7 @@ if __name__ == "__main__":
                                     ((ppcat['MUSTANG_10as_peak'] > 1.75*ppcat['Fpeak6cm_Becker']) & (ppcat['Fpeak6cm_Becker'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm_THOR']) & (ppcat['Fpeak20cm_THOR'] > 0)) |
                                     ((ppcat['MUSTANG_10as_peak'] > 43*ppcat['Fpeak20cm']) & (ppcat['Fpeak20cm'] > 0))
-                                   ) | 
+                                   ) |
                                    # 3mm excess over 1mm extrapolation, but no 6cm/20cm detection
                                    (
                                        (ppcat['Fpeak20cm'] == 0) & (ppcat['Fpeak20cm_THOR'] == 0) & (ppcat['Fpeak6cm_MAGPIS'] == 0) &
