@@ -80,7 +80,7 @@ cand_qual = {
     'G48.914-0.284': 'diffuse',
     'G0.529-0.084': 'diffuse',
     'G0.169+0.150': 'diffuse',
-    'G34.257+0.153': 'HII',
+    'G34.257+0.153': 'HII', # is a hypercompact HII region
     'G49.394-0.483': 'W51e2/e8',
     'G0.117+0.085': 'diffuse',
 }

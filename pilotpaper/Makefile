@@ -16,11 +16,11 @@ all: gitstuff.tex pilotpaper
 pilotpaper: 
 	echo "texpath: ${texpath}"
 	python make.py --texpath=${texpath}
-	python make_apjform.py
+	#python make_apjform.py
 	gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=pilotpaper_compressed.pdf pilotpaper.pdf
 	python paper2arxiv.py --apj
 	python paper2arxiv.py
-	python make_apjform.py
+	#python make_apjform.py
 
 .PHONY: diff
 diff:
