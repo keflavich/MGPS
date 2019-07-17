@@ -490,17 +490,51 @@ another, would likely be classified as extended.
 
 \subsection{Catalog cross-matching}
 \label{sec:catalogmatching}
-We cross-match the resulting catalog with the Herschel HiGal
-\citep{Elia2017a}, Spitzer GLIMPSE and MIPSGAL
-\citep{Churchwell2009a,Gutermuth2015a},
-Bolocam BGPS \citep{Aguirre2011a,Rosolowsky2010a,Ginsburg2013a}, LABOCA ATLASGAL
-\citep{Urquhart2014c},
-and MAGPIS 6cm and 20cm
-\citep{Giveon2005a} and CORNISH 6cm \citep{Hoare2012a} catalogs.
+We cross-match the resulting catalog with the catalogs listed in Table \ref{tab:otherdata}.  
+% Herschel HiGal
+% \citep[70-500\um, $\sim6-36\arcsec$]{Elia2017a}, Spitzer GLIMPSE and MIPSGAL
+% \citep[3.6-24\um, $\sim2-6\arcsec$]{Churchwell2009a,Gutermuth2015a},
+% Bolocam BGPS \citep[1.1mm, $\approx33\arcsec$]{Aguirre2011a,Rosolowsky2010a,Ginsburg2013a}, LABOCA ATLASGAL
+% \citep[870 \um, $\approx20\arcsec$]{Urquhart2014c},
+% and MAGPIS 6cm and 20cm
+% \citep[$\sim1\arcsec$]{Giveon2005a} and CORNISH 6cm \citep[$\sim1\arcsec$]{Hoare2012a} catalogs.
 Matches in these catalogs are included if there is a source within 10\arcsec
 (approximately the MUSTANG beam FWHM) of the MGPS catalog entry.
 
-\todo{Add a summary of the auxiliary data sets used either here or in an adjacent section}
+\begin{table*}[htp]
+\centering
+%\begin{minipage}{130mm}
+\caption{Comparison Data Set Summary}
+\begin{tabular}{llll}
+\label{tab:otherdata}
+Name                 & Wavelength(s)  &  Angular Resolution    & References \\
+                     & \um            &  \arcsec               &  \\
+\hline                                                       
+Spitzer GLIMPSE      & 3.6--8.0       &  2                     & \citet{Churchwell2009a} \\
+Spitzer MIPSGAL      & 24             &  6                     & \citet{Gutermuth2015a} \\
+Herschel HiGal       & 70--500        &  6--36                 & \citet{Elia2017a} \\
+APEX-Laboca ATLASGAL & 870            &  20                    & \citet{Urquhart2014c} \\
+CSO-Bolocam BGPS     & 1100           &  33                    & \citet{Rosolowsky2010a}\\
+                                                             &&& \citet{Ginsburg2013a} \\
+GBT-MUSTANG MGPS90   & 3274           &  9                     & This work \\
+\hline                                                       
+                     & cm             &                        & \\
+\hline                                                       
+MAGPIS               & 6              & 4                      & \citet{Giveon2005a} \\
+                                                             &&& \citet{Helfand2006a} \\
+CORNISH              & 6              & 1.5                    & \citet{Hoare2012a} \\
+MAGPIS               & 20             & 5                      & \citet{Giveon2005b} \\
+\hline
+\end{tabular}
+%$^*$ When no matching entry was found, we adopted the listed value as a
+%$1-\sigma$ upper limit on the source flux when plotting SEDs.  However, all of these
+%surveys have significantly varying point source sensitivity at different locations,
+%so these limits should be treated carefully.  The GLIMPSE data were not included in
+%SED plots, so no upper limit is used.  
+
+\end{table*}
+
+%\todo{Add a summary of the auxiliary data sets used either here or in an adjacent section}
 
 Of the \nsources total MUSTANG sources, \mmdetections had millimeter/submillimeter
 matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
@@ -807,7 +841,9 @@ or centimeter counterparts.}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G34_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G34 field.}
+\caption{MUSTANG image of the G34 field.  Above $b\gtrsim 0\deg$,
+horizontal cross-scans have not been obtained; the vertical streak seen
+at $\ell=34.25\deg$ is a consequence of these missing data.}
 \label{fig:g34overview}
 \end{figure*}
 
@@ -894,7 +930,8 @@ within the MGPS90 beam.  The source passed the selection criteria in Section
 relatively isolated \hchii regions. The intermediate Herschel wavelengths (160,
 250, 350 \um) appear as upper limits because the HiGal catalogs broke this
 source into several, none of which match the MGPS90 centroid to within
-10\arcsec.}
+10\arcsec.  The asymmetry in the MUSTANG image is caused by the missing
+scans noted in Figure \ref{fig:g34overview}.}
 \label{fig:g34hchii}
 \end{figure*}
 
