@@ -614,6 +614,7 @@ $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
 % therefore just a particularly bright patch of diffuse free-free emission.
 
 \subsection{\hchii region identification}
+\label{sec:hiireg}
 One of the aims of this survey is to identify the youngest high-mass
 protostars.  Candidates are those sources with little to no infrared emission
 and very compact, optically thick hypercompact \hii regions.
@@ -814,8 +815,16 @@ complex.}
 \end{figure*}
 
 \subsection{Representative SEDs of selected sources}
-\todo{In this section, we'll show SEDs of a few selected sources (HCHII region, UCHII region,
-dust-only source, OH/IR star, whatever) along with the cutout mosaic.}
+To put the MGSP90 data in context, we show a few examples of SEDs extracted
+from the catalogs described in section \ref{sec:catalogmatching} along with
+cutout images extracted from the same surveys.  The selected SEDs are of a 
+planetary nebula (Fig. \ref{fig:g29pn}), which exhibits emission at all wavelengths,
+an OH/IR star (Fig. \ref{fig:g31ohir}) that is infrared- and millimeter-bright but
+not detected at centimeter wavelengths, and a high-mass YSO that is a candidate
+\hchii region with no centimeter detection (Fig. \ref{fig:g12hiicand}).
+
+%\todo{In this section, we'll show SEDs of a few selected sources (HCHII region, UCHII region,
+%dust-only source, OH/IR star, whatever) along with the cutout mosaic.}
 % candidates: G11.943-0.156: dust-only, detected at infrared but not cm.  Bright mm.  BGPS spatially offset
 % G11.945-0.036: extended HII region (why no 20cm counterpart in catalog?)
 % G11.971+0.192: likely extragalactic, possible radio jet
@@ -840,6 +849,29 @@ various surveys hosted on the MAGPIS cutout service
 Short wavelengths ($<24$ \um) are not included in the SED, the rest are included in the cross-matched catalog.}
 \label{fig:g29pn}
 \end{figure*}
+
+
+\begin{figure*}[htp]
+\includegraphics[width=17cm]{figures/SED_plot_G12_G12.026-0.031.png}
+\caption{SED of source G12.026-0.031, a candidate \hchii region and likely high-mass YSO identified in the RMS
+survey \citep{Lumsden2013a}.  This compact source failed the criteria in Section \ref{sec:hiireg},
+indicating that no clear excess of free-free emission is detected at 3 mm, and suggesting that if an \hchii region is
+present, it is faint.  Such objects are of particular interest because they constitute the most compact and likely youngest
+forming high-mass stars.}
+\label{fig:g12hiicand}
+\end{figure*}
+
+
+
+\begin{figure*}[htp]
+\includegraphics[width=17cm]{figures/SED_plot_G31_G30.944+0.035.png}
+\caption{SED of source G30.944+0.035, an OH/IR star.  The dusty SED with no
+detected radio emission made this source a candidate hypercompact HII region
+based on the criteria in Section \ref{sec:hiireg}, though it only barely passed
+the second criterion.}
+\label{fig:g31ohir}
+\end{figure*}
+
 
 
 

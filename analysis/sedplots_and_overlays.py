@@ -40,7 +40,10 @@ for regname,fn in files.items():
             catfn = f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac'
             if not os.path.exists(catfn):
                 # during debugging stages, this can happen...
+                print(f"Skipped {catfn}")
                 continue
+            else:
+                print(f"Working on {catfn}")
             ppcat = Table.read(catfn, format='ascii.ipac')
 
             fig5 = pl.figure(5, figsize=szinch)
@@ -50,6 +53,11 @@ for regname,fn in files.items():
             fig2.clf()
             mgpsdetected = ppcat['rejected'] == 0
             for ii,row in enumerate(ppcat[mgpsdetected]):
+                name = f'{regname}_{row["SourceName"].strip()}'
+
+                # Disable this if redos are desired
+                #if os.path.exists(f'{catalog_figure_path}/seds/SED_plot_{name}.png'):
+                #    continue
                 #if ii/4+1 > 9:
                 #    break
                 #ax = fig2.add_subplot(3, 3, int(ii/4) + 1)
@@ -68,7 +76,9 @@ for regname,fn in files.items():
                 ax.set_aspect('equal', 'box')
                 ax.set_xlabel("Wavelength ($\mu$m)")
                 ax.set_ylabel("Flux Density [mJy]")
-                name = f'{regname}_{row["SourceName"]}'
+                ax.yaxis.set_label_position("right")
+                ax.yaxis.tick_right()
+                
                 fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.png', bbox_inches='tight')
                 print(f"finished {name}")
 
