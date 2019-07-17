@@ -11,6 +11,7 @@
 
 \begin{document}
 \title{The MUSTANG Galactic Plane Survey (MGPS90) pilot}
+\input{authors}
 
 \begin{abstract}
 We report the results of a pilot program for a MUSTANG Galactic Plane survey.
@@ -335,7 +336,8 @@ which should be the July 11 version of the data release.}
 % all at 3mm.}
 
 \subsection{Cross-validation with ALMA calibrator catalog}
-\todo{Find if there are any ALMA calibrators in any of our target fields that
+\todo{OPTIONAL: Coauthors, is this a priority?  If so, are there any volunteers to help?
+Find if there are any ALMA calibrators in any of our target fields that
 we can validate our calibration against.}
 
 \subsection{Effective Central Frequency}
@@ -344,23 +346,29 @@ We multiplied the bandpass filter by power law flux density distributions with $
 to obtain the true effective central frequency of the bandpass for these assumed
 continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
 
+% analysis/filters.py
 \begin{table*}[htp]
     \caption{Central Frequencies}
-\begin{tabular}{ll}
+\begin{tabular}{lll}
     \label{tab:centralfreq}
-$\alpha$ & Frequency \\
+$\alpha$ & Frequency & Wavelength\\
+         & GHz       & mm \\
 \hline
-0.0 & 89.72 GHz \\
-0.5 & 90.17 GHz \\
-1.0 & 90.63 GHz \\
-1.5 & 91.09 GHz \\
-2.0 & 91.54 GHz \\
-2.5 & 92.00 GHz \\
-3.0 & 92.44 GHz \\
-3.5 & 92.89 GHz \\
-4.0 & 93.32 GHz \\
+0.0 & 89.72  & 3.341 \\
+0.5 & 90.18  & 3.324 \\
+1.0 & 90.64  & 3.308 \\
+1.5 & 91.09  & 3.291 \\
+2.0 & 91.55  & 3.275 \\
+2.5 & 92.00  & 3.259 \\
+3.0 & 92.45  & 3.243 \\
+3.5 & 92.89  & 3.227 \\
+4.0 & 93.33  & 3.212 \\
 \hline
 \end{tabular}
+\par The central frequencies are computed by computing the first moment of a
+power-law source function $S(\nu) = \nu^{\alpha}$ integrated over the MUSTANG
+bandpass.
+
 \end{table*}
 
 \subsection{Combination with Planck data\label{sec:feather}}

@@ -25,10 +25,11 @@ nu0 = 100*u.GHz
 for alpha in np.arange(0, 4.5, 0.5):
     flux = (frq/nu0)**alpha
     ctrfrq = (frq * flux * filterfunc).sum() / (filterfunc * flux).sum()
-    print("{0}: {1}".format(alpha, ctrfrq))
+    print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}")
 
 
 """
+effective central frequencies
 0.0: 89.72196996399734 GHz
 0.5: 90.17848572026456 GHz
 1.0: 90.63580283990281 GHz
