@@ -14,6 +14,8 @@
 \input{authors}
 
 \begin{abstract}
+\todo{COAUTHORS: Please look at the file \texttt{authors.tex} and add your
+affiliation etc.}\\
 We report the results of a pilot program for a MUSTANG Galactic Plane survey.
 The survey so far achieves a typical depth of $1$ mJy/beam in a $9\arcsec$
 beam.
@@ -386,6 +388,7 @@ structures (4-10\arcmin) are likely to be poorly recovered.
 The resulting FITS images are provided in the data repository.
 
 \subsection{Free-free separation}
+\label{sec:freefree}
 The MGPS90
 data have contributions from (thermal) free-free, thermal dust continuum, and
 (nonthermal) synchrotron emission.  We describe here our decomposition of the
@@ -449,8 +452,9 @@ The W43 region is substantially more dust-dominated than the Galactic Center
 (Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
 aligned with free-free features, so it is difficult to disentangle them by eye
 in the MGPS90 image.  The MGPS90 - 20 cm image is negative over the free-free
-dominated regions, likely indicating that much of the free-free emission is
-optically thick at 20 cm.  However, despite this clear oversubtraction, the
+dominated regions, likely indicating that there is likely substantial nonthermal
+emission in these HII regions \todo{Is there any other explanation?  That seems
+like kind of a big deal.}.  However, despite this clear oversubtraction, the
 difference image shows an exquisite high-resolution image of the compact
 dust-dominated features.
 
@@ -459,12 +463,14 @@ dust-dominated features.
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G01_arches_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the Sgr B2 field centered on the Arches region. 
-    All images are displayed on the same intensity scale in units of Jy/sr.
-    (a; 3 mm) MGPS90 
-    (b; 3 mm Dust) ATLASGAL 870 \um scaled to 3 mm
-    (c; 3 mm free-free) smoothed MGPS90 - scaled ATLASGAL
-    (d; 20 cm) VLA 20 cm continuum scaled to 3 mm
-    (e; 3 mm Dust) smoothed MGPS90 - scaled VLA 20 cm continuum.
+    All images are displayed on the same intensity scale in units of Jy/sr.  In the G01 field,
+    the 20 cm data have 30\arcsec resolution, so the MGPS90 data have been smoothed to match
+    the resolution of the other images.
+    (a; 870 \um scaled) ATLASGAL 870 \um scaled to 3 mm
+    (b; 3 mm free-free) smoothed MGPS90 - scaled ATLASGAL
+    (c; 3 mm) MGPS90 
+    (d; 3 mm Dust) smoothed MGPS90 - scaled VLA 20 cm continuum.
+    (e; 20 cm scaled) VLA 20 cm continuum scaled to 3 mm
 }
 \label{fig:arches_freefree}
 \end{figure*}
@@ -472,7 +478,10 @@ dust-dominated features.
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G31_w43_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G31 field centered on W43.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
+    In G31, the 20 cm data have $\sim5$ \arcsec resolution, so they are
+    smoothed to match the MGPS90 data to create panels (d) and (e), while the
+    MGPS90 data are smoothed to match the ATLASGAL data to create panel (b).
 }
 \label{fig:w43freefree}
 \end{figure*}
@@ -613,7 +622,9 @@ $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
 \end{figure*}
 
 
-\todo{Add measurements of known HCHII regions - get those IDs from somewhere.}
+% \todo{Add measurements of known HCHII regions - get those IDs from somewhere.}
+% Known HCHIIs are W51 clusters (Ginsburg 2017), W49 objects (De-Pree...),
+% G34.26+0.15 (Sewilo), Sgr B2.
 
 % \subsection{W43 catalog}
 % We use the W43 region as our test area to examine the cataloging process and
@@ -937,7 +948,9 @@ YSO that is a candidate \hchii region with no centimeter detection (Fig.
 various surveys hosted on the MAGPIS cutout service
 (\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal cutout service
 (\url{https://tools.ssdc.asi.it/HiGAL.jsp}); individual survey references are in Section \ref{sec:catalogmatching}.
-Short wavelengths ($<24$ \um) are not included in the SED, the rest are included in the cross-matched catalog.}
+The white bar in the lower-left is a 1\arcminute scalebar.
+Short wavelengths ($<24$ \um) are not included in the SED, the rest are included in the cross-matched catalog.
+}
 \label{fig:g29pn}
 \end{figure*}
 
@@ -981,11 +994,15 @@ scans noted in Figure \ref{fig:g34overview}.}
 \appendix
 
 \section{Additional free-free / dust decomposition maps}
+In this appendix, we show cutout images focused on a selection of bright extended emission regions
+and the associated free-free decomposition described in Section \ref{sec:freefree}
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G01_sgrb2_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G01 field centered on Sgr B2.
     See Figure \ref{fig:arches_freefree}.
+    The differences in the ATLASGAL- and 20 cm-based dust decomposition highlight the
+    different angular scales recovered by those data sets.
 }
 \label{fig:sgrb2freefree}
 \end{figure*}
@@ -993,7 +1010,12 @@ scans noted in Figure \ref{fig:g34overview}.}
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G12_w33_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G12 field centered on W33.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
+    The diffuse free-free emission is well-removed by subtracting the 20 cm data,
+    but the compact point source appears much brighter in the 3 mm-derived map;
+    this difference is likely because free-free emission is present but optically
+    thick at 20 cm, resulting in an underestimate of the free-free contribution 
+    at 3 mm.
 }
 \label{fig:w33freefree}
 \end{figure*}
@@ -1001,7 +1023,7 @@ scans noted in Figure \ref{fig:g34overview}.}
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G29_g29_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G29 field.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
 }
 \label{fig:g29freefree}
 \end{figure*}
@@ -1009,7 +1031,7 @@ scans noted in Figure \ref{fig:g34overview}.}
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G34_g34_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G34 field centered on G34.26+0.15.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
 }
 \label{fig:g34freefree}
 \end{figure*}
@@ -1018,7 +1040,7 @@ scans noted in Figure \ref{fig:g34overview}.}
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G43_w49a_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G43 field centered on W49A.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
 }
 \label{fig:w49afreefree}
 \end{figure*}
@@ -1026,7 +1048,7 @@ scans noted in Figure \ref{fig:g34overview}.}
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G43_w49b_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G43 field centered on W49B.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
 }
 \label{fig:w49bfreefree}
 \end{figure*}
@@ -1034,7 +1056,7 @@ scans noted in Figure \ref{fig:g34overview}.}
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G49_w51main_5panel.pdf}
     \caption{Decomposition of the MGPS90 data in the G49 field centered on W51 Main.
-    See Figure \ref{fig:arches_freefree}.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
 }
 \label{fig:w51mainfreefree}
 \end{figure*}

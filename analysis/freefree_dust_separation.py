@@ -60,71 +60,73 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         figure = pl.gcf()
     figure.clf()
 
-    for ii, (survey,img) in enumerate(images.items()):
+    (survey,img), = images.items()
 
-        new_img = img[0].data
-        if hasattr(img[0], 'header'):
-            outwcs = wcs.WCS(img[0].header)
-        else:
-            outwcs = img[0].wcs
+    new_img = img[0].data
+    if hasattr(img[0], 'header'):
+        outwcs = wcs.WCS(img[0].header)
+    else:
+        outwcs = img[0].wcs
 
-        agal_bm = tgt_bm = Beam(beam_map[survey])
-        convbm = tgt_bm.deconvolve(mgps_beam)
+    agal_bm = tgt_bm = Beam(beam_map[survey])
+    convbm = tgt_bm.deconvolve(mgps_beam)
 
-        mgps_sm = convolution.convolve_fft(mgps_cutout.data, convbm.as_kernel(mgps_pixscale))
-        mgps_reproj,_ = reproject.reproject_interp((mgps_sm, mgps_cutout.wcs), outwcs, shape_out=img[0].data.shape)
+    mgps_sm = convolution.convolve_fft(mgps_cutout.data, convbm.as_kernel(mgps_pixscale))
+    mgps_reproj,_ = reproject.reproject_interp((mgps_sm, mgps_cutout.wcs), outwcs, shape_out=img[0].data.shape)
 
-        dust_pred = dust_emissivity.blackbody.modified_blackbody(u.Quantity([wlmap[survey].to(u.GHz,
-                                                                                              u.spectral()),
-                                                                             mustang_central_frequency]),
-                                                                 assumed_temperature,
-                                                                 beta=assumed_dustbeta)
+    mgpsjysr = mgps_cutout.data / mgps_beam.sr.value
 
-        # assumes "surv" is dust
-        surv_to_mgps = new_img * dust_pred[1]/dust_pred[0]
-        print(f"{regname} {survey}")
-        print(f"{survey} to mgps ratio: {dust_pred[1]/dust_pred[0]}")
+    dust_pred = dust_emissivity.blackbody.modified_blackbody(u.Quantity([wlmap[survey].to(u.GHz,
+                                                                                          u.spectral()),
+                                                                         mustang_central_frequency]),
+                                                             assumed_temperature,
+                                                             beta=assumed_dustbeta)
 
-        dusty = surv_to_mgps / tgt_bm.sr.value
-        freefree = (mgps_reproj / mgps_beam.sr.value - dusty)
-        print(img[0].data.max(), mgps_sm.max())
-        print(np.nanmax(dusty), np.nanmax(freefree), np.nanmax(mgps_reproj / mgps_beam.sr.value))
+    # assumes "surv" is dust
+    surv_to_mgps = new_img * dust_pred[1]/dust_pred[0]
+    print(f"{regname} {survey}")
+    print(f"{survey} to mgps ratio: {dust_pred[1]/dust_pred[0]}")
 
-        norm = visualization.ImageNormalize(freefree,
-                                            interval=visualization.ManualInterval(np.nanpercentile(freefree, 0.5),
-                                                                                  np.nanpercentile(freefree, 99.9)),
-                                            stretch=visualization.LogStretch(),
-                                           )
-        mgpsnorm = visualization.ImageNormalize(mgps_cutout.data,
-                                                interval=visualization.PercentileInterval(99.95),
-                                                stretch=visualization.LogStretch(),)
-        print(f"interval: {norm.interval.vmin}, {norm.interval.vmax}")
+    dusty = surv_to_mgps / tgt_bm.sr.value
+    freefree = (mgps_reproj / mgps_beam.sr.value - dusty)
+    print(img[0].data.max(), mgps_sm.max())
+    print(np.nanmax(dusty), np.nanmax(freefree), np.nanmax(mgps_reproj / mgps_beam.sr.value))
 
-        Magpis.cache_location = '/Volumes/external/mgps/cache/'
+    norm = visualization.ImageNormalize(freefree,
+                                        interval=visualization.ManualInterval(np.nanpercentile(freefree, 0.1),
+                                                                              np.nanpercentile(freefree, 99.9)),
+                                        stretch=visualization.LogStretch(),
+                                       )
+    mgpsnorm = visualization.ImageNormalize(mgps_cutout.data,
+                                            interval=visualization.PercentileInterval(99.95),
+                                            stretch=visualization.LogStretch(),)
+    print(f"interval: {norm.interval.vmin}, {norm.interval.vmax}")
 
-        ax0 = figure.add_subplot(1, 5, 1, projection=mgps_cutout.wcs)
-        ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
-        ax0.set_title("3 mm")
-        ax1 = figure.add_subplot(1, 5, 2, projection=outwcs)
-        ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
-        ax1.set_title("870 \um scaled")
-        ax2 = figure.add_subplot(1, 5, 3, projection=outwcs)
-        ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
-        ax2.set_title("3 mm Free-Free")
+    Magpis.cache_location = '/Volumes/external/mgps/cache/'
 
-        for ax in (ax0,): # ax1, ax2):
-            #ax.set_xlabel("Galactic Longitude")
-            ax.set_ylabel("Galactic Latitude")
-            ax.tick_params(direction='in')
-            ax.tick_params(color='w')
+    ax0 = figure.add_subplot(1, 5, 3, projection=mgps_cutout.wcs)
+    ax0.imshow(mgpsjysr, origin='lower', interpolation='none', norm=norm)
+    ax0.set_title("3 mm")
+    ax1 = figure.add_subplot(1, 5, 1, projection=outwcs)
+    ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
+    ax1.set_title("870 $\\mu$m scaled")
+    ax2 = figure.add_subplot(1, 5, 2, projection=outwcs)
+    ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
+    ax2.set_title("3 mm Free-Free")
 
+    for ax in (ax0, ax1, ax2):
+        #ax.set_xlabel("Galactic Longitude")
+        ax.tick_params(direction='in')
+        ax.tick_params(color='w')
 
-        ax1.coords[1].set_axislabel("")
-        ax1.coords[1].set_ticklabel_visible(False)
-        ax2.coords[1].set_axislabel("")
-        ax2.coords[1].set_ticklabel_visible(False)
+    ax0.set_ylabel("Galactic Latitude")
 
-        pl.subplots_adjust(hspace=0, wspace=0)
+    ax0.coords[1].set_axislabel("")
+    ax0.coords[1].set_ticklabel_visible(False)
+    ax2.coords[1].set_axislabel("")
+    ax2.coords[1].set_ticklabel_visible(False)
+
+    pl.subplots_adjust(hspace=0, wspace=0)
 
     if 'G01' in regname:
         gps20im = fits.open('/Users/adam/work/gc/20cm_0.fits',)
@@ -145,7 +147,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
                            wcs=mgps_cutout.wcs)
                            #wcs=wcs.WCS(mgps_fh.header))
                            #wcs.WCS(gps20im[0].header).celestial)
-    ax3 = figure.add_subplot(1, 5, 4, projection=gps20cutout.wcs)
+    ax3 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
 
     gps20_bm = Beam.from_fits_header(gps20im[0].header)
     print(f"GPS 20 beam: {gps20_bm.__repr__()}")
@@ -163,7 +165,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
 
     ax3.imshow(gps20_jysr * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
     ax3.set_title("20 cm scaled")
-    ax3.set_xlabel("Galactic Longitude")
+    ax2.set_xlabel("Galactic Longitude")
     ax3.coords[1].set_axislabel("")
     ax3.coords[1].set_ticklabel_visible(False)
     ax3.tick_params(direction='in')
@@ -225,7 +227,6 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
 
         gps20_pixscale = (wcs.utils.proj_plane_pixel_area(gps20cutout.wcs)*u.deg**2)**0.5
 
-        mgpsjysr = mgps_cutout.data / mgps_beam.sr.value
 
         if gps20_bm.sr < mgps_beam.sr:
             # smooth GPS20 to MGPS
@@ -242,7 +243,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
             mgpsjysr = convolution.convolve_fft(mgpsjysr,
                                                 gps20_convbm.as_kernel(mgps_pixscale))
 
-        ax4 = figure.add_subplot(1, 5, 5, projection=mgps_cutout.wcs)
+        ax4 = figure.add_subplot(1, 5, 4, projection=mgps_cutout.wcs)
 
         # use the central frequency corresponding to an approximately flat spectrum (flat -> 89.72)
         dust20 = mgpsjysr - gps20_proj * freefree_20cm_to_3mm
@@ -255,6 +256,8 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
                                                                                                          99.9)),
                                                   stretch=visualization.LogStretch(),)
 
+        # show smoothed 20 cm
+        ax3.imshow(gps20_proj * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
         ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
         ax4.set_title("3 mm Dust")
         ax4.tick_params(direction='in')
@@ -263,6 +266,16 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         ax4.coords[1].set_ticklabel_visible(False)
 
         pl.tight_layout()
+
+    if 'w49b' in regname.lower():
+        norm.vmin = np.min([np.nanpercentile(dust20, 10), np.nanpercentile(freefree, 0.1)])
+    elif 'arches' not in regname:
+        norm.vmin = np.min([np.nanpercentile(dust20, 0.5), np.nanpercentile(freefree, 0.1)])
+    ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
+    ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
+    ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
+    ax3.imshow(gps20_proj * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
+    ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
 
 
 if __name__ == "__main__":
