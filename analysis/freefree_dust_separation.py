@@ -32,7 +32,7 @@ assumed_temperature = 25*u.K
 assumed_dustbeta = 1.5
 
 
-def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
+def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                       surveys=['atlasgal'], figure=None,
                       regname='GAL_031',
                       fifth_panel_synchro=False,
@@ -41,6 +41,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
     mgps_fh = fits.open(mgpsfile)[0]
     frame = wcs.utils.wcs_to_celestial_frame(wcs.WCS(mgps_fh.header))
 
+    coordinate = reg.center
     coordname = "{0:06.3f}_{1:06.3f}".format(coordinate.galactic.l.deg,
                                              coordinate.galactic.b.deg)
 
@@ -110,6 +111,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
     ax1 = figure.add_subplot(1, 5, 1, projection=outwcs)
     ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
     ax1.set_title("870 $\\mu$m scaled")
+    ax1.set_ylabel("Galactic Latitude")
     ax2 = figure.add_subplot(1, 5, 2, projection=outwcs)
     ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
     ax2.set_title("3 mm Free-Free")
@@ -119,7 +121,6 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         ax.tick_params(direction='in')
         ax.tick_params(color='w')
 
-    ax0.set_ylabel("Galactic Latitude")
 
     ax0.coords[1].set_axislabel("")
     ax0.coords[1].set_ticklabel_visible(False)
@@ -165,7 +166,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
 
     ax3.imshow(gps20_jysr * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
     ax3.set_title("20 cm scaled")
-    ax2.set_xlabel("Galactic Longitude")
+    ax0.set_xlabel("Galactic Longitude")
     ax3.coords[1].set_axislabel("")
     ax3.coords[1].set_ticklabel_visible(False)
     ax3.tick_params(direction='in')
@@ -267,10 +268,13 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
 
         pl.tight_layout()
 
-    if 'w49b' in regname.lower():
-        norm.vmin = np.min([np.nanpercentile(dust20, 10), np.nanpercentile(freefree, 0.1)])
-    elif 'arches' not in regname:
+    #elif 'G01' not in regname:
+    #    norm.vmin = np.min([np.nanpercentile(dust20, 0.5), np.nanpercentile(freefree, 0.1)])
+    if np.abs(np.nanpercentile(dust20, 0.5) - np.nanpercentile(freefree, 0.1)) < 1e8:
         norm.vmin = np.min([np.nanpercentile(dust20, 0.5), np.nanpercentile(freefree, 0.1)])
+    if 'w49b' in reg.meta['text']:
+        norm.vmin = np.min([np.nanpercentile(dust20, 8), np.nanpercentile(freefree, 0.1)])
+
     ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
     ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
     ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
@@ -308,7 +312,7 @@ if __name__ == "__main__":
 
             if ww.footprint_contains(reg.center):
 
-                make_hiidust_plot(reg.center, mgpsfile, width=reg.radius, regname=regname,
+                make_hiidust_plot(reg, mgpsfile, width=reg.radius, regname=regname,
                                   figure=pl.figure(1, figsize=(12,8)))
                 tgtname = reg.meta['label']
 
