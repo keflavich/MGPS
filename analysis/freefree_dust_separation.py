@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import pylab as pl
 import reproject
 
 from astroquery.magpis import Magpis
@@ -21,6 +20,8 @@ import files
 from make_sed_cutout_image import wlmap, getimg
 from constants import mgps_beam, mustang_central_frequency
 
+import pylab as pl
+
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -33,7 +34,9 @@ assumed_dustbeta = 1.5
 
 def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
                       surveys=['atlasgal'], figure=None,
-                      regname='GAL_031'):
+                      regname='GAL_031',
+                      fifth_panel_synchro=False,
+                     ):
 
     mgps_fh = fits.open(mgpsfile)[0]
     frame = wcs.utils.wcs_to_celestial_frame(wcs.WCS(mgps_fh.header))
@@ -71,7 +74,9 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         mgps_sm = convolution.convolve_fft(mgps_cutout.data, convbm.as_kernel(mgps_pixscale))
         mgps_reproj,_ = reproject.reproject_interp((mgps_sm, mgps_cutout.wcs), outwcs, shape_out=img[0].data.shape)
 
-        dust_pred = dust_emissivity.blackbody.modified_blackbody(u.Quantity([wlmap[survey].to(u.GHz, u.spectral()), mustang_central_frequency]),
+        dust_pred = dust_emissivity.blackbody.modified_blackbody(u.Quantity([wlmap[survey].to(u.GHz,
+                                                                                              u.spectral()),
+                                                                             mustang_central_frequency]),
                                                                  assumed_temperature,
                                                                  beta=assumed_dustbeta)
 
@@ -107,8 +112,8 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
         ax2.set_title("3mm Free-Free")
 
-        for ax in (ax0, ax1, ax2):
-            ax.set_xlabel("Galactic Longitude")
+        for ax in (ax0,): # ax1, ax2):
+            #ax.set_xlabel("Galactic Longitude")
             ax.set_ylabel("Galactic Latitude")
             ax.tick_params(direction='in')
             ax.tick_params(color='w')
@@ -130,14 +135,20 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
 
     reproj_gps20,_ = reproject.reproject_interp((gps20im[0].data.squeeze(),
                                                  wcs.WCS(gps20im[0].header).celestial),
-                                                mgps_fh.header)
+                                                #mgps_fh.header)
+    # refactoring to make a smaller cutout would make this faster....
+                                                mgps_cutout.wcs,
+                                                shape_out=mgps_cutout.data.shape)
 
     gps20cutout = Cutout2D(reproj_gps20, #gps20im[0].data.squeeze(),
                            coordinate.transform_to(frame.name), size=width*2,
-                           wcs=wcs.WCS(mgps_fh.header))
+                           wcs=mgps_cutout.wcs)
+                           #wcs=wcs.WCS(mgps_fh.header))
                            #wcs.WCS(gps20im[0].header).celestial)
     ax3 = figure.add_subplot(1, 5, 4, projection=gps20cutout.wcs)
 
+    gps20_bm = Beam.from_fits_header(gps20im[0].header)
+    print(f"GPS 20 beam: {gps20_bm.__repr__()}")
 
     norm20 = visualization.ImageNormalize(gps20cutout.data,
                                         interval=visualization.ManualInterval(np.nanpercentile(gps20cutout.data, 0.5),
@@ -145,39 +156,113 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
                                         stretch=visualization.LogStretch(),
                                        )
 
-    ax3.imshow(gps20cutout.data, origin='lower', interpolation='none', norm=norm20)
+    # use 0.12 per Loren's suggestion
+    freefree_20cm_to_3mm = (90*u.GHz/(1.4*u.GHz))**-0.12
+
+    gps20_jysr = gps20cutout.data / gps20_bm.sr.value
+
+    ax3.imshow(gps20_jysr * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
     ax3.set_title("20cm")
     ax3.set_xlabel("Galactic Longitude")
     ax3.coords[1].set_axislabel("")
     ax3.coords[1].set_ticklabel_visible(False)
+    ax3.tick_params(direction='in')
+    ax3.tick_params(color='w')
 
-    # TODO: VERIFY THIS WORKS
-    # Probably need to convolve both images to same resolution and then get them in the same units
-    # MAGPIS data are high-resolution (comparable to but better than MGPS)
-    # Zadeh data are low-resolution, 30ish arcsec
-    freefree_proj,_ = reproject.reproject_interp((freefree, outwcs), gps20cutout.wcs, shape_out=gps20cutout.data.shape)
 
-    gps20_bm = Beam.from_fits_header(gps20im[0].header)
 
-    ax4 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
+    # Fifth Panel:
 
-    freefree_3mm_to_20cm = 1/(90/1.4)**-0.12
-    empirical_factor = 3 # freefree was coming out way too high, don't understand why yet
-    synchro = gps20cutout.data * (mgps_beam.sr / gps20_bm.sr) - freefree_proj * freefree_3mm_to_20cm / empirical_factor
-    #return gps20cutout.data, freefree_proj, synchro
-    normsynchro = visualization.ImageNormalize(gps20cutout.data,
-                                               interval=visualization.ManualInterval(np.nanpercentile(synchro,
-                                                                                                      0.5),
-                                                                                     np.nanpercentile(synchro,
-                                                                                                      99.9)),
-                                               stretch=visualization.LogStretch(),)
+    if fifth_panel_synchro:
+        # MAGPIS data are high-resolution (comparable to but better than MGPS)
+        # Zadeh data are low-resolution, 30ish arcsec
+        # units: Jy/sr
+        freefree_proj,_ = reproject.reproject_interp((freefree, outwcs),
+                                                     gps20cutout.wcs,
+                                                     shape_out=gps20cutout.data.shape)
 
-    ax4.imshow(synchro, origin='lower', interpolation='none', norm=normsynchro)
-    ax4.coords[1].set_axislabel("")
-    ax4.coords[1].set_ticklabel_visible(False)
-               #/ (gps20cutout.data / gps_bm.sr), origin='lower', interpolation='none', vmin=-1, vmax=2)
 
-    pl.tight_layout()
+        gps20_pixscale = (wcs.utils.proj_plane_pixel_area(gps20cutout.wcs)*u.deg**2)**0.5
+
+        # depending on which image has higher resolution, convolve one to the other
+        try:
+            gps20convbm = tgt_bm.deconvolve(gps20_bm)
+            gps20_jysr_sm = convolution.convolve_fft(gps20_jysr, gps20convbm.as_kernel(gps20_pixscale))
+        except ValueError:
+            gps20_jysr_sm = gps20_jysr
+            ff_convbm = gps20_bm.deconvolve(tgt_bm)
+            freefree_proj = convolution.convolve_fft(freefree_proj, ff_convbm.as_kernel(gps20_pixscale))
+
+        ax4 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
+
+        # use the central frequency corresponding to an approximately flat spectrum (flat -> 89.72)
+        freefree_3mm_to_20cm = 1/(90*u.GHz/(1.4*u.GHz))**-0.12
+        #empirical_factor = 3 # freefree was coming out way too high, don't understand why yet
+        synchro = gps20_jysr_sm - freefree_proj * freefree_3mm_to_20cm
+        synchro[np.isnan(gps20_jysr) | (gps20_jysr == 0)] = np.nan
+
+        synchroish_ratio = gps20_jysr_sm / (freefree_proj * freefree_3mm_to_20cm)
+
+        #synchro = synchroish_ratio
+
+        normsynchro = visualization.ImageNormalize(gps20_jysr_sm,
+                                                   interval=visualization.ManualInterval(np.nanpercentile(gps20_jysr_sm,
+                                                                                                          0.5),
+                                                                                         np.nanpercentile(gps20_jysr_sm,
+                                                                                                          99.9)),
+                                                   stretch=visualization.LogStretch(),)
+
+        ax4.imshow(synchro, origin='lower', interpolation='none', norm=normsynchro)
+        ax4.set_title("Synchrotron")
+        ax4.tick_params(direction='in')
+        ax4.tick_params(color='w')
+        ax4.coords[1].set_axislabel("")
+        ax4.coords[1].set_ticklabel_visible(False)
+
+        pl.tight_layout()
+    else:
+        # scale 20cm to match MGPS and subtract it
+
+        gps20_pixscale = (wcs.utils.proj_plane_pixel_area(gps20cutout.wcs)*u.deg**2)**0.5
+
+        mgpsjysr = mgps_cutout.data / mgps_beam.sr.value
+
+        if gps20_bm.sr < mgps_beam.sr:
+            # smooth GPS20 to MGPS
+            gps20convbm = mgps_beam.deconvolve(gps20_bm)
+            gps20_jysr_sm = convolution.convolve_fft(gps20_jysr, gps20convbm.as_kernel(gps20_pixscale))
+            gps20_jysr_sm[~np.isfinite(gps20_jysr)] = np.nan
+            gps20_proj = gps20_jysr_sm
+            #gps20_proj,_ = reproject.reproject_interp((gps20_jysr_sm, gps20cutout.wcs),
+            #                                          ww,
+            #                                          shape_out=mgps_cutout.data.shape)
+        else:
+            gps20_proj = gps20_jysr
+            gps20_convbm = gps20_bm.deconvolve(mgps_beam)
+            mgpsjysr = convolution.convolve_fft(mgpsjysr,
+                                                gps20_convbm.as_kernel(mgps_pixscale))
+
+        ax4 = figure.add_subplot(1, 5, 5, projection=mgps_cutout.wcs)
+
+        # use the central frequency corresponding to an approximately flat spectrum (flat -> 89.72)
+        dust20 = mgpsjysr - gps20_proj * freefree_20cm_to_3mm
+        dust20[np.isnan(gps20_proj) | (gps20_proj == 0)] = np.nan
+
+        normdust20 = visualization.ImageNormalize(mgpsjysr,
+                                                  interval=visualization.ManualInterval(np.nanpercentile(mgpsjysr,
+                                                                                                         0.5),
+                                                                                        np.nanpercentile(mgpsjysr,
+                                                                                                         99.9)),
+                                                  stretch=visualization.LogStretch(),)
+
+        ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
+        ax4.set_title("3mm Dust")
+        ax4.tick_params(direction='in')
+        ax4.tick_params(color='w')
+        ax4.coords[1].set_axislabel("")
+        ax4.coords[1].set_ticklabel_visible(False)
+
+        pl.tight_layout()
 
 
 if __name__ == "__main__":
@@ -196,6 +281,8 @@ if __name__ == "__main__":
 
         return pixcrd[0] > 0 and pixcrd[1] > 0 and pixcrd[0] < header['NAXIS1']-1 and pixcrd[1] < header['NAXIS2']-1
 
+    pl.close(1)
+
     for reg in regs:
 
         for regname, mgpsfile in files.files.items():
@@ -208,7 +295,8 @@ if __name__ == "__main__":
 
             if ww.footprint_contains(reg.center):
 
-                make_hiidust_plot(reg.center, mgpsfile, width=reg.radius, regname=regname)
+                make_hiidust_plot(reg.center, mgpsfile, width=reg.radius, regname=regname,
+                                  figure=pl.figure(1, figsize=(12,8)))
                 tgtname = reg.meta['label']
 
                 pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_5panel.pdf', bbox_inches='tight')

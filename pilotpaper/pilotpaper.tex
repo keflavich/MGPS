@@ -393,55 +393,88 @@ MGPS90 data into free-free and dust emission; the non-thermal emission was not
 separated from the free-free emission.
 
 
-We use the ATLASGAL 870\,$\mu$m
-data \citep{Schuller2009a} to estimate the dust contribution since at 870\,$\mu$m essentially
-all emission is from dust.  
-We estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data,
+We use the ATLASGAL 870\,$\mu$m data \citep{Schuller2009a} to estimate the dust
+contribution since at 870\,$\mu$m essentially all emission is from dust.  We
+estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data,
 assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the
 ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
-90GHz} \simeq 0.15 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We subtract
-the 90\,GHz dust signal found by scaling the ATLASGAL data from the MGPS90 data
-and thereby produce 90\,GHz maps of contributions from dust and ff+s.  We
-perform this subtraction on the feathered MGPS90 and Planck data
-(Section~\ref{sec:feather}).
+90GHz} \simeq 0.013 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We
+subtract the scaled ATLASGAL data from an appropriately smoothed version of the
+MGPS90 map to obtain an estimated free-free map.  We perform this subtraction
+on the feathered MGPS90 and Planck data (Section~\ref{sec:feather}).
 
-We compare the resultant ff+s maps with VLA images made at 20\,cm to gain insight into
-the relative contributions from free-free and synchrotron emission.  
+Similarly, we use 20 cm maps to estimate the dust contribution by subtracting
+a scaled 20 cm map from the MGPS90 data.
+%We compare the resultant ff+s maps with VLA images made at 20\,cm to gain insight into
+%the relative contributions from free-free and synchrotron emission.  
 %Sources with negative spectral indices will appear brighter at 20\,cm than at 90\,GHz.
 For most fields, we use 20\,cm MAGPIS data \citep{Helfand2006a}, which has an
 angular resolution of $\sim\!6\arcsec$ and a point source sensitivity of
 $1-2$\,mJy.  MAGPIS does not cover the Galactic center or 
 $\ell>48^\circ$, and so we use other data in these zones. In the Galactic
-center, we use the multi-configuration 20 cm map from \citet{Yusef-Zadeh2004a},
-and in the W51 field we use the multi-configuration map from
-\citet{Mehringer1994a}.
+center, we use the multi-configuration 20 cm map from \citet[][resolution
+$\sim30\arcsec$]{Yusef-Zadeh2004a}, and in the W51 field we use the
+multi-configuration map from \citet[][resolution $\lesssim1\arcsec$]{Mehringer1994a}.
+We scale the 20 cm to 90 GHz assuming the 20 cm consists exclusively of optically
+thin free-free emission (which is incorrect; these maps contain both synchrotron
+emission and optically thick free-free emission) following a power law $S_{\nu}
+\propto \nu^{-0.12}$ \citep{Wilson2009a}.
 
 We show the results of the decomposition for one example field in
 Figure~\ref{fig:sgrb2_freefree}; the rest of the MGPS90 fields are in the
 Appendix.  Figure~\ref{fig:sgrb2_freefree} contains panels of the MGPS90 data,
-the contribution to the MGPS90 data from thermal dust, the contribution to the
-MGPS90 data from ff+s, 20\,cm data, \todo{and the MGPS90 to 20\,cm ratio.  The ratio
-map  gives an indication of the ff+s spectral index, and can allow one to
-separate thermal and nonthermal emission.}  We expect that the ratio $S_{\rm
-90GHz}/S_{\rm 20cm} \simeq 0.25$ for optically-thin free-free emission and is
-less than this value for synchrotron emission.
+the contribution to the MGPS90 data from thermal dust estimated from ATLASGAL
+subtraction, the contribution to the MGPS90 data from ff+s, 20\,cm data, and
+the contribution to the MGPS90 data from thermal dust estimated from 20\,cm
+subtraction.
 
-\todo{
-We see in Figure~\ref{fig:sgrb2_freefree} the complicated interplay between the
-various contributions to the emission at 90\,GHz....
-there's some text analysis that ought to be done here
-}
+%The ratio
+%map  gives an indication of the ff+s spectral index, and can allow one to
+%separate thermal and nonthermal emission.}  We expect that the ratio $S_{\rm
+%90GHz}/S_{\rm 20cm} \simeq 0.25$ for optically-thin free-free emission and is
+%less than this value for synchrotron emission.
+
+The example in Figure \ref{fig:sgrb2_freefree} shows good agreement between the
+two dust estimates and between the free-free estimates, and the differences
+highlight some of the incorrect assumptions in the above analysis.  The excess
+diffuse emission in the rightmost panel (MGPS90 - VLA) is most likely caused by
+the VLA's failure to recover large angular scales.  The missing emission on the
+right side of that map is caused by the excess synchrotron emission in the Sgr
+A region, which is not accounted for in our simple free-free model.  Both dust
+maps excellently recover the massive G0.253+0.015 cloud (the bean shaped
+feature in the upper left) and the southern dust ridge (the prominent dust feature
+just below the center of the map).
+
+The W43 region is substantially more dust-dominated than the Galactic Center
+(Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
+aligned with free-free features, so it is difficult to disentangle them by eye
+in the MGPS90 image.  The MGPS90 - 20 cm image is negative over the free-free
+dominated regions, likely indicating that much of the free-free emission is
+optically thick at 20 cm.  However, despite this clear oversubtraction, the
+difference image shows an exquisite high-resolution image of the compact
+dust-dominated features.
 
 %To get a better sense of what is detected, we do the stuff in freefree\_dust\_separation.py
 
 \begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/G01_sgrb2.pdf}
-    \caption{Decomposition of the MGPS90 data in the Sgr B2 field.  (left)
-    MGPS90 (left middle) ATLASGAL 870 \um  (right middle) MGPS90 - scaled
-    ATLASGAL (right) VLA 20 cm continuum.  The negative region just north
-    of center implies that a steeper dust emissivity spectral index
-    ($\beta>1.5$) may be more appropriate in the vicinity of Sgr B2.}
+    \includegraphics[width=17cm]{figures/G01_arches_5panel.pdf}
+    \caption{Decomposition of the MGPS90 data in the Sgr B2 field centered on the Arches region. 
+    All images are displayed on the same intensity scale in units of Jy/sr.
+    (a; 3 mm) MGPS90 
+    (b; 3 mm Dust) ATLASGAL 870 \um scaled to 3 mm
+    (c; 3 mm free-free) smoothed MGPS90 - scaled ATLASGAL
+    (d; 20 cm) VLA 20 cm continuum scaled to 3 mm
+    (e; 3 mm Dust) smoothed MGPS90 - scaled VLA 20 cm continuum.
+}
 \label{fig:sgrb2_freefree}
+\end{figure*}
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/G31_w43_5panel.pdf}
+    \caption{Decomposition of the MGPS90 data in the G31 field centered on W43.
+    See Figure \ref{fig:sgrb2_freefree}.
+}
+\label{fig:w43freefree}
 \end{figure*}
 
 \section{Catalogs}
