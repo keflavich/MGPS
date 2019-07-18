@@ -107,10 +107,10 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
         ax0.set_title("3 mm")
         ax1 = figure.add_subplot(1, 5, 2, projection=outwcs)
         ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
-        ax1.set_title("3mm Dust")
+        ax1.set_title("870 \um scaled")
         ax2 = figure.add_subplot(1, 5, 3, projection=outwcs)
         ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
-        ax2.set_title("3mm Free-Free")
+        ax2.set_title("3 mm Free-Free")
 
         for ax in (ax0,): # ax1, ax2):
             #ax.set_xlabel("Galactic Longitude")
@@ -162,7 +162,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
     gps20_jysr = gps20cutout.data / gps20_bm.sr.value
 
     ax3.imshow(gps20_jysr * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
-    ax3.set_title("20cm")
+    ax3.set_title("20 cm scaled")
     ax3.set_xlabel("Galactic Longitude")
     ax3.coords[1].set_axislabel("")
     ax3.coords[1].set_ticklabel_visible(False)
@@ -256,7 +256,7 @@ def make_hiidust_plot(coordinate, mgpsfile, width=1*u.arcmin,
                                                   stretch=visualization.LogStretch(),)
 
         ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
-        ax4.set_title("3mm Dust")
+        ax4.set_title("3 mm Dust")
         ax4.tick_params(direction='in')
         ax4.tick_params(color='w')
         ax4.coords[1].set_axislabel("")
