@@ -1,0 +1,92 @@
+_idx                                Index number (internal use only)
+_index                              Index number (internal use only)  
+_name                               Index number (internal use only) 
+area_ellipse               deg2     Area of the elliptical approximation to the dendrogram-extracted source        
+area_exact                 deg2     Area of the dendrogram-extracted source (n_pixels * pixel area)      
+MUSTANG_dend_flux          Jy       Total flux in the dendrogram-extracted source                    
+major_fwhm                 deg      FWHM of the major axis of the dendrogram-extracted source         
+minor_fwhm                 deg      FWHM of the minor axis of the dendrogram-extracted source                  
+position_angle             deg      Position angle of the dendrogram-extracted source                 
+radius                     deg      Effective radius of the dendrogram-extracted source (area_exact^(1/2))     
+x_cen                      deg      Galactic Longitude centroid position of the dendrogram-extracted source    
+y_cen                      deg      Galactic Latitude centroid position of the dendrogram-extracted source    
+rejected                            Boolean mask stating whether the source passed the SNR-rejection threshold (MUSTANG_dend_flux / noise > 5)    
+MUSTANG_detected                    ignore - redundant (added by dendrocat)           
+MUSTANG_snr                         Signal-to-noise ratio       
+MUSTANG_10as_peak          Jy/beam  Peak intensity of the MGPS90 data within a 10 arcsecond aperture centered on the source             
+MUSTANG_10as_sum                    Total intensity of the MGPS90 data within a 10 arcsecond aperture centered on the source                         
+MUSTANG_10as_rms                                
+MUSTANG_10as_median                                
+MUSTANG_10as_npix                                
+MUSTANG_15as_peak                   Peak intensity of the MGPS90 data within a 15 arcsecond aperture centered on the source             
+MUSTANG_15as_sum                                
+MUSTANG_15as_rms                                
+MUSTANG_15as_median                                
+MUSTANG_15as_npix                                
+MUSTANG_background_peak                                
+MUSTANG_background_sum                                
+MUSTANG_background_rms                                
+MUSTANG_background_median                                
+MUSTANG_background_npix                                
+SourceName                                
+Fpeak20cm                                
+Fint20cm                                
+RMS20cm                                
+Fpeak20cm_THOR                                
+Fint20cm_THOR                                
+Fpeak6cm_MAGPIS                                
+Fint6cm_CORNISH                                
+eFint6cm_CORNISH                                
+Fpeak6cm_Becker                                
+Fint870um                                
+e_Fint870um                                
+Fint24um                                
+Fint8um                                
+Fint5_8um                                
+Fint4_5um                                
+Fint3_6um                                
+RMSClass                                
+Fint70um                                
+Fpeak70um                                
+Fint160um                                
+Fpeak160um                                
+Fint250um                                
+Fpeak250um                                
+Fint350um                                
+Fpeak350um                                
+Fint500um                                
+Fpeak500um                                
+Fint1100um                                
+Fint1100um_40as                                
+eFint1100um_40as                                
+alpha_THOR                                
+e_alpha_THOR                                
+Fpeak20cm_THOR2                                
+HerschelDetected                                
+SpitzerDetected                                
+cmDetected                                
+3mm20cmindex_THOR                                
+3mm20cmindex                                
+3mm1mmindex                                
+3mm6cmindex_MAGPIS                                
+3mm6cmindex_CORNISH                                
+3mm6cmindex_Becker                                
+HCHII_candidate                                
+amplitude                                
+center_x                                
+center_y                                
+fwhm_major                                
+fwhm_minor                                
+pa                        
+chi2                                
+chi2_n                                
+e_amplitude                                
+e_center_x                                
+e_center_y                                
+e_fwhm_major                                
+e_fwhm_minor                                
+e_pa                                
+success                                
+AspectRatio                                
+MorphologyClass                                
+FieldID                               
