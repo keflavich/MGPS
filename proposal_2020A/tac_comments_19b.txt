@@ -1,0 +1,43 @@
+Summary: The authors propose to conduct a segment of a large Galactic plane survey at 3mm with 
+MUSTANG, following successful pilot observations. The goals of the survey are to produce a 
+complete catalog of hyper compact HII regions representing the earliest stages of massive star 
+formation, thereby investigating unknown basic properties of this phase of star formation, as 
+well as physical properties of dust at high resolution.
+
+Proposal strengths:
+The proposal benefits significantly from pilot observations, with which the authors convincingly 
+demonstrate the feasibility of efficient data processing.
+
+The study of the populations and relative lifetimes of the earliest stages of high-mass star 
+formation is important for constraining uncertain models of star formation, and the method for 
+identifying such sources (e.g., HCHII regions) from multi-wavelength analysis is well justified.
+
+The potential for the MGPS-3mm to characterize the free-free contribution to molecular cloud SEDs 
+as well as the beta-temperature degeneracy will significantly aid studies of the evolutionary states 
+of molecular clouds.
+
+The synergy between the proposed dataset and existing and incoming surveys with similar resolution 
+and sensitivity at shorter and longer wavelengths is a major strength.
+
+The responsibilities to the observations, reduction, imaging, and analysis are divided nicely between 
+the group members. 
+
+Furthermore, they emphasize the uniqueness of GBT/MUSTANG for conducting the proposed observations, 
+maximizing the potential for this project to produce a useful legacy data product for the broader 
+community.
+
+Proposal weaknesses:
+It would have been useful to see a quantitative analysis of the pilot dataset, or some discussion of 
+the possible lessons learned as a result of pilot data processing. In addition, some justification for 
+why the proposed extension of the plane survey was selected in particular would have been helpful. 
+
+As stated in the proposal, source confusion within crowded clusters make definitive source assignment 
+difficult.
+
+The amount of observing hours at 3mm is limited, and this is a significant time request.
+
+No reference list can be found in the proposal.
+
+
+Recommended time: The SRP does not recommend a change to the proposed time request.
+Technical issues affecting ranking or recommended time: None.
