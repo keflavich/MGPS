@@ -4,6 +4,8 @@
 
 \def\todo#1{{\textcolor{red}{TODO: #1}}}
 
+\newcommand{\MGPS}{MGPS90\xspace}
+
 \input{nsources}
 
 \input{nhiicandidates}
@@ -26,28 +28,26 @@ at either longer or shorter wavelengths.
 
 \section{Introduction}
 Surveys of the Galactic plane in the millimeter regime are essential for measuring
-the gas and dust involved in star formation.  Several surveys have covered the
+the gas and dust involved in star formation.  Several continuum surveys have covered the
 complete plane from the infrared through 1 mm
 \citep{Eden2017a,Elia2017a,Ginsburg2013a,Aguirre2011a,Molinari2010a,Csengeri2014a}.
-In the millimeter/submillimeter regime, these surveys are limited to resolution 15\arcsec
+In the millimeter/submillimeter regime, these surveys have resolution 15\arcsec
 or worse.
-In the centimeter regime, full Galactic plane surveys have been limited to 6 cm and 
-longer wavelengths \citep{Giveon2005a,Hoare2012a,Beuther2016a}.
-
-Between 1 mm and 6 cm, there are no existing plane surveys.  This wavelength
-regime represents the global minimum in typical Galaxy spectral energy distributions,
-and it therefore probes a different regime than the neighboring wavelengths.  At 3 mm,
-most dust emission is optically thin; very few regions have high enough column density
-on $\sim0.1-1$ pc scales to reach an optical depth $\tau_{3 \mathrm{mm}}\geq1$.
-Similarly, almost all \hii regions exhibiting free-free emission are optically thin;
-only the densest of hypercompact \hii (\hchii) regions are optically thick out to such
-high frequencies.  Anomalous Microwave Emission (AME) peaks somewhere in the 10-60 GHz
-regime and remains a substantial fraction of the total emission out to
-$\sim100$ GHz \citep{Dickinson2018a}.
+In the centimeter regime, large-area Galactic plane surveys have been conducted at 6 cm and 
+longer wavelengths at resolutions $>1.5\arcsec$ \citep{Giveon2005a,Hoare2012a,Beuther2016a}.
 
 Emission at 3 mm (90 GHz) consists of a combination of dust, free-free, and synchrotron
-continuous emission.  In the large bandwidth of MUSTANG, line contamination is generally
-negligible.
+continuous emission. 
+Between 1 mm and 6 cm, there are no existing plane surveys.  This wavelength
+regime represents the global minimum in typical galactic spectral energy
+distributions.  At 3 mm, most dust emission is optically thin; very few regions
+have high enough column density on $\sim0.1-1$ pc scales to reach an optical
+depth $\tau_{3 \mathrm{mm}}\geq1$.  Similarly, almost all \hii regions exhibit
+optically-thin free-free emission  at 3 mm; only the densest of hypercompact
+\hii (\hchii) regions are optically thick out to such high frequencies.
+Anomalous Microwave Emission (AME) peaks somewhere in the 10-60 GHz
+regime and remains a substantial fraction of the total emission out to
+$\sim100$ GHz \citep{Dickinson2018a}.
 
 %Because most of the
 %MGPS90 fields in this initial data release cover locations of active massive
@@ -79,6 +79,15 @@ synch.}\propto \nu^{\alpha}$, with $\alpha\simeq -1 \mathrm{~to~} -2$.  At 90\,G
 to detect synchrotron emission from Galactic supernova remanants, nonthermal
 filaments (in the Galactic center), and extragalactic sources. 
 
+% Because both free-free and dust emission are optically thin...
+%One of the aims of this survey is to identify the youngest high-mass protostars.
+
+\todo{ Add full paragraph about the MUSTANG instrument (Brian, Simon)}
+ In the large bandwidth of MUSTANG, line contamination is generally
+negligible.
+
+
+
 %We can separate the MGPS90 emission into contributions from dust and the
 %combined signal from free-free and synchrotron (hereafter ``ff+s'') if we can
 %estimate the contribution from dust alone.
@@ -90,7 +99,8 @@ filaments (in the Galactic center), and extragalactic sources.
 %20\,cm data.
 
 We present the first component of an ongoing 3 mm survey with the MUSTANG instrument on
-the Green Bank Telescope with 9 \arcsec resolution.
+the Green Bank Telescope with 9 \arcsec resolution.   When complete, this survey
+will cover most of the northern Galactic plane within $b<0.5$.
 
 
 \section{Observations}
@@ -98,17 +108,17 @@ the Green Bank Telescope with 9 \arcsec resolution.
 A summary of the reported observations is given in Table \ref{tab:observations}.
 
 The images from this project are released at
-\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910%2FDVN%2FD18I4Y&version=DRAFT}
+%\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910%2FDVN%2FD18I4Y&version=DRAFT}
 \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HPATJB}
 
 \begin{table*}[htp]
 \centering
 %\begin{minipage}{130mm}
 \caption{Observation Summary}
-\begin{tabular}{llllll}
+\begin{tabular}{llllllll}
     \label{tab:observations}
-Target   &      Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
-         &        hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
+Target   & Galactic Longitude & Field Size &     Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
+         &                    &            &       hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
 \hline
 \hline
 \input{obstable_data}
@@ -122,6 +132,8 @@ Target   &      Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $
 \hline
 \hline
 \end{tabular}
+\par The $\ell$ and $b$ offsets are the fitted pointing offsets for these
+fields compared to 20 cm data; see Section \ref{sec:pointing}.
 \caption{Observing Session Dates and Lengths}
 \begin{tabular}{lll}
     \label{tab:observations}
@@ -286,8 +298,9 @@ accuracy is $\sim4\arcsec$.
 %offsets, since the Bolocam data are the closest in frequency to MUSTANG of the
 %available data sets and since those images were cross-calibrated against the
 %Herschel Hi-Gal images.
-We compared the MUSTANG-2 maps with 20 cm images from the MAGPIS Galactic Plane survey [CITE]
-and from other sources \citep{Mehringer1994a,Yusef-Zadeh2004a} to measure pointing offsets,
+We compared the MUSTANG-2 maps with 20 cm images from the MAGPIS Galactic Plane
+survey \citep{Helfand2006a} and from other sources
+\citep{Mehringer1994a,Yusef-Zadeh2004a} to measure pointing offsets,
 since these images showed the closest morphological match to the MGPS90 data.
 However, there are substantial regions in each field, particularly the Galactic center,
 that are synchrotron-dominated at 20 cm and have no corresponding features at 3 mm; we masked
@@ -389,7 +402,8 @@ The resulting FITS images are provided in the data repository.
 
 \subsection{Free-free separation}
 \label{sec:freefree}
-The MGPS90
+As stated in the introduction,
+the MGPS90
 data have contributions from (thermal) free-free, thermal dust continuum, and
 (nonthermal) synchrotron emission.  We describe here our decomposition of the
 MGPS90 data into free-free and dust emission; the non-thermal emission was not
@@ -419,9 +433,13 @@ center, we use the multi-configuration 20 cm map from \citet[][resolution
 $\sim30\arcsec$]{Yusef-Zadeh2004a}, and in the W51 field we use the
 multi-configuration map from \citet[][resolution $\lesssim1\arcsec$]{Mehringer1994a}.
 We scale the 20 cm to 90 GHz assuming the 20 cm consists exclusively of optically
-thin free-free emission (which is incorrect; these maps contain both synchrotron
-emission and optically thick free-free emission) following a power law $S_{\nu}
-\propto \nu^{-0.12}$ \citep{Wilson2009a}.
+thin free-free emission  following a power law $S_{\nu}
+\propto \nu^{-0.12}$ \citep{Wilson2009a}.  The observed fields were selected
+based on their rich ongoing star formation activity, so this approximation is
+reasonable, but there are several cases where additional emission mechanisms
+must be active.
+%(which is incorrect; these maps contain both synchrotron
+%emission and optically thick free-free emission)
 
 We show the results of the decomposition for one example field in
 Figure~\ref{fig:arches_freefree}; the rest of the MGPS90 fields are in the
@@ -452,13 +470,12 @@ The W43 region is substantially more dust-dominated than the Galactic Center
 (Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
 aligned with free-free features, so it is difficult to disentangle them by eye
 in the MGPS90 image.  The MGPS90 - 20 cm image is negative over the free-free
-dominated regions, likely indicating that there is likely substantial nonthermal
+dominated regions, likely indicating that there is substantial nonthermal
 emission in these HII regions \todo{Is there any other explanation?  That seems
-like kind of a big deal.}(CITE: Padovani+ in prep on synchrotron emission from
+like kind of a big deal.}(CITE: Padovani+ accepted on synchrotron emission from
 HII regions; \url{https://synchrotron-hiiregions.herokuapp.com/}).  However,
 despite this clear oversubtraction, the difference image shows an exquisite
-high-resolution image of the compact
-dust-dominated features.
+high-resolution view of the compact dust-dominated features.
 
 %To get a better sense of what is detected, we do the stuff in freefree\_dust\_separation.py
 
@@ -497,7 +514,7 @@ the catalog described here, we included only the most compact structures, which
 are the `leaves' in the catalog hierarchy.
 
 To select primarily robust compact sources, we filter the images to reject
-scales $>45\arcsec$ prior to cataloging.  We used a $4-\sigma$ flux threshold
+scales $>45\arcsec$ prior to cataloging.  We use a $4 \sigma$ flux threshold
 and minimum of 100 pixels as the dendrogram parameters; the pixel scale is
 1$\arcsec$/pixel, so our minimum object size is $\sim1/2$ of beam area.
 We then reject sources with a peak signal-to-noise
@@ -609,13 +626,16 @@ has few sources below 5 mJy.  The overlaid histogram shows the subset of
 the sample with no detections at other wavelengths; this subset is much
 fainter than the overall distribution, suggesting that the majority
 of these sources were either below the detection limit or the confusion
-limit of the other surveys.  We fit cut-off power-law distributions
+limit of the other surveys.  
+\todo{These are just fits, there's nothing particularly interesting about them:
+We fit cut-off power-law distributions
 \begin{equation}
     p(S) \propto S^{-\alpha}
 \end{equation}
 to each of these histograms\citep{Clauset2007a,Alstott2014a}, finding a slope
 $\alpha=\plalphaall\pm\plsigmaall$ for the full distribution and
 $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
+}
 
 
 % fulltable_histograms
@@ -711,7 +731,7 @@ $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
 \label{sec:hiireg}
 One of the aims of this survey is to identify the youngest high-mass
 protostars.  Candidates are those sources with little to no infrared emission
-and very compact, optically thick hypercompact \hii regions.
+and very compact, optically thick (hypercompact) \hii regions.
 
 Massive stars form in the middle of ultra-dense cores undergoing gravitational
 collapse leading to an accretion rate of order $\dot{M} \sim 10^{-3}$ \msun
@@ -743,7 +763,7 @@ temperatures.
 % gas density, resulting in a spectrum that remains optically thick to relatively
 % high frequency.
 We therefore select candidate HC\hii regions
-as those fitting these criteria:
+as those fitting either of these criteria:
 \begin{enumerate}
     \item $S_{3 \mathrm{mm}} > 1.75 S_{6 \mathrm{cm}}$.  % or $S_{3 \mathrm{mm}} > S_{20 \mathrm{cm}}$.
         This requirement selects free-free sources that have $\tau_{ff}=1$
@@ -867,7 +887,7 @@ criteria \citep{Sewilo2004a,Avalos2006a}.  MGPS90 is clearly capable of detectin
 \includegraphics[width=17cm]{figures/G01_overview_withcatalog.pdf}
 \caption{MUSTANG image of the G01 field, centered on Sgr B2.  The green squares show
 sources with millimeter/submillimeter counterparts, blue circles show those
-with centimeter counterparts, purple triangle show sources with \emph{both} millimeter
+with centimeter counterparts, purple triangles show sources with \emph{both} millimeter
 and centimeter counterparts, and orange diamonds show those with no millimeter
 or centimeter counterparts.}
 \label{fig:g01overview}
@@ -908,7 +928,8 @@ at $\ell=34.25\deg$ is a consequence of these missing data.}
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G43_overview_withcatalog.pdf}
 \caption{MUSTANG image of the G43 field, which contains the 
-W49 star-forming complex.}
+W49A star-forming complex (center) and the W49B supernova remnant (just southeast
+of center).}
 \label{fig:g43overview}
 \end{figure*}
 
@@ -920,7 +941,7 @@ complex.}
 \end{figure*}
 
 \subsection{Representative SEDs of selected sources}
-To put the MGSP90 data in context, we show a few examples of SEDs extracted
+To put the \MGPS data in context, we show a few examples of SEDs extracted
 from the catalogs described in section \ref{sec:catalogmatching} along with
 cutout images extracted from the same surveys.  The selected SEDs are of a
 planetary nebula (Fig. \ref{fig:g29pn}), which exhibits emission at all
@@ -928,7 +949,8 @@ wavelengths, an OH/IR star (Fig. \ref{fig:g31ohir}) that is infrared- and
 millimeter-bright but not detected at centimeter wavelengths, a high-mass
 YSO that is a candidate \hchii region with no centimeter detection (Fig.
 \ref{fig:g12hiicand}), and a source containing a known pair of \hchii regions
-(Fig.  \ref{fig:g34hchii}).  
+(Fig.  \ref{fig:g34hchii}).  These SEDs highlight the important role of \MGPS
+data in bridging the gap between the millimeter and centimeter regimes.
 
 %\todo{In this section, we'll show SEDs of a few selected sources (HCHII region, UCHII region,
 %dust-only source, OH/IR star, whatever) along with the cutout mosaic.}
@@ -954,7 +976,7 @@ YSO that is a candidate \hchii region with no centimeter detection (Fig.
 various surveys hosted on the MAGPIS cutout service
 (\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal cutout service
 (\url{https://tools.ssdc.asi.it/HiGAL.jsp}); individual survey references are in Section \ref{sec:catalogmatching}.
-The white bar in the lower-left is a 1\arcminute scalebar.
+The white bar in the lower-left is a 1\arcmin\ scalebar.
 Short wavelengths ($<24$ \um) are not included in the SED, the rest are included in the cross-matched catalog.
 }
 \label{fig:g29pn}
@@ -990,7 +1012,7 @@ within the MGPS90 beam.  The source passed the selection criteria in Section
 relatively isolated \hchii regions. The intermediate Herschel wavelengths (160,
 250, 350 \um) appear as upper limits because the HiGal catalogs broke this
 source into several, none of which match the MGPS90 centroid to within
-10\arcsec.  The asymmetry in the MUSTANG image is caused by the missing
+10\arcsec.  The asymmetry in the \MGPS image is caused by the missing
 scans noted in Figure \ref{fig:g34overview}.}
 \label{fig:g34hchii}
 \end{figure*}
