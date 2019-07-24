@@ -5,6 +5,7 @@
 \def\todo#1{{\textcolor{red}{TODO: #1}}}
 
 \newcommand{\MGPS}{MGPS90\xspace}
+\newcommand{\MUSTANG}{MUSTANG-2\xspace}
 
 \input{nsources}
 
@@ -12,13 +13,13 @@
 \input{distribution_alphas}
 
 \begin{document}
-\title{The MUSTANG Galactic Plane Survey (MGPS90) pilot}
+\title{The \MUSTANG Galactic Plane Survey (MGPS90) pilot}
 \input{authors}
 
 \begin{abstract}
 \todo{COAUTHORS: Please look at the file \texttt{authors.tex} and add your
 affiliation etc.}\\
-We report the results of a pilot program for a MUSTANG Galactic Plane survey.
+We report the results of a pilot program for a \MUSTANG Galactic Plane survey.
 The survey so far achieves a typical depth of $1$ mJy/beam in a $9\arcsec$
 beam.
 We have identified \nsources sources over seven observed fields (total area
@@ -82,8 +83,8 @@ filaments (in the Galactic center), and extragalactic sources.
 % Because both free-free and dust emission are optically thin...
 %One of the aims of this survey is to identify the youngest high-mass protostars.
 
-\todo{ Add full paragraph about the MUSTANG instrument (Brian, Simon)}
- In the large bandwidth of MUSTANG, line contamination is generally
+\todo{ Add full paragraph about the \MUSTANG instrument (Brian, Simon)}
+ In the large bandwidth of \MUSTANG, line contamination is generally
 negligible.
 
 
@@ -98,7 +99,7 @@ negligible.
 %spectral indices, which we cannot do with accuracy with only the 90\,GHz and
 %20\,cm data.
 
-We present the first component of an ongoing 3 mm survey with the MUSTANG instrument on
+We present the first component of an ongoing 3 mm survey with the \MUSTANG instrument on
 the Green Bank Telescope with 9 \arcsec resolution.   When complete, this survey
 will cover most of the northern Galactic plane within $b<0.5$.
 
@@ -216,7 +217,7 @@ Known point sources were observed at regular intervals each night.
 
 The absolute accuracy of these calibrations should be reasonable and about 10\%.
 Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
-sources (the ALMA band is different from MUSTANG but there are measurements at
+sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
 some is from our knowledge of $\tau$ (the sky optical depth) during the observations.
 
@@ -281,7 +282,7 @@ resulting in a 9\arcsec beam.
 \label{sec:pointing}
 Several corrections to the raw timestream data were required to produce maps.
 Individual scans were noted to have point sources shifted by up to half a beam
-($\sim4\arcsec$), indicating a timing error between the MUSTANG-2 pointing data
+($\sim4\arcsec$), indicating a timing error between the \MUSTANG pointing data
 and the true telescope pointing.  To ensure that point sources were coincident
 in the maps, scans were cross-correlated with a first-iteration map, then
 assigned a new timing offset.  The timing errors ranged from $\sim10$ to $30$
@@ -298,7 +299,7 @@ accuracy is $\sim4\arcsec$.
 %offsets, since the Bolocam data are the closest in frequency to MUSTANG of the
 %available data sets and since those images were cross-calibrated against the
 %Herschel Hi-Gal images.
-We compared the MUSTANG-2 maps with 20 cm images from the MAGPIS Galactic Plane
+We compared the \MUSTANG maps with 20 cm images from the MAGPIS Galactic Plane
 survey \citep{Helfand2006a} and from other sources
 \citep{Mehringer1994a,Yusef-Zadeh2004a} to measure pointing offsets,
 since these images showed the closest morphological match to the MGPS90 data.
@@ -306,14 +307,14 @@ However, there are substantial regions in each field, particularly the Galactic 
 that are synchrotron-dominated at 20 cm and have no corresponding features at 3 mm; we masked
 out these features.
 We use the \texttt{image-registration}\footnote{\url{http://image-registration.rtfd.org}}
-toolkit to cross-correlate the MUSTANG images with the 20 cm
+toolkit to cross-correlate the \MUSTANG images with the 20 cm
 %convolved to Bolocam resolution with the Bolocam
 images and use a fourier-domain upsampling approach to obtain
 sub-pixel positional offsets.  The measured offsets are reported in Table
 \ref{tab:observations} and show the offset of the 20 cm data with respect to
-the MUSTANG data.
+the \MUSTANG data.
 
-In several cases, the measured offset is comparable to the MUSTANG beam.  We
+In several cases, the measured offset is comparable to the \MUSTANG beam.  We
 therefore correct these images for the offset, assuming the VLA 20 cm data
 have correct pointing.  The original pointing centers are recorded in the FITS
 headers of the published images with names \texttt{CRVALnA} so that the original
@@ -356,7 +357,7 @@ Find if there are any ALMA calibrators in any of our target fields that
 we can validate our calibration against.}
 
 \subsection{Effective Central Frequency}
-The MUSTANG-2 bandpass filter is approximately flat over the range 75 to 105 GHz.
+The \MUSTANG bandpass filter is approximately flat over the range 75 to 105 GHz.
 We multiplied the bandpass filter by power law flux density distributions with $S_\nu\propto\nu^{\alpha}$
 to obtain the true effective central frequency of the bandpass for these assumed
 continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
@@ -381,17 +382,17 @@ $\alpha$ & Frequency & Wavelength\\
 \hline
 \end{tabular}
 \par The central frequencies are computed by computing the first moment of a
-power-law source function $S(\nu) = \nu^{\alpha}$ integrated over the MUSTANG
+power-law source function $S(\nu) = \nu^{\alpha}$ integrated over the \MUSTANG
 bandpass.
 
 \end{table*}
 
 \subsection{Combination with Planck data\label{sec:feather}}
-The largest angular scale recovered by MUSTANG is approximately 4.25\arcmin.
+The largest angular scale recovered by \MUSTANG is approximately 4.25\arcmin.
 The large angular scale structure is therefore missing.  To recover those
-missing scales, we combine the MUSTANG data with
+missing scales, we combine the \MUSTANG data with
 Planck 100 GHz data (with an effective central frequency of 104.225 GHz
-assuming a spectral index $\alpha=3$) scaled to the MUSTANG central frequency
+assuming a spectral index $\alpha=3$) scaled to the \MUSTANG central frequency
 of 92.44 GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
 as implemented in the \texttt{uvcombine}
 \footnote{\url{https://github.com/radio-astro-tools/uvcombine}} package.
@@ -572,7 +573,7 @@ We cross-match the resulting catalog with the catalogs listed in Table \ref{tab:
 % and MAGPIS 6cm and 20cm
 % \citep[$\sim1\arcsec$]{Giveon2005a} and CORNISH 6cm \citep[$\sim1\arcsec$]{Hoare2012a} catalogs.
 Matches in these catalogs are included if there is a source within 10\arcsec
-(approximately the MUSTANG beam FWHM) of the MGPS catalog entry.
+(approximately the \MUSTANG beam FWHM) of the MGPS catalog entry.
 
 \begin{table*}[htp]
 \centering
@@ -589,7 +590,7 @@ Herschel HiGal       & 70--500        &  6--36                 & \citet{Elia2017
 APEX-Laboca ATLASGAL & 870            &  20                    & \citet{Urquhart2014c} \\
 CSO-Bolocam BGPS     & 1100           &  33                    & \citet{Rosolowsky2010a}\\
                                                              &&& \citet{Ginsburg2013a} \\
-GBT-MUSTANG MGPS90   & 3274           &  9                     & This work \\
+GBT-\MUSTANG MGPS90  & 3274           &  9                     & This work \\
 \hline                                                       
                      & cm             &                        & \\
 \hline                                                       
@@ -609,7 +610,7 @@ MAGPIS               & 20             & 5                      & \citet{Giveon20
 
 %\todo{Add a summary of the auxiliary data sets used either here or in an adjacent section}
 
-Of the \nsources total MUSTANG sources, \mmdetections had millimeter/submillimeter
+Of the \nsources total \MGPS sources, \mmdetections had millimeter/submillimeter
 matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
 had no match in the millimeter or centimeter catalogs.  There were
@@ -620,7 +621,7 @@ compact subset of these sources overlaid on the images, with color and shape
 indicating whether they had detections at other wavelengths as
 described in the figure captions.
 
-Figure \ref{fig:fullcathist} shows the histogram of MUSTANG-measured fluxes
+Figure \ref{fig:fullcathist} shows the histogram of \MUSTANG-measured fluxes
 in the catalog.  Because the typical noise level was $\sim1$ mJy, the catalog
 has few sources below 5 mJy.  The overlaid histogram shows the subset of
 the sample with no detections at other wavelengths; this subset is much
@@ -885,7 +886,7 @@ criteria \citep{Sewilo2004a,Avalos2006a}.  MGPS90 is clearly capable of detectin
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G01_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G01 field, centered on Sgr B2.  The green squares show
+\caption{\MUSTANG image of the G01 field, centered on Sgr B2.  The green squares show
 sources with millimeter/submillimeter counterparts, blue circles show those
 with centimeter counterparts, purple triangles show sources with \emph{both} millimeter
 and centimeter counterparts, and orange diamonds show those with no millimeter
@@ -895,20 +896,20 @@ or centimeter counterparts.}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G12_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G12 field, including the W33 star-forming region.}
+\caption{\MUSTANG image of the G12 field, including the W33 star-forming region.}
 \label{fig:g12overview}
 \end{figure*}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G29_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G29 field.}
+\caption{\MUSTANG image of the G29 field.}
 \label{fig:g29overview}
 \end{figure*}
 
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G31_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G31 field containing W43.
+\caption{\MUSTANG image of the G31 field containing W43.
 %The overplotted symbols show the locations
 %of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
 %and centimeter and Herschel non-detections in green.
@@ -919,7 +920,7 @@ or centimeter counterparts.}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G34_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G34 field.  Above $b\gtrsim 0\deg$,
+\caption{\MUSTANG image of the G34 field.  Above $b\gtrsim 0\deg$,
 horizontal cross-scans have not been obtained; the vertical streak seen
 at $\ell=34.25\deg$ is a consequence of these missing data.}
 \label{fig:g34overview}
@@ -927,7 +928,7 @@ at $\ell=34.25\deg$ is a consequence of these missing data.}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G43_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G43 field, which contains the 
+\caption{\MUSTANG image of the G43 field, which contains the 
 W49A star-forming complex (center) and the W49B supernova remnant (just southeast
 of center).}
 \label{fig:g43overview}
@@ -935,7 +936,7 @@ of center).}
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G49_overview_withcatalog.pdf}
-\caption{MUSTANG image of the G49 field, which contains the W51 star-forming
+\caption{\MUSTANG image of the G49 field, which contains the W51 star-forming
 complex.}
 \label{fig:g49overview}
 \end{figure*}
