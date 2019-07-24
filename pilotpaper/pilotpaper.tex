@@ -78,14 +78,21 @@ Synchrotron emission generally has a steep negative spectral index and so
 decreases in intensity as a function of increasing frequency, $S_{\nu,
 synch.}\propto \nu^{\alpha}$, with $\alpha\simeq -1 \mathrm{~to~} -2$.  At 90\,GHz, we expect
 to detect synchrotron emission from Galactic supernova remanants, nonthermal
-filaments (in the Galactic center), and extragalactic sources. 
+filaments (in the Galactic center), and extragalactic sources.
 
 % Because both free-free and dust emission are optically thin...
 %One of the aims of this survey is to identify the youngest high-mass protostars.
 
-\todo{ Add full paragraph about the \MUSTANG instrument (Brian, Simon)}
- In the large bandwidth of \MUSTANG, line contamination is generally
-negligible.
+MUSTANG-2\cite{M2_2014} is a 223 element bolometer array operating on the 100~m
+Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a 4.25'
+field-of-view (fov).  The detectors are TES detectors read out using a
+microwave multiplexing readout (umux). Typical observing modes consist of
+different on-the-fly mapping scans - either small daisy scans for arcminute
+sized targets or larger raster scans in perpendicular directions used in the
+data presented in this paper.  Both scan patterns are designed to maximize
+cross-linking on many timescales so as to enable the removal of 1/f noise from
+the instrument and the atmosphere.  In the large bandwidth of MUSTANG-2, line
+contamination is generally negligible.
 
 
 
@@ -180,7 +187,7 @@ Known point sources were observed at regular intervals each night.
     \item A calibration for the detector array (i.e., relative calibration between
         the individual receivers) is found using a skydip and the
         opacity (at 90 GHz) as given by CLEO (Control Library for Operators and
-        Engineers; \url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}), to get
+        Engineers\footnote{\url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}}), to get
         each timestream into
         antenna temperature.
     \item A map is made (in azimuth/elevation coordinates) of each calibration
@@ -191,7 +198,7 @@ Known point sources were observed at regular intervals each night.
             \item Fixing the centroid as found above, a double Gaussian (two
                 1-D Gaussians) is fit.
             \item The beam volume is calculated from the map within a 60"
-                aperture as well as analytically from the double Gaussian. The
+                aperture as well as analytically from the double 1D Gaussians. The
                 adopted beam volume is often that from the double Gaussian, but
                 if the fits are poor, the 60" aperture value is generally
                 adopted. If both values are questionable, or some other
@@ -219,7 +226,7 @@ The absolute accuracy of these calibrations should be reasonable and about 10\%.
 Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
 sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
-some is from our knowledge of $\tau$ (the sky optical depth) during the observations.
+some is from our knowledge of $\tau$ (the sky optical depth) during the observations.  \todo{Simon, or MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
 Maps were made using the MINKASI algorithm \citep{}\todo{Simon: could you fill
@@ -229,7 +236,7 @@ obtain a noise model.
 This model has does not work well if there are strong sources,
 so we added features to work around this by subdividing timestreams and taking
 the lowest power spectra from each scan.  We also included a fudge factor for
-lowering the power spectra in the signal band.
+lowering the power spectra in the signal band. \todo{MUSTANG team: can you say a little more about the fudge factor?  Or, maybe rephrase it in a way more appropriate for publication?}
 
 We followed an iterative process to obtain the best maps.  A map is made, the
 result then clipped at some level above any artifacts in that iteration and the
@@ -254,7 +261,7 @@ especially in the Sgr B2 / Galactic Center field.
 The noise in the maps is given per 1" pixel - given there are 80 (Gaussian
 beam) to 140 (variance beam) arcsecond sq per beam one can expect the noise in
 the unsmoothed maps to drop by an order of magnitude when proper smoothing is
-applied.
+applied. \todo{MUSTANG team: could you clarify this section?  What is the `variance beam'?}
 
 %  old noise table
 % \begin{table*}[htp]
