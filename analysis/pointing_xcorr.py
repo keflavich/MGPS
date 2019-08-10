@@ -5,8 +5,9 @@ import regions
 import json
 import shutil
 import image_registration
+from scipy import ndimage
 from astroquery.magpis import Magpis
-from astroquery.higal import HiGal
+#from astroquery.higal import HiGal
 import astroquery.exceptions
 from astropy.wcs import WCS, utils as wcsutils
 from astropy.io import fits
@@ -30,7 +31,7 @@ from paths import diagnostic_figure_path, pilotpaperpath, catalog_path
 from files import files
 
 Magpis.cache_location = '/Volumes/external/mgps/cache/'
-HiGal.cache_location = '/Volumes/external/mgps/cache/'
+#HiGal.cache_location = '/Volumes/external/mgps/cache/'
 
 print("WARNING: This script requires big downloads.")
 
@@ -52,7 +53,8 @@ center_coordinate = {
     'G12': coordinates.SkyCoord(12.7, -0.15, frame='galactic', unit=(u.deg, u.deg)),
 }
 gps20_override = {
-    'G49': '/Users/adam/work/w51/vla_old/W51-LBAND_Darray.fits',
+    'G49': '/Users/adam/work/w51/vla_old/W51-LBAND_Carray.fits',
+    #'G49': '/Users/adam/work/w51/vla_old/W51-LBAND-feathered_ABCD.fits',
     'G01': '/Users/adam/work/gc/20cm_0.fits',
 }
 
@@ -80,6 +82,7 @@ mgps_beam = radio_beam.Beam(10*u.arcsec)
 
 for regname,fn in files.items():
 #DEBUG for regname,fn in (('G01',files['G01']),):
+#DEBUG for regname,fn in (('G49',files['G49']),):
     fh = fits.open(fn)[0]
 
     # calculate offsets against original pointing before
@@ -111,7 +114,7 @@ for regname,fn in files.items():
     print(f"region {regname} file {fn}")
     for survey in Magpis.list_surveys():
         #if not ('atlasgal' in survey or 'bolocam' in survey):
-        if survey not in ('bolocam','gps20new'):
+        if survey not in ('gps20new',):
             continue
         offset[regname][survey] = {}
 
@@ -152,14 +155,14 @@ for regname,fn in files.items():
         # convolve MGPS to atlasgal/bolocam resolution
         if survey in beams:
             convbeam = radio_beam.Beam(beams[survey]).deconvolve(mgps_beam)
-            print(f"Convolving MGPS data to {survey} resoln with convolving beam {str(convbeam)}")
+            print(f"{regname}: Convolving MGPS data to {survey} resoln with convolving beam {str(convbeam)}")
             convdata = convolution.convolve_fft(fh.data, convbeam.as_kernel(mgps_pixscale), allow_huge=True)
             convfh = fits.PrimaryHDU(data=convdata, header=fh.header)
         else:
             convfh = fh
 
         if survey == 'bolocam':
-            print(f"Projecting {survey} to MGPS")
+            print(f"{regname}: Projecting {survey} to MGPS")
             # project bolocam to MGPS, except with bigger pixels
             target_header = ww[::5,::5].to_header()
             target_header['NAXIS'] = 2
@@ -180,23 +183,37 @@ for regname,fn in files.items():
             #    print("Removed Sgr A*")
             reg = regions.read_ds9(f'/Users/adam/work/mgps/regions/freefreemask_{regname}.reg')
             ww = WCS(hdu.header)
+
+            pixscale1, pixscale2 = (wcs.utils.proj_plane_pixel_scales(ww),
+                                    wcs.utils.proj_plane_pixel_scales(wcs.WCS(convfh.header)))
+
+            # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
+            if all(pixscale1 < pixscale2):
+                print(f"{regname}: Projecting MGPS to {survey} pix={pixscale1}")
+                proj_image1, proj_image2, header = \
+                        image_registration.FITS_tools.match_fits(hdu, convfh,
+                                                                 return_header=True
+                                                                )
+            else:
+                print(f"{regname}: Projecting {survey} to MGPS pix={pixscale2}")
+                proj_image2, proj_image1, header = \
+                        image_registration.FITS_tools.match_fits(convfh, hdu,
+                                                                 return_header=True
+                                                                )
+                ww = wcs.WCS(convfh.header)
+
             pixreg = [rr.to_pixel(ww) for rr in reg]
             rmasks = [rr.to_mask() for rr in pixreg]
-            mask = np.zeros(hdu.data.shape, dtype='bool')
+            mask = np.zeros(proj_image1.shape, dtype='bool')
             for rm in rmasks:
                 mask[rm.bbox.slices] += rm.data.astype('bool')
 
-            # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
-            print(f"Projecting MGPS to {survey}")
-            proj_image1, proj_image2, header = \
-                    image_registration.FITS_tools.match_fits(hdu, convfh,
-                                                             return_header=True
-                                                            )
             #if regname == 'G01':
             #    assert np.all(np.isnan(hdu.data[2150:2204,2656:2721]))
             #    assert np.all(np.isnan(proj_image1[2150:2204,2656:2721]))
             # just to be EXTRA sure...
             ok = np.isfinite(proj_image1) & np.isfinite(proj_image2)
+            ok &= (proj_image1 > 0) & (proj_image2 > 0)
             proj_image1[~ok] = np.nan
             proj_image2[~ok] = np.nan
             proj_image1[~mask] = np.nan
@@ -211,14 +228,14 @@ for regname,fn in files.items():
 
         offset[regname][survey]['nomeansub'] = xcorr, xcorr*pixscale.to(u.arcsec)
 
-        print(f"MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
+        print(f"{regname}: MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
         #dx,dy,wdx,wdy,edx,edy,ewdx,ewdy,cr1,cr2,shf = xcorr
         #raise ValueError("STOP HERE")
         #dx,dy,wdx,wdy,edx,edy,ewdx,ewdy = xcorr
         xcorr = image_registration.chi2_shift(proj_image1, proj_image2,
                                               zeromean=True, return_error=True,
                                               upsample_factor=100.)
-        print(f"zero-mean MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
+        print(f"{regname}: zero-mean MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
 
         offset[regname][survey]['meansub'] = xcorr, xcorr*pixscale.to(u.arcsec)
 
@@ -243,11 +260,14 @@ for regname,fn in files.items():
         pl.figure(2).clf()
         diffim = (proj_image1/np.nanpercentile(proj_image1, 99) -
                   proj_image2/np.nanpercentile(proj_image2, 99))
-        asinhnorm = ImageNormalize(diffim,
+        slices = ndimage.find_objects(np.isfinite(diffim))[0]
+        diffim = (proj_image1/np.nanpercentile(proj_image1[slices], 99) -
+                  proj_image2/np.nanpercentile(proj_image2[slices], 99))
+        asinhnorm = ImageNormalize(diffim[slices],
                                    interval=PercentileInterval(99.5),
                                    stretch=AsinhStretch())
 
-        pl.subplot(1,1,1).imshow(diffim,
+        pl.subplot(1,1,1).imshow(diffim[slices],
                                  origin='lower', norm=asinhnorm)
 
     #try:
@@ -264,9 +284,9 @@ for regname,fn in files.items():
 
 
 
-print("bolocam zeromean")
-for reg in offset:
-    print(f"{reg:5s}: {offset[reg]['bolocam']['meansub'][1][:2]}")
+#print("bolocam zeromean")
+#for reg in offset:
+#    print(f"{reg:5s}: {offset[reg]['bolocam']['meansub'][1][:2]}")
 
 print("gps20new zeromean")
 for reg in offset:
@@ -283,8 +303,12 @@ for key in offset:
     offset[key]['bolocam']['nomeansub'] = offset[key]['bolocam']['nomeansub'][0],list(offset[key]['bolocam']['nomeansub'][1].value)
     offset[key]['gps20new']['meansub'] = offset[key]['gps20new']['meansub'][0],list(offset[key]['gps20new']['meansub'][1].value)
     offset[key]['gps20new']['nomeansub'] = offset[key]['gps20new']['nomeansub'][0],list(offset[key]['gps20new']['nomeansub'][1].value)
-with open(f"{catalog_path}/position_offsets.json", "w") as fh:
-    json.dump(offset, fh)
+
+if len(offset) >= 6:
+    # don't write (overwrite) the data unless all 6 fields have been fit
+    # (allows running this script in "DEBUG" mode")
+    with open(f"{catalog_path}/position_offsets.json", "w") as fh:
+        json.dump(offset, fh)
 
 #with open(f"{pilotpaperpath}/position_offsets_table.tex", "w") as fh:
 #    fh.write(
