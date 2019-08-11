@@ -133,7 +133,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
         gps20im = fits.open('/Users/adam/work/gc/20cm_0.fits',)
     elif 'G49' in regname:
         gps20im = fits.open('/Users/adam/work/w51/vla_old/W51-LBAND-feathered_ABCD.fits')
-        gps20im = fits.open('/Users/adam/work/w51/vla_old/W51-LBAND_Carray.fits')
+        #gps20im = fits.open('/Users/adam/work/w51/vla_old/W51-LBAND_Carray.fits')
     else:
         gps20im = getimg(coordinate, image_size=width*2, survey='gps20new')
 

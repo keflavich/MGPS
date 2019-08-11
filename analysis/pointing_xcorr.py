@@ -184,23 +184,42 @@ for regname,fn in files.items():
             reg = regions.read_ds9(f'/Users/adam/work/mgps/regions/freefreemask_{regname}.reg')
             ww = WCS(hdu.header)
 
-            pixscale1, pixscale2 = (wcs.utils.proj_plane_pixel_scales(ww),
-                                    wcs.utils.proj_plane_pixel_scales(wcs.WCS(convfh.header)))
+            pixscale1, pixscale2 = (wcsutils.proj_plane_pixel_scales(ww),
+                                    wcsutils.proj_plane_pixel_scales(wcs.WCS(convfh.header)))
 
             # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
             if all(pixscale1 < pixscale2):
-                print(f"{regname}: Projecting MGPS to {survey} pix={pixscale1}")
-                proj_image1, proj_image2, header = \
-                        image_registration.FITS_tools.match_fits(hdu, convfh,
-                                                                 return_header=True
-                                                                )
+                projfn = f'{paths.basepath}/pointing/mgps_proj_{survey}.fits'
+                if os.path.exists(projfn):
+                    proj_image2 = fits.getdata(projfn)
+                    header = fits.getheader(projfn)
+                    proj_image1 = hdu.data
+                else:
+                    print(f"{regname}: Projecting MGPS to {survey} pix={pixscale1}")
+                    proj_image1, proj_image2, header = \
+                            image_registration.FITS_tools.match_fits(hdu, convfh,
+                                                                     return_header=True
+                                                                    )
+                    fits.PrimaryHDU(data=proj_image2,
+                                    header=header).writeto(projfn)
+                correction_sign = 1
             else:
-                print(f"{regname}: Projecting {survey} to MGPS pix={pixscale2}")
-                proj_image2, proj_image1, header = \
-                        image_registration.FITS_tools.match_fits(convfh, hdu,
-                                                                 return_header=True
-                                                                )
+                projfn = f'{paths.basepath}/pointing/{survey}_proj_mgps.fits'
+                if os.path.exists(projfn):
+                    proj_image1 = fits.getdata(projfn)
+                    header = fits.getheader(projfn)
+                    proj_image2 = convfh.data
+                else:
+                    print(f"{regname}: Projecting {survey} to MGPS pix={pixscale2}")
+                    proj_image2, proj_image1, header = \
+                            image_registration.FITS_tools.match_fits(convfh, hdu,
+                                                                     return_header=True
+                                                                    )
+                    fits.PrimaryHDU(data=proj_image1,
+                                    header=header).writeto(projfn)
                 ww = wcs.WCS(convfh.header)
+                correction_sign = 1
+                pixscale = wcsutils.proj_plane_pixel_scales(ww)[0]*u.deg
 
             pixreg = [rr.to_pixel(ww) for rr in reg]
             rmasks = [rr.to_mask() for rr in pixreg]
@@ -213,7 +232,7 @@ for regname,fn in files.items():
             #    assert np.all(np.isnan(proj_image1[2150:2204,2656:2721]))
             # just to be EXTRA sure...
             ok = np.isfinite(proj_image1) & np.isfinite(proj_image2)
-            ok &= (proj_image1 > 0) & (proj_image2 > 0)
+            #ok &= (proj_image1 > 0) & (proj_image2 > 0)
             proj_image1[~ok] = np.nan
             proj_image2[~ok] = np.nan
             proj_image1[~mask] = np.nan
@@ -226,7 +245,7 @@ for regname,fn in files.items():
                                               return_error=True,
                                               upsample_factor=100.)
 
-        offset[regname][survey]['nomeansub'] = xcorr, xcorr*pixscale.to(u.arcsec)
+        offset[regname][survey]['nomeansub'] = xcorr*correction_sign, xcorr*pixscale.to(u.arcsec)*correction_sign
 
         print(f"{regname}: MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
         #dx,dy,wdx,wdy,edx,edy,ewdx,ewdy,cr1,cr2,shf = xcorr
@@ -237,7 +256,7 @@ for regname,fn in files.items():
                                               upsample_factor=100.)
         print(f"{regname}: zero-mean MAGPIS {survey} = {xcorr} = {xcorr*pixscale.to(u.arcsec)}")
 
-        offset[regname][survey]['meansub'] = xcorr, xcorr*pixscale.to(u.arcsec)
+        offset[regname][survey]['meansub'] = xcorr*correction_sign, xcorr*pixscale.to(u.arcsec)*correction_sign
 
         # annoyingly necessary diagnostics
         pl.figure(1).clf()
@@ -299,8 +318,8 @@ for reg in offset:
 #    print(f"{reg:5s}: {offset[reg]['atlasgal']['meansub'][1]}")
 
 for key in offset:
-    offset[key]['bolocam']['meansub'] = offset[key]['bolocam']['meansub'][0],list(offset[key]['bolocam']['meansub'][1].value)
-    offset[key]['bolocam']['nomeansub'] = offset[key]['bolocam']['nomeansub'][0],list(offset[key]['bolocam']['nomeansub'][1].value)
+    #offset[key]['bolocam']['meansub'] = offset[key]['bolocam']['meansub'][0],list(offset[key]['bolocam']['meansub'][1].value)
+    #offset[key]['bolocam']['nomeansub'] = offset[key]['bolocam']['nomeansub'][0],list(offset[key]['bolocam']['nomeansub'][1].value)
     offset[key]['gps20new']['meansub'] = offset[key]['gps20new']['meansub'][0],list(offset[key]['gps20new']['meansub'][1].value)
     offset[key]['gps20new']['nomeansub'] = offset[key]['gps20new']['nomeansub'][0],list(offset[key]['gps20new']['nomeansub'][1].value)
 
