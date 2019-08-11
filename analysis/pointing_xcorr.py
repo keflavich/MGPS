@@ -236,11 +236,19 @@ for regname,fn in files.items():
             #    assert np.all(np.isnan(proj_image1[2150:2204,2656:2721]))
             # just to be EXTRA sure...
             ok = np.isfinite(proj_image1) & np.isfinite(proj_image2)
+
             #ok &= (proj_image1 > 0) & (proj_image2 > 0)
             proj_image1[~ok] = np.nan
             proj_image2[~ok] = np.nan
             proj_image1[~mask] = np.nan
             proj_image2[~mask] = np.nan
+
+            # to make the xcorr stuff go faster...
+            slices = ndimage.find_objects(ok)[0]
+
+            proj_image1 = proj_image1[slices]
+            proj_image2 = proj_image2[slices]
+
 
         #raise ValueError()
 
