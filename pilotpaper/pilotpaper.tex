@@ -369,7 +369,8 @@ to obtain the true effective central frequency of the bandpass for these assumed
 continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
 
 % analysis/filters.py
-\begin{table*}[htp]
+\begin{table}[htp]
+\centering
     \caption{Central Frequencies}
 \begin{tabular}{lll}
     \label{tab:centralfreq}
@@ -391,7 +392,7 @@ $\alpha$ & Frequency & Wavelength\\
 power-law source function $S(\nu) = \nu^{\alpha}$ integrated over the \MUSTANG
 bandpass.
 
-\end{table*}
+\end{table}
 
 \subsection{Combination with Planck data\label{sec:feather}}
 The largest angular scale recovered by \MUSTANG is approximately 4.25\arcmin.
@@ -441,7 +442,7 @@ $\sim30\arcsec$]{Yusef-Zadeh2004a}, and in the W51 field we use the
 multi-configuration map from \citet[][resolution $\lesssim1\arcsec$]{Mehringer1994a}.
 We scale the 20 cm to 90 GHz assuming the 20 cm consists exclusively of optically
 thin free-free emission  following a power law $S_{\nu}
-\propto \nu^{-0.12}$ \citep{Wilson2009a}.  The observed fields were selected
+\propto \nu^{-0.12}$ \citep{Wilson2009a}.  If the power law has a more strongly negative spectral index, when the scaled 20\,cm data is subtracted from the 3\,mm MGPS data, the resultant ``3\,mm Dust'' image will have negative values; if it is more positive, the resultant image will have positive values.  The observed fields were selected
 based on their rich ongoing star formation activity, so this approximation is
 reasonable, but there are several cases where additional emission mechanisms
 must be active.
@@ -939,6 +940,10 @@ W49A star-forming complex (center) and the W49B supernova remnant (just southeas
 of center).}
 \label{fig:g43overview}
 \end{figure*}
+
+The W49B supernova remnant in the G43 field stands out as a bright nonthermal source.  No other SNRs in the surveyed area as as bright at 3\,mm (see Figure~\ref{fig:g43overview}). \citet{Sun2011} found that the spectral energy distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz of index $-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is $19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy. %(90/5)^(-0.46)*19.1 . 
+%We therefore expect
+Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that all the associated emission is nonthermal. 
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G49_overview_withcatalog.pdf}
