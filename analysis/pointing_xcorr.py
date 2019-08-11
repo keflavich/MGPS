@@ -193,6 +193,7 @@ for regname,fn in files.items():
             if all(pixscale1 < pixscale2):
                 projfn = f'{basepath}/pointing/{regname}_mgps_proj_{survey}.fits'
                 if os.path.exists(projfn):
+                    print(f"{regname}: Loading {projfn} from disk")
                     proj_image2 = fits.getdata(projfn)
                     header = fits.getheader(projfn)
                     proj_image1 = hdu.data
@@ -208,6 +209,7 @@ for regname,fn in files.items():
             else:
                 projfn = f'{basepath}/pointing/{regname}_{survey}_proj_mgps.fits'
                 if os.path.exists(projfn):
+                    print(f"{regname}: Loading {projfn} from disk")
                     proj_image1 = fits.getdata(projfn)
                     header = fits.getheader(projfn)
                     proj_image2 = convfh.data
@@ -315,9 +317,9 @@ for reg in offset:
 print("bolocam no zeromean")
 for reg in offset:
     print(f"{reg:5s}: {offset[reg]['bolocam']['nomeansub'][1]}")
-print("atlasgal")
-for reg in offset:
-    print(f"{reg:5s}: {offset[reg]['atlasgal']['meansub'][1]}")
+#print("atlasgal")
+#for reg in offset:
+#    print(f"{reg:5s}: {offset[reg]['atlasgal']['meansub'][1]}")
 
 for key in offset:
     offset[key]['bolocam']['meansub'] = offset[key]['bolocam']['meansub'][0],list(offset[key]['bolocam']['meansub'][1].value)
