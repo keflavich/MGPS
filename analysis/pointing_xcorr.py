@@ -27,7 +27,7 @@ import matplotlib
 import warnings
 warnings.filterwarnings('ignore')
 
-from paths import diagnostic_figure_path, pilotpaperpath, catalog_path
+from paths import diagnostic_figure_path, pilotpaperpath, catalog_path, basepath
 from files import files
 
 Magpis.cache_location = '/Volumes/external/mgps/cache/'
@@ -114,7 +114,7 @@ for regname,fn in files.items():
     print(f"region {regname} file {fn}")
     for survey in Magpis.list_surveys():
         #if not ('atlasgal' in survey or 'bolocam' in survey):
-        if survey not in ('gps20new',):
+        if survey not in ('gps20new', 'bolocam'):
             continue
         offset[regname][survey] = {}
 
@@ -174,7 +174,9 @@ for regname,fn in files.items():
                                                              header=target_header,
                                                              return_header=True
                                                             )
-            fits.PrimaryHDU(data=proj_image2, header=target_header).writeto(f"{Magpis.cache_location}/MGPS_{regname}_smBolo.fits", overwrite=True)
+            fits.PrimaryHDU(data=proj_image2,
+                            header=target_header).writeto(f"{Magpis.cache_location}/MGPS_{regname}_smBolo.fits",
+                                                          overwrite=True)
         else:
             #if regname == 'G01':
             #    # special case for 20cm data...
@@ -185,11 +187,11 @@ for regname,fn in files.items():
             ww = WCS(hdu.header)
 
             pixscale1, pixscale2 = (wcsutils.proj_plane_pixel_scales(ww),
-                                    wcsutils.proj_plane_pixel_scales(wcs.WCS(convfh.header)))
+                                    wcsutils.proj_plane_pixel_scales(WCS(convfh.header)))
 
             # project MGPS to retrieved b/c retrieved is always smaller in MAGPIS case
             if all(pixscale1 < pixscale2):
-                projfn = f'{paths.basepath}/pointing/mgps_proj_{survey}.fits'
+                projfn = f'{basepath}/pointing/{regname}_mgps_proj_{survey}.fits'
                 if os.path.exists(projfn):
                     proj_image2 = fits.getdata(projfn)
                     header = fits.getheader(projfn)
@@ -204,7 +206,7 @@ for regname,fn in files.items():
                                     header=header).writeto(projfn)
                 correction_sign = 1
             else:
-                projfn = f'{paths.basepath}/pointing/{survey}_proj_mgps.fits'
+                projfn = f'{basepath}/pointing/{regname}_{survey}_proj_mgps.fits'
                 if os.path.exists(projfn):
                     proj_image1 = fits.getdata(projfn)
                     header = fits.getheader(projfn)
@@ -217,7 +219,7 @@ for regname,fn in files.items():
                                                                     )
                     fits.PrimaryHDU(data=proj_image1,
                                     header=header).writeto(projfn)
-                ww = wcs.WCS(convfh.header)
+                ww = WCS(convfh.header)
                 correction_sign = 1
                 pixscale = wcsutils.proj_plane_pixel_scales(ww)[0]*u.deg
 
@@ -303,23 +305,23 @@ for regname,fn in files.items():
 
 
 
-#print("bolocam zeromean")
-#for reg in offset:
-#    print(f"{reg:5s}: {offset[reg]['bolocam']['meansub'][1][:2]}")
+print("bolocam zeromean")
+for reg in offset:
+    print(f"{reg:5s}: {offset[reg]['bolocam']['meansub'][1][:2]}")
 
 print("gps20new zeromean")
 for reg in offset:
     print(f"{reg:5s}: {offset[reg]['gps20new']['meansub'][1][:2]}")
-#print("bolocam no zeromean")
-#for reg in offset:
-#    print(f"{reg:5s}: {offset[reg]['bolocam']['nomeansub'][1]}")
-#print("atlasgal")
-#for reg in offset:
-#    print(f"{reg:5s}: {offset[reg]['atlasgal']['meansub'][1]}")
+print("bolocam no zeromean")
+for reg in offset:
+    print(f"{reg:5s}: {offset[reg]['bolocam']['nomeansub'][1]}")
+print("atlasgal")
+for reg in offset:
+    print(f"{reg:5s}: {offset[reg]['atlasgal']['meansub'][1]}")
 
 for key in offset:
-    #offset[key]['bolocam']['meansub'] = offset[key]['bolocam']['meansub'][0],list(offset[key]['bolocam']['meansub'][1].value)
-    #offset[key]['bolocam']['nomeansub'] = offset[key]['bolocam']['nomeansub'][0],list(offset[key]['bolocam']['nomeansub'][1].value)
+    offset[key]['bolocam']['meansub'] = offset[key]['bolocam']['meansub'][0],list(offset[key]['bolocam']['meansub'][1].value)
+    offset[key]['bolocam']['nomeansub'] = offset[key]['bolocam']['nomeansub'][0],list(offset[key]['bolocam']['nomeansub'][1].value)
     offset[key]['gps20new']['meansub'] = offset[key]['gps20new']['meansub'][0],list(offset[key]['gps20new']['meansub'][1].value)
     offset[key]['gps20new']['nomeansub'] = offset[key]['gps20new']['nomeansub'][0],list(offset[key]['gps20new']['nomeansub'][1].value)
 

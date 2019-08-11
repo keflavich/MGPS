@@ -357,10 +357,10 @@ which should be the July 11 version of the data release.}
 % very well when there are whopping bright synchrotron sources that are not seen at
 % all at 3mm.}
 
-\subsection{Cross-validation with ALMA calibrator catalog}
-\todo{OPTIONAL: Coauthors, is this a priority?  If so, are there any volunteers to help?
-Find if there are any ALMA calibrators in any of our target fields that
-we can validate our calibration against.}
+% \subsection{Cross-validation with ALMA calibrator catalog}
+% \todo{OPTIONAL: Coauthors, is this a priority?  If so, are there any volunteers to help?
+% Find if there are any ALMA calibrators in any of our target fields that
+% we can validate our calibration against.}
 
 \subsection{Effective Central Frequency}
 The \MUSTANG bandpass filter is approximately flat over the range 75 to 105 GHz.
@@ -634,15 +634,15 @@ the sample with no detections at other wavelengths; this subset is much
 fainter than the overall distribution, suggesting that the majority
 of these sources were either below the detection limit or the confusion
 limit of the other surveys.  
-\todo{These are just fits, there's nothing particularly interesting about them:
-We fit cut-off power-law distributions
-\begin{equation}
-    p(S) \propto S^{-\alpha}
-\end{equation}
-to each of these histograms\citep{Clauset2007a,Alstott2014a}, finding a slope
-$\alpha=\plalphaall\pm\plsigmaall$ for the full distribution and
-$\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
-}
+% \todo{These are just fits, there's nothing particularly interesting about them:
+% We fit cut-off power-law distributions
+% \begin{equation}
+%     p(S) \propto S^{-\alpha}
+% \end{equation}
+% to each of these histograms\citep{Clauset2007a,Alstott2014a}, finding a slope
+% $\alpha=\plalphaall\pm\plsigmaall$ for the full distribution and
+% $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
+% }
 
 
 % fulltable_histograms
@@ -1079,7 +1079,9 @@ and the associated free-free decomposition described in Section \ref{sec:freefre
     \caption{Decomposition of the MGPS90 data in the G43 field centered on W49A.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     As in Figure \ref{fig:g29freefree}, several compact structures appear to have
-    excess 20 cm emission.
+    excess 20 cm emission.  However, other structures exhibit free-free
+    emission that is optically thick at 20 cm and is therefore under-subtracted
+    at 3 mm in panel (d); see also Figure \ref{fig:w51mainfreefree}.
 }
 \label{fig:w49afreefree}
 \end{figure*}
@@ -1099,9 +1101,8 @@ and the associated free-free decomposition described in Section \ref{sec:freefre
     \caption{Decomposition of the MGPS90 data in the G49 field centered on W51 Main.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     There is a mix of under- and over-subtracted emission in the dust map in panel (d);
-    the arc shape in the center is purely free-free emission \citep{Ginsburg2016a}, but
-    it is optically thick at long wavelengths.
-    \todo{I'm concerned that there's still a spatial offset here.}
+    the arc shape in the center is purely free-free emission \citep{Ginsburg2016a,Ginsburg2017a}, but
+    it is optically thick at 20 cm.
 }
 \label{fig:w51mainfreefree}
 \end{figure*}
