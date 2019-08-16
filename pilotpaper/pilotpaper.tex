@@ -226,17 +226,17 @@ The absolute accuracy of these calibrations should be reasonable and about 10\%.
 Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
 sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
-some is from our knowledge of $\tau$ (the sky optical depth) during the observations.  \todo{Simon, or MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
+some is from our knowledge of $\tau$ (the sky optical depth) during the observations (for which we use archival weather data and models of the atmosphere). 
+%\todo{Simon, or MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
-Maps were made using the MINKASI algorithm \citep{}\todo{Simon: could you fill
-in a citation here?}.  We used smoothed power spectra from a singular value
+Maps were made using MUSTANG2's MINKASI\citep{Seivers et.al. in Prep} data reduction pipeline which is based on maximum likelihood.  We used smoothed power spectra from a singular value
 decomposition (SVD) of the data on a scan by scan basis to
 obtain a noise model.
-This model does not work well if there are strong sources,
-so we added features to work around this by subdividing timestreams and taking
-the lowest power spectra from each scan.  We also included a fudge factor for
-lowering the power spectra in the signal band. \todo{MUSTANG team: can you say a little more about the fudge factor?  Or, maybe rephrase it in a way more appropriate for publication?}
+This model does not work well if there are strong sources.
+By subdividing timestreams and taking power spectra of each segment, it is possible to identify parts of the power spectra with strong sources as there is a significant increase in the signal band ($\sim$0.1--15~Hz). These regions are flagged and an average power spectrum calculated from the median of the remaining segments. 
+%We also included a fudge factor for
+%lowering the power spectra in the signal band. \todo{MUSTANG team: can you say a little more about the fudge factor?  Or, maybe rephrase it in a way more appropriate for publication?}
 
 We followed an iterative process to obtain the best maps.  A map is made, the
 result then clipped at some level above any artifacts in that iteration and the
@@ -260,10 +260,9 @@ The processed images are shown in figures
 
 \subsection{Sensitivity and beam size}
 
-The noise in the maps is given per 1" pixel - given there are 80 (Gaussian
-beam) to 140 (variance beam) arcsecond sq per beam one can expect the noise in
-the unsmoothed maps to drop by an order of magnitude when proper smoothing is
-applied. \todo{MUSTANG team: could you clarify this section?  What is the `variance beam'?}
+The noise in the maps is given per 1" pixel - given there are 80 (Main
+beam) to 140 (Main beam + near in sidelobes) arcsecond sq per beam one can expect the noise in the unsmoothed maps to drop by an order of magnitude when proper smoothing is applied. 
+%\todo{MUSTANG team: could you clarify this section?  What is the `variance beam'?}
 
 %  old noise table
 % \begin{table*}[htp]
@@ -897,7 +896,7 @@ criteria \citep{Sewilo2004a,Avalos2006a}.  MGPS90 is clearly capable of detectin
 
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/G01_overview.pdf}
+\includegraphics[width=17cm]{pilotpaper/figures/G01_overview_withcatalog.pdf}
 \caption{\MUSTANG image of the G01 field, centered on Sgr B2.
 %The green squares show
 %sources with millimeter/submillimeter counterparts, blue circles show those
@@ -909,20 +908,20 @@ criteria \citep{Sewilo2004a,Avalos2006a}.  MGPS90 is clearly capable of detectin
 \end{figure*}
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/G12_overview.pdf}
+\includegraphics[width=17cm]{pilotpaper/figures/G12_overview_withcatalog.pdf}
 \caption{\MUSTANG image of the G12 field, including the W33 star-forming region.}
 \label{fig:g12overview}
 \end{figure*}
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/G29_overview.pdf}
+\includegraphics[width=17cm]{pilotpaper/figures/G29_overview_withcatalog.pdf}
 \caption{\MUSTANG image of the G29 field.}
 \label{fig:g29overview}
 \end{figure*}
 
 
 \begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/G31_overview.pdf}
+    \includegraphics[width=17cm]{pilotpaper/figures/G31_overview_withcatalog.pdf}
 \caption{\MUSTANG image of the G31 field containing W43.
 %The overplotted symbols show the locations
 %of Herschel-detected sources in cyan crosses, centimeter-detected sources in white x's, centimeter-detected Herschel nondetections as red circles,
@@ -933,7 +932,7 @@ criteria \citep{Sewilo2004a,Avalos2006a}.  MGPS90 is clearly capable of detectin
 
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/G34_overview.pdf}
+\includegraphics[width=17cm]{pilotpaper/figures/G34_overview_withcatalog.pdf}
 \caption{\MUSTANG image of the G34 field.  Above $b\gtrsim 0\deg$,
 horizontal cross-scans have not been obtained; the vertical streak seen
 at $\ell=34.25\deg$ is a consequence of these missing data.}
@@ -941,7 +940,7 @@ at $\ell=34.25\deg$ is a consequence of these missing data.}
 \end{figure*}
 
 \begin{figure*}[htp]
-\includegraphics[width=17cm]{figures/G43_overview.pdf}
+\includegraphics[width=17cm]{pilotpaper/figures/G43_overview_withcatalog.pdf}
 \caption{\MUSTANG image of the G43 field, which contains the 
 W49A star-forming complex (center) and the W49B supernova remnant (just southeast
 of center).}
