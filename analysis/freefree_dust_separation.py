@@ -11,6 +11,9 @@ from astropy import visualization
 from astropy import convolution
 from radio_beam import Beam
 
+from astropy.visualization import quantity_support
+quantity_support()  
+
 # https://github.com/keflavich/dust_emissivity
 import dust_emissivity
 
@@ -36,6 +39,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                       surveys=['atlasgal'], figure=None,
                       regname='GAL_031',
                       fifth_panel_synchro=False,
+                      alpha=-0.12,
                      ):
 
     mgps_fh = fits.open(mgpsfile)[0]
@@ -88,8 +92,9 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
     print(f"{regname} {survey}")
     print(f"{survey} to mgps ratio: {dust_pred[1]/dust_pred[0]}")
 
-    dusty = surv_to_mgps / tgt_bm.sr.value
+    dusty = surv_to_mgps.value / tgt_bm.sr.value
     freefree = (mgps_reproj / mgps_beam.sr.value - dusty)
+    assert not hasattr(freefree, 'unit')
     print(img[0].data.max(), mgps_sm.max())
     print(np.nanmax(dusty), np.nanmax(freefree), np.nanmax(mgps_reproj / mgps_beam.sr.value))
 
@@ -102,6 +107,10 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                                             interval=visualization.PercentileInterval(99.95),
                                             stretch=visualization.LogStretch(),)
     print(f"interval: {norm.interval.vmin}, {norm.interval.vmax}")
+    assert not hasattr(norm.vmin, 'unit')
+    assert not hasattr(norm.vmax, 'unit')
+    assert not hasattr(mgpsnorm.vmin, 'unit')
+    assert not hasattr(mgpsnorm.vmax, 'unit')
 
     Magpis.cache_location = '/Volumes/external/mgps/cache/'
 
@@ -161,11 +170,11 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                                        )
 
     # use 0.12 per Loren's suggestion
-    freefree_20cm_to_3mm = (90*u.GHz/(1.4*u.GHz))**-0.12
+    freefree_20cm_to_3mm = (90*u.GHz/(1.4*u.GHz))**alpha
 
     gps20_jysr = gps20cutout.data / gps20_bm.sr.value
 
-    ax3.imshow(gps20_jysr * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
+    ax3.imshow((gps20_jysr * freefree_20cm_to_3mm).value, origin='lower', interpolation='none', norm=norm)
     ax3.set_title("20 cm scaled")
     ax0.set_xlabel("Galactic Longitude")
     ax3.coords[1].set_axislabel("")
@@ -216,7 +225,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                                                                                                           99.9)),
                                                    stretch=visualization.LogStretch(),)
 
-        ax4.imshow(synchro, origin='lower', interpolation='none', norm=normsynchro)
+        ax4.imshow(synchro.value, origin='lower', interpolation='none', norm=normsynchro)
         ax4.set_title("Synchrotron")
         ax4.tick_params(direction='in')
         ax4.tick_params(color='w')
@@ -248,7 +257,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
         ax4 = figure.add_subplot(1, 5, 4, projection=mgps_cutout.wcs)
 
         # use the central frequency corresponding to an approximately flat spectrum (flat -> 89.72)
-        dust20 = mgpsjysr - gps20_proj * freefree_20cm_to_3mm
+        dust20 = (mgpsjysr - gps20_proj * freefree_20cm_to_3mm).value
         dust20[np.isnan(gps20_proj) | (gps20_proj == 0)] = np.nan
 
         normdust20 = visualization.ImageNormalize(mgpsjysr,
@@ -259,7 +268,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                                                   stretch=visualization.LogStretch(),)
 
         # show smoothed 20 cm
-        ax3.imshow(gps20_proj * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
+        ax3.imshow((gps20_proj * freefree_20cm_to_3mm).value, origin='lower', interpolation='none', norm=norm)
         ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
         ax4.set_title("3 mm Dust")
         ax4.tick_params(direction='in')
@@ -279,8 +288,9 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
     ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
     ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
     ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
-    ax3.imshow(gps20_proj * freefree_20cm_to_3mm, origin='lower', interpolation='none', norm=norm)
+    ax3.imshow((gps20_proj * freefree_20cm_to_3mm).value, origin='lower', interpolation='none', norm=norm)
     ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
+
 
 
 if __name__ == "__main__":
@@ -312,6 +322,16 @@ if __name__ == "__main__":
             ww = wcs.WCS(fits.getheader(mgpsfile))
 
             if ww.footprint_contains(reg.center):
+
+                if 'w49b' in regname:
+                    make_hiidust_plot(reg, mgpsfile, width=reg.radius, regname=regname,
+                                      figure=pl.figure(1, figsize=(12,8)),
+                                      alpha = -0.46
+                                     )
+                    tgtname = reg.meta['label']
+
+                    pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_alpha0.46_5panel.pdf', bbox_inches='tight')
+                    pl.clf()
 
                 make_hiidust_plot(reg, mgpsfile, width=reg.radius, regname=regname,
                                   figure=pl.figure(1, figsize=(12,8)))
