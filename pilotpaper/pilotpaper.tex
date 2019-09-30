@@ -78,7 +78,7 @@ The flux density from optically thin free-free emission is roughly flat as a
 function of frequency, $S_{\nu, ff} \propto \nu^{\alpha}$, where $\alpha=-0.12$
 is the spectral index, and we expect almost
 all free-free emission to be optically thin at the observed frequency
-\citep{Wilson2009a,Condon2007a,Condon2016}. 
+\citep{Wilson2009a,Condon2007a,Condon2016a}. 
 
 Synchrotron emission generally has a steep negative spectral index and so
 decreases in intensity as a function of increasing frequency, $S_{\nu,
@@ -89,7 +89,7 @@ filaments (in the Galactic center), and extragalactic sources.
 % Because both free-free and dust emission are optically thin...
 %One of the aims of this survey is to identify the youngest high-mass protostars.
 
-MUSTANG-2 \citep{M2_2014} is a 223 element bolometer array operating on the 100~m
+MUSTANG-2 \citep{Dicker2014a} is a 223 element bolometer array operating on the 100~m
 Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a 4.25'
 field-of-view (fov).  The detectors are TES detectors read out using a
 microwave multiplexing readout (umux). Typical observing modes consist of
@@ -199,14 +199,13 @@ Known point sources were observed at regular intervals each night.
     \item A map is made (in azimuth/elevation coordinates) of each calibration
         point source scan in IDL.  Romero et al (in prep) will present the IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
-            \item A single 2-D Gaussian is fit to the point source. The
-                centroid and widths are recorded.
+            \item A single 2-D Gaussian is fit to the point source. 
             \item Fixing the centroid as found above, a double Gaussian (two
                 1-D Gaussians) is fit.
-            \item The beam volume is calculated from the map within a 60"
-                aperture as well as analytically from the double 1D Gaussians. The
-                adopted beam volume is often that from the double Gaussian, but
-                if the fits are poor, the 60" aperture value is generally
+            \item The beam volume is calculated from the map within a 60\arcsec
+                aperture and analytically from the fitted double 1D Gaussians. The
+                adopted beam volume from the double Gaussian is preferred, but
+                if the fits are poor, the 60\arcsec aperture value is 
                 adopted. If both values are questionable, or some other
                 indicator of reliability fails, the beam volume of that
                 individual scan will be excluded.
@@ -215,20 +214,20 @@ Known point sources were observed at regular intervals each night.
         \begin{enumerate}
             \item The peaks of secondary calibrators are normalized by the mean
                 for each specific secondary calibrator. These peaks are tied
-                into a primary calibrator, whose peak is scaled to the expected
-                peak, in Jy \perbeam, which is determined from planetary models
-                if a planet, or from interpolation of ALMA data, if only an
-                ALMA calibrator was accessible in a given night. The scaling is
+                to a primary calibrator that is scaled to the expected
+                peak in Jy \perbeam.  The expected peak is determined from
+                planetary models if a planet or from interpolation of ALMA data
+                if only an ALMA calibrator is accessible. The scaling is
                 linearly interpolated between calibration scans.
             \item Conversion to Kelvin accounts for the beam volume. As such,
                 the beam volumes are interpolated between scans.
         \end{enumerate}
-    \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities, and
-        pointing offsets are all recorded in an IDL save file, which is read in
-        and applied to the processing of the science scans.
+    \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities,
+        and pointing offsets are recorded in an IDL save file and are
+        applied to the processing of the science scans.
 \end{enumerate}
 
-The absolute accuracy of these calibrations should be reasonable and about 10\%.
+The absolute accuracy of these calibrations should be about 10\%.
 Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
 sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
@@ -420,15 +419,15 @@ The resulting FITS images are provided in the data repository.
 \label{sec:freefree}
 As stated in the introduction,
 the MGPS90
-data have contributions from (thermal) free-free, thermal dust continuum, and
-(nonthermal) synchrotron emission.  We describe here our decomposition of the
+data have contributions from thermal free-free, thermal dust continuum, and
+nonthermal synchrotron emission.  We describe here our decomposition of the
 MGPS90 data into free-free and dust emission; the non-thermal emission was not
 separated from the free-free emission.
 
 
 We use the ATLASGAL 870\,$\mu$m data \citep{Schuller2009a} to estimate the dust
 contribution since at 870\,$\mu$m essentially all emission is from dust.  We
-estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data,
+estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data
 assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the
 ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
 90GHz} \simeq 0.013 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We
@@ -450,9 +449,15 @@ $\sim30\arcsec$]{Yusef-Zadeh2004a}, and in the W51 field we use the
 multi-configuration map from \citet[][resolution $\lesssim1\arcsec$]{Mehringer1994a}.
 We scale the 20 cm to 90 GHz assuming the 20 cm consists exclusively of optically
 thin free-free emission  following a power law $S_{\nu}
-\propto \nu^{-0.12}$ \citep{Wilson2009a}.  If the power law has a more strongly negative spectral index, when the scaled 20\,cm data is subtracted from the 3\,mm MGPS data, the resultant ``3\,mm Dust'' image will have negative values; if it is more positive, the resultant image will have positive values.  The observed fields were selected
+\propto \nu^{-0.12}$ \citep{Wilson2009a}.  If the power law has a more negative
+spectral index, 
+%when the scaled 20\,cm data is subtracted from the 3\,mm MGPS data,
+the resultant ``3\,mm Dust'' image will have negative values; if it is
+more positive, the resultant image will have positive values.  The observed
+fields were selected
 based on their rich ongoing star formation activity, so this approximation is
 reasonable, but there are several cases where additional emission mechanisms
+(e.g., synchrotron)
 must be active.
 %(which is incorrect; these maps contain both synchrotron
 %emission and optically thick free-free emission)
@@ -487,11 +492,14 @@ The W43 region is substantially more dust-dominated than the Galactic Center
 aligned with free-free features, so it is difficult to disentangle them by eye
 in the MGPS90 image.  The MGPS90 - 20 cm image is negative over the free-free
 dominated regions, likely indicating that there is substantial nonthermal
-emission in these HII regions \todo{Is there any other explanation?  That seems
-like kind of a big deal.}(CITE: Padovani+ accepted on synchrotron emission from
-HII regions; \url{https://synchrotron-hiiregions.herokuapp.com/}).  However,
-despite this clear oversubtraction, the difference image shows an exquisite
-high-resolution view of the compact dust-dominated features.
+emission in these HII regions.  The presence of such nonthermal emission
+indicates that electrons must be accelerated to relativistic velocities in the
+HII region, which has recently been shown to be possible in the HII region
+expansion front \citep{Padovani2019a}.
+
+%However,
+%despite this clear oversubtraction, the difference image shows an exquisite
+%high-resolution view of the compact dust-dominated features.
 
 %To get a better sense of what is detected, we do the stuff in freefree\_dust\_separation.py
 
@@ -953,9 +961,15 @@ of center).}
 \label{fig:g43overview}
 \end{figure*}
 
-The W49B supernova remnant in the G43 field stands out as a bright nonthermal source.  No other SNRs in the surveyed area as as bright at 3\,mm (see Figure~\ref{fig:g43overview}). \citet{Sun2011} found that the spectral energy distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz of index $-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is $19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy. %(90/5)^(-0.46)*19.1 . 
-%We therefore expect
-Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that all the associated emission is nonthermal. 
+The W49B supernova remnant in the G43 field stands out as a bright nonthermal
+source.  No other supernova remnants in the surveyed area as as bright at 3\,mm (see
+Figure~\ref{fig:g43overview}). \citet{Sun2011a} found that the spectral energy
+distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz
+with index $\alpha=-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is
+$19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy.
+%(90/5)^(-0.46)*19.1 . 
+Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that all
+the associated emission is nonthermal. 
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G49_overview_withcatalog.pdf}
