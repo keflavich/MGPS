@@ -235,11 +235,16 @@ some is from our knowledge of $\tau$ (the sky optical depth) during the observat
 %\todo{Simon, or MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
-Maps were made using MUSTANG2's MINKASI\citep{Seivers et.al. in Prep} data reduction pipeline which is based on maximum likelihood.  We used smoothed power spectra from a singular value
-decomposition (SVD) of the data on a scan by scan basis to
-obtain a noise model.
+Maps were made using MUSTANG2's MINKASI (Seivers et.al. in prep) data reduction
+pipeline which is based on maximum likelihood \todo{maximum likelihood what?}.
+We used smoothed power spectra from a singular value decomposition (SVD) of the
+data on a scan by scan basis to obtain a noise model.
 This model does not work well if there are strong sources.
-By subdividing timestreams and taking power spectra of each segment, it is possible to identify parts of the power spectra with strong sources as there is a significant increase in the signal band ($\sim$0.1--15~Hz). These regions are flagged and an average power spectrum calculated from the median of the remaining segments. 
+By subdividing timestreams and taking power spectra of each segment, it is
+possible to identify parts of the power spectra with strong sources as there is
+a significant increase in the signal band ($\sim$0.1--15~Hz). These regions are
+flagged and an average power spectrum calculated from the median of the
+remaining segments. 
 %We also included a fudge factor for
 %lowering the power spectra in the signal band. \todo{MUSTANG team: can you say a little more about the fudge factor?  Or, maybe rephrase it in a way more appropriate for publication?}
 
