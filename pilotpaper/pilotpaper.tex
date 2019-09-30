@@ -24,21 +24,21 @@ The survey so far achieves a typical depth of $1$ mJy/beam in a $9\arcsec$
 beam.
 We have identified \nsources sources over seven observed fields (total area
 $\approx 10 \deg^2$).  The majority of these sources have identified counterparts
-at either longer or shorter wavelengths.
+at other wavelengths.
 \end{abstract}
 
 \section{Introduction}
 Surveys of the Galactic plane in the millimeter regime are essential for measuring
 the gas and dust involved in star formation.  Several continuum surveys have covered the
 complete plane from the infrared through 1 mm
-\citep{Eden2017a,Elia2017a,Ginsburg2013a,Aguirre2011a,Molinari2010a,Csengeri2014a}.
+\citep{Molinari2010a,Aguirre2011a,Ginsburg2013a,Csengeri2014a,Eden2017a,Elia2017a}.
 In the millimeter/submillimeter regime, these surveys have resolution 15\arcsec
 or worse.
 In the centimeter regime, large-area Galactic plane surveys have been conducted at 6 cm and 
-longer wavelengths at resolutions $>1.5\arcsec$ \citep{Giveon2005a,Hoare2012a,Beuther2016a}.
+longer wavelengths at resolutions $1.5\arcsec$ or worse \citep{Giveon2005a,Hoare2012a,Beuther2016a}.
 
 Emission at 3 mm (90 GHz) consists of a combination of dust, free-free, and synchrotron
-continuous emission. 
+continuum emission. 
 Between 1 mm and 6 cm, there are no existing plane surveys.  This wavelength
 regime represents the global minimum in typical galactic spectral energy
 distributions.  At 3 mm, most dust emission is optically thin; very few regions
@@ -47,15 +47,20 @@ depth $\tau_{3 \mathrm{mm}}\geq1$.  Similarly, almost all \hii regions exhibit
 optically-thin free-free emission  at 3 mm; only the densest of hypercompact
 \hii (\hchii) regions are optically thick out to such high frequencies.
 Anomalous Microwave Emission (AME) peaks somewhere in the 10-60 GHz
-regime and remains a substantial fraction of the total emission out to
-$\sim100$ GHz \citep{Dickinson2018a}.
+regime and remains a substantial fraction of the total emission on large angular scales out to
+$\sim100$ GHz, though so far most observations on small ($\lesssim10\arcmin$) scales have
+been limited to lower ($<50 GHz$) frequencies  \citep{Dickinson2018a}.
+\todo{I could use help with the AME statement; I'm looking for a reasonable but not overly
+reductionist 1-line summary of AME and its relevance to these observations.  My reading
+is that no one has looked at compact HII regions in detail, but there are observations
+at similar angular and physical scales covering lower frequencies}
 
 %Because most of the
 %MGPS90 fields in this initial data release cover locations of active massive
 %star formation with many \hii\ regions, we expect free-free emission to be the
 %dominant source of 90\,GHz flux.
 
-Thermally-emitting dust follows a Planck function of typical temperature
+Thermally-emitting dust follows a modified Planck function of typical temperature
 30\,K; its intensity therefore peaks near 3\,THz.  At 90\,GHz, the dust flux
 density is set by the dust column density $N_d$, the dust temperature $T_d$,
 and the dust opacity $\kappa_\nu$:
@@ -73,11 +78,12 @@ The flux density from optically thin free-free emission is roughly flat as a
 function of frequency, $S_{\nu, ff} \propto \nu^{\alpha}$, where $\alpha=-0.12$
 is the spectral index, and we expect almost
 all free-free emission to be optically thin at the observed frequency
-\citep{Wilson2009a,Condon2007a}. 
+\citep{Wilson2009a,Condon2007a,Condon2016}. 
+
 Synchrotron emission generally has a steep negative spectral index and so
 decreases in intensity as a function of increasing frequency, $S_{\nu,
 synch.}\propto \nu^{\alpha}$, with $\alpha\simeq -1 \mathrm{~to~} -2$.  At 90\,GHz, we expect
-to detect synchrotron emission from Galactic supernova remanants, nonthermal
+to detect synchrotron emission from Galactic supernova remnants, nonthermal
 filaments (in the Galactic center), and extragalactic sources.
 
 % Because both free-free and dust emission are optically thin...
@@ -184,14 +190,14 @@ A consistent calibration procedure was carried out for each observation.
 Known point sources were observed at regular intervals each night.
 
 \begin{enumerate}
-    \item A calibration for the detector array (i.e., relative calibration between
-        the individual receivers) is found using a skydip and the
-        opacity (at 90 GHz) as given by CLEO (Control Library for Operators and
-        Engineers\footnote{\url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}}), to get
+    \item A calibration for the detector array, i.e., relative calibration between
+        the individual receivers, is found using a skydip and the
+        opacity at 90 GHz as given by CLEO (Control Library for Operators and
+        Engineers\footnote{\url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}}) to get
         each timestream into
         antenna temperature.
     \item A map is made (in azimuth/elevation coordinates) of each calibration
-        (point source) scan in IDL.
+        point source scan in IDL.  Romero et al (in prep) will present the IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
             \item A single 2-D Gaussian is fit to the point source. The
                 centroid and widths are recorded.
