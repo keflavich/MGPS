@@ -93,40 +93,52 @@ for regname,fn in files.items():
 
             kept = (catalog['rejected'] == 0) & (catalog['MorphologyClass'] == 'C')
 
-            keptpts, = ax.plot(catalog['x_cen'][kept & (mmdetected & cmdetected)], catalog['y_cen'][kept & (mmdetected & cmdetected)],
-                               marker='^', linestyle='none',
-                               markerfacecolor='none', markeredgecolor='m',
-                               transform=ax.get_transform('world'))
-            keptpts, = ax.plot(catalog['x_cen'][kept & (mmdetected & ~cmdetected)], catalog['y_cen'][kept & (mmdetected & ~cmdetected)],
-                               marker='s', linestyle='none',
-                               markerfacecolor='none', markeredgecolor='g',
-                               transform=ax.get_transform('world'))
-            keptpts, = ax.plot(catalog['x_cen'][kept & (cmdetected & ~mmdetected)], catalog['y_cen'][kept & (cmdetected & ~mmdetected)],
-                               marker='o', linestyle='none',
-                               markerfacecolor='none', markeredgecolor='b',
-                               transform=ax.get_transform('world'))
-            keptpts, = ax.plot(catalog['x_cen'][kept & cm_mm_nondetection], catalog['y_cen'][kept & cm_mm_nondetection],
-                               marker='d', linestyle='none',
-                               markerfacecolor='none', markeredgecolor='orange',
-                               transform=ax.get_transform('world'))
+            mask = kept & (mmdetected & cmdetected)
+            if any(mask):
+                keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
+                                   marker='^', linestyle='none',
+                                   markerfacecolor='none', markeredgecolor='m',
+                                   transform=ax.get_transform('world'))
+            mask = kept & (mmdetected & ~cmdetected)
+            if any(mask):
+                keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
+                                   marker='s', linestyle='none',
+                                   markerfacecolor='none', markeredgecolor='g',
+                                   transform=ax.get_transform('world'))
+            mask = kept & (cmdetected & ~mmdetected)
+            if any(mask):
+                keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
+                                   marker='o', linestyle='none',
+                                   markerfacecolor='none', markeredgecolor='b',
+                                   transform=ax.get_transform('world'))
+            mask = kept & cm_mm_nondetection
+            if any(mask):
+                keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
+                                   marker='d', linestyle='none',
+                                   markerfacecolor='none', markeredgecolor='orange',
+                                   transform=ax.get_transform('world'))
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.pdf", bbox_inches='tight')
 
-            allpts, = ax.plot(catalog['x_cen'][~kept], catalog['y_cen'][~kept],
-                              marker='x', linestyle='none',
-                              markerfacecolor='none', markeredgecolor='r',
-                              transform=ax.get_transform('world'))
+            if any(~kept):
+                allpts, = ax.plot(catalog['x_cen'][~kept], catalog['y_cen'][~kept],
+                                  marker='x', linestyle='none',
+                                  markerfacecolor='none', markeredgecolor='r',
+                                  transform=ax.get_transform('world'))
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withrejectcatalog.pdf", bbox_inches='tight')
 
             allpts.set_visible(False)
 
             hiicand_mask = catalog['HCHII_candidate'] == 'True'
-            hiicandpts, = ax.plot(catalog['x_cen'][kept & hiicand_mask],
-                                  catalog['y_cen'][kept & hiicand_mask],
-                                  marker='+', linestyle='none',
-                                  markerfacecolor='b', markeredgecolor='c',
-                                  transform=ax.get_transform('world'))
+
+            mask = kept & hiicand_mask
+            if any(mask):
+                hiicandpts, = ax.plot(catalog['x_cen'][mask],
+                                      catalog['y_cen'][mask],
+                                      marker='+', linestyle='none',
+                                      markerfacecolor='b', markeredgecolor='c',
+                                      transform=ax.get_transform('world'))
 
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_andHII.pdf", bbox_inches='tight')
