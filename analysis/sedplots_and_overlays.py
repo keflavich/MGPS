@@ -21,6 +21,8 @@ mpl.rcParams['xtick.direction'] = 'in'
 mpl.rcParams['ytick.direction'] = 'in'
 mpl.rcParams['xtick.top'] = False
 mpl.rcParams['ytick.right'] = False
+mpl.rcParams['xtick.color'] = 'w'
+mpl.rcParams['ytick.color'] = 'w'
 
 
 szinch = (15,12)
@@ -93,25 +95,34 @@ for regname,fn in files.items():
             #data,_ = reproject.reproject_interp(files['G31'], galhdr)
             #hdu = fits.PrimaryHDU(data=data, header=galhdr)
 
-            pl.figure(4).clf()
-            FF = aplpy.FITSFigure(fn, figure=pl.figure(4), convention='calabretta')
-            FF.show_grayscale()
+            try:
+                pl.figure(4, figsize=(12,12)).clf()
+                FF = aplpy.FITSFigure(fn, figure=pl.figure(4), convention='calabretta')
+                FF.show_grayscale()
+                FF.tick_labels.set_font(color='k')
 
-            ppcat['x_cen'].unit = u.deg
-            ppcat['y_cen'].unit = u.deg
-            coords = coordinates.SkyCoord(ppcat['x_cen'].quantity, ppcat['y_cen'].quantity, frame='icrs').galactic
+                ppcat['x_cen'].unit = u.deg
+                ppcat['y_cen'].unit = u.deg
+                #coords = coordinates.SkyCoord(ppcat['x_cen'].quantity, ppcat['y_cen'].quantity, frame='icrs').galactic
+                coords = coordinates.SkyCoord(ppcat['x_cen'].quantity, ppcat['y_cen'].quantity, frame='galactic')
 
-            herscheldetected = ppcat['HerschelDetected'] == 'True'
-            spitzerdetected = ppcat['SpitzerDetected'] == 'True'
-            cmdetected = ppcat['cmDetected'] == 'True'
-            mgpsdetected = ppcat['rejected'] == 0
-            mask = ((cmdetected) & (mgpsdetected))
-            FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='w', facecolor='w', marker='x', linewidth=1)
-            mask = ((herscheldetected) & (mgpsdetected))
-            FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='c', facecolor='c', marker='+', linewidth=1)
-            mask = ((cmdetected) & (~herscheldetected) & (mgpsdetected))
-            FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='r')
-            mask = ((~cmdetected) & (~herscheldetected) & (mgpsdetected))
-            FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='lime')
+                herscheldetected = ppcat['HerschelDetected'] == 'True'
+                spitzerdetected = ppcat['SpitzerDetected'] == 'True'
+                cmdetected = ppcat['cmDetected'] == 'True'
+                mgpsdetected = ppcat['rejected'] == 0
+                mask = ((cmdetected) & (mgpsdetected))
+                if any(mask):
+                    FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='w', facecolor='w', marker='x', linewidth=1)
+                mask = ((herscheldetected) & (mgpsdetected))
+                if any(mask):
+                    FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='c', facecolor='c', marker='+', linewidth=1)
+                mask = ((cmdetected) & (~herscheldetected) & (mgpsdetected))
+                if any(mask):
+                    FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='r')
+                mask = ((~cmdetected) & (~herscheldetected) & (mgpsdetected))
+                if any(mask):
+                    FF.show_markers(coords.l[mask], coords.b[mask], edgecolor='lime')
 
-            FF.savefig(f'{catalog_figure_path}/{regname}_catalog_overlay.pdf')
+                FF.savefig(f'{catalog_figure_path}/{regname}_catalog_overlay.pdf')
+            except Exception as ex:
+                print(ex)
