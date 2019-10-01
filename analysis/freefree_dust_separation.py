@@ -313,6 +313,8 @@ if __name__ == "__main__":
 
     for reg in regs:
 
+        tgtname = reg.meta['label']
+
         for regname, mgpsfile in files.files.items():
 
             #mgpsfile = os.path.join('/Volumes/external/mgps/Feb5_2019/',
@@ -323,18 +325,16 @@ if __name__ == "__main__":
 
             if ww.footprint_contains(reg.center):
 
-                if 'w49b' in regname:
+                if 'w49b' in tgtname:
                     make_hiidust_plot(reg, mgpsfile, width=reg.radius, regname=regname,
                                       figure=pl.figure(1, figsize=(12,8)),
                                       alpha = -0.46
                                      )
-                    tgtname = reg.meta['label']
 
                     pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_alpha0.46_5panel.pdf', bbox_inches='tight')
                     pl.clf()
 
                 make_hiidust_plot(reg, mgpsfile, width=reg.radius, regname=regname,
                                   figure=pl.figure(1, figsize=(12,8)))
-                tgtname = reg.meta['label']
 
                 pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_5panel.pdf', bbox_inches='tight')

@@ -13,6 +13,13 @@ from astropy import visualization
 
 import paths
 
+import matplotlib as mpl
+
+mpl.rcParams['xtick.direction'] = 'in'
+mpl.rcParams['ytick.direction'] = 'in'
+mpl.rcParams['xtick.top'] = False
+mpl.rcParams['ytick.right'] = False
+
 def getimg(*args, **kwargs):
     try:
         return Magpis.get_images(*args, **kwargs)

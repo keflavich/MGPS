@@ -15,6 +15,12 @@ from paths import catalog_figure_path, catalog_path
 from utils import makesed, makeuplims
 from catalog_flux_limits import flux_limits
 
+import matplotlib as mpl
+
+mpl.rcParams['xtick.direction'] = 'in'
+mpl.rcParams['ytick.direction'] = 'in'
+mpl.rcParams['xtick.top'] = False
+mpl.rcParams['ytick.right'] = False
 
 
 szinch = (15,12)
@@ -78,7 +84,7 @@ for regname,fn in files.items():
                 ax.set_ylabel("Flux Density [mJy]")
                 ax.yaxis.set_label_position("right")
                 ax.yaxis.tick_right()
-                
+
                 fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.pdf', bbox_inches='tight')
                 print(f"finished {name}")
 
