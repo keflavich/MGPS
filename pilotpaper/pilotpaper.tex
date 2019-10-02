@@ -89,16 +89,7 @@ filaments (in the Galactic center), and extragalactic sources.
 % Because both free-free and dust emission are optically thin...
 %One of the aims of this survey is to identify the youngest high-mass protostars.
 
-MUSTANG-2 \citep{Dicker2014a} is a 223 element bolometer array operating on the 100~m
-Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a 4.25'
-field-of-view (fov).  The detectors are TES detectors read out using a
-microwave multiplexing readout (umux). Typical observing modes consist of
-different on-the-fly mapping scans - either small daisy scans for arcminute
-sized targets or larger raster scans in perpendicular directions used in the
-data presented in this paper.  Both scan patterns are designed to maximize
-cross-linking on many timescales so as to enable the removal of 1/f noise from
-the instrument and the atmosphere.  In the large bandwidth of MUSTANG-2, line
-contamination is generally negligible.
+\MUSTANG \citep{Dicker2014a} is a 223 element bolometer array operating on the 100~m Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a 4.25\arcmin\ field-of-view (fov).\footnote{\url{http://www.gb.nrao.edu/mustang/}}  The detectors are TES detectors read out using a microwave multiplexing readout (umux). Typical observing modes consist of different on-the-fly mapping scans - either small daisy scans for arcminute sized targets or larger raster scans in perpendicular directions used in the data presented in this paper.  Both scan patterns are designed to maximize cross-linking on many timescales so as to enable the removal of 1/f noise from the instrument and the atmosphere.  In the large bandwidth of \MUSTANG, line contamination is generally negligible.
 
 
 
@@ -112,9 +103,7 @@ contamination is generally negligible.
 %spectral indices, which we cannot do with accuracy with only the 90\,GHz and
 %20\,cm data.
 
-We present the first component of an ongoing 3 mm survey with the \MUSTANG instrument on
-the Green Bank Telescope with 9 \arcsec resolution.   When complete, this survey
-will cover most of the northern Galactic plane within $b<0.5$.
+We present the first component of an ongoing 3 mm survey with the \MUSTANG instrument on the GBT with 9\arcsec resolution.   When complete, this survey will cover most of the northern Galactic plane within $b<0.5$.
 
 
 \section{Observations}
@@ -197,7 +186,7 @@ Known point sources were observed at regular intervals each night.
         each timestream into
         antenna temperature.
     \item A map is made (in azimuth/elevation coordinates) of each calibration
-        point source scan in IDL.  Romero et al (in prep) will present the IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
+        point source scan in IDL.  \cite{Romero2019} describe in detail the IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
             \item A single 2-D Gaussian is fit to the point source. 
             \item Fixing the centroid as found above, a double Gaussian (two
@@ -217,7 +206,7 @@ Known point sources were observed at regular intervals each night.
                 to a primary calibrator that is scaled to the expected
                 peak in Jy \perbeam.  The expected peak is determined from
                 planetary models if a planet or from interpolation of ALMA data
-                if only an ALMA calibrator is accessible. The scaling is
+                if only an ALMA calibrator is accessible.\footnote{We use standard ALMA calibrators from the GridCal program.  See \url{http://www.alma.cl/~ahales/cal_survey/plots/calsurvey_monitoring_B3.html}, \url{https://almascience.eso.org/sc/}, \cite{vanKempen2014}.} The scaling is
                 linearly interpolated between calibration scans.
             \item Conversion to Kelvin accounts for the beam volume. As such,
                 the beam volumes are interpolated between scans.
@@ -384,10 +373,10 @@ continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
 \begin{table}[htp]
 \centering
     \caption{Central Frequencies}
-\begin{tabular}{lll}
+\begin{tabular}{lcc}
     \label{tab:centralfreq}
 $\alpha$ & Frequency & Wavelength\\
-         & GHz       & mm \\
+         & (GHz)       & (mm) \\
 \hline
 0.0 & 89.72  & 3.341 \\
 0.5 & 90.18  & 3.324 \\
