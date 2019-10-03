@@ -353,11 +353,11 @@ therefore correct these images for the offset, assuming the VLA 20 cm data
 have correct pointing.  The original pointing centers are recorded in the FITS
 headers of the published images with names \texttt{CRVALnA} so that the original
 pointing centers can be used if needed.
-\todo{Coauthors: if you could, please look at the data an ensure (1) that you're
-looking at an image that has CRVAL1A/CRVAL2A in the headers and (2) that the image
-appears to match well to other data sets you have.  Please see
-\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HPATJB&version=DRAFT},
-which should be the July 11 version of the data release.}
+% \todo{Coauthors: if you could, please look at the data an ensure (1) that you're
+% looking at an image that has CRVAL1A/CRVAL2A in the headers and (2) that the image
+% appears to match well to other data sets you have.  Please see
+% \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HPATJB&version=DRAFT},
+% which should be the July 11 version of the data release.}
 
 %\todo{GAL029 did not get a good enough pointing correction; there are clear offsets
 %in the point sources.  I don't know why this has happened and it's pretty painful
@@ -436,177 +436,7 @@ than the largest scale recovered in the MGPS data, so intermediate-scale
 structures (4-10\arcmin) are likely to be poorly recovered.
 The resulting FITS images are provided in the data repository.
 
-\subsection{Free-free separation}
-\label{sec:freefree}
-\todo{Does this belong in its own "analysis" section now?  Probably yes.}
-As stated in the introduction,
-the MGPS90
-data have contributions from thermal free-free, thermal dust continuum, and
-nonthermal synchrotron emission.  We describe here our decomposition of the
-MGPS90 data into free-free and dust emission; the non-thermal emission was not
-separated from the free-free emission.
-
-
-We use the ATLASGAL 870\,$\mu$m data \citep{Schuller2009a} to estimate the dust
-contribution since at 870\,$\mu$m essentially all emission is from dust.  We
-estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data
-assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the
-ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
-90GHz} \simeq 0.013 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We
-subtract the scaled ATLASGAL data from an appropriately smoothed version of the
-MGPS90 map to obtain an estimated free-free map.  We perform this subtraction
-on the feathered MGPS90 and Planck data (Section~\ref{sec:feather}).
-
-Similarly, we use 20 cm maps to estimate the dust contribution by subtracting
-a scaled 20 cm map from the MGPS90 data.
-%We compare the resultant ff+s maps with VLA images made at 20\,cm to gain insight into
-%the relative contributions from free-free and synchrotron emission.  
-%Sources with negative spectral indices will appear brighter at 20\,cm than at 90\,GHz.
-For most fields, we use 20\,cm MAGPIS data \citep{Helfand2006a}, which has an
-angular resolution of $\sim\!6\arcsec$ and a point source sensitivity of
-$1-2$\,mJy.  MAGPIS does not cover the Galactic center or 
-$\ell>48^\circ$, and so we use other data in these zones. In the Galactic
-center, we use the multi-configuration 20 cm map from \citet[][resolution
-$\sim30\arcsec$]{Yusef-Zadeh2004a}, and in the W51 field we use the
-multi-configuration map from \citet[][resolution $\lesssim1\arcsec$]{Mehringer1994a}.
-We scale the 20 cm to 90 GHz assuming the 20 cm consists exclusively of optically
-thin free-free emission  following a power law $S_{\nu}
-\propto \nu^{-0.12}$ \citep{Wilson2009a}.  If the power law has a more negative
-spectral index, 
-%when the scaled 20\,cm data is subtracted from the 3\,mm MGPS data,
-the resultant ``3\,mm Dust'' image will have negative values; if it is
-more positive, the resultant image will have positive values.  The observed
-fields were selected
-based on their rich ongoing star formation activity, so this approximation is
-reasonable, but there are several cases where additional emission mechanisms
-(e.g., synchrotron)
-must be active.
-%(which is incorrect; these maps contain both synchrotron
-%emission and optically thick free-free emission)
-
-We show the results of the decomposition for one example field in
-Figure~\ref{fig:arches_freefree}; the rest of the MGPS90 fields are in the
-Appendix.  Figure~\ref{fig:arches_freefree} contains panels of the MGPS90 data,
-the contribution to the MGPS90 data from thermal dust estimated from ATLASGAL
-subtraction, the contribution to the MGPS90 data from ff+s, 20\,cm data, and
-the contribution to the MGPS90 data from thermal dust estimated from 20\,cm
-subtraction.
-
-%The ratio
-%map  gives an indication of the ff+s spectral index, and can allow one to
-%separate thermal and nonthermal emission.}  We expect that the ratio $S_{\rm
-%90GHz}/S_{\rm 20cm} \simeq 0.25$ for optically-thin free-free emission and is
-%less than this value for synchrotron emission.
-
-The example in Figure \ref{fig:arches_freefree} shows good agreement between the
-two dust estimates and between the free-free estimates, and the differences
-highlight some of the incorrect assumptions in the above analysis.  The excess
-diffuse emission in the rightmost panel (MGPS90 - VLA) is most likely caused by
-the VLA's failure to recover large angular scales.  The missing emission on the
-right side of that map is caused by the excess synchrotron emission in the Sgr
-A region, which is not accounted for in our simple free-free model.  Both dust
-maps excellently recover the massive G0.253+0.015 cloud (the bean shaped
-feature in the upper left) and the southern dust ridge (the prominent dust feature
-just below the center of the map).
-
-The W43 region is substantially more dust-dominated than the Galactic Center
-(Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
-aligned with free-free features, so it is difficult to disentangle them by eye
-in the MGPS90 image.  The MGPS90 - 20 cm image is negative in the 20
-cm-dominated regions, likely indicating that there is substantial nonthermal
-emission in these HII regions.  While there are no known supernovae in the region, the population
-of OB and Wolf-Rayet stars in the region powering the expanding HII region may also
-drive strong shocks into the surrounding medium \citep[e.g.][]{Bally2010a}.
-The presence of such nonthermal emission indicates that electrons must be
-accelerated to relativistic velocities in the HII region, which has recently
-been shown to be possible in HII region expansion fronts
-\citep{Padovani2019a}.
-
-The W49B supernova remnant in the G43 field stands out as a bright nonthermal
-source.  No other supernova remnants in the surveyed area as as bright at 3\,mm (see
-Figure~\ref{fig:g43overview}). \citet{Sun2011a} found that the spectral energy
-distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz
-with index $\alpha=-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is
-$19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy.
-%(90/5)^(-0.46)*19.1 . 
-Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that most of
-the associated emission is nonthermal. 
-% note to Loren: the alpha=4.6 scaling results in the bright edges going to ~zero,
-% but the center ends up too low, suggesting that the center (the faint bit) is
-% consistent w/-0.12 but the edges are ~-0.46.  It's beyond the scope of this
-% paper to go into that level of detailed analysis, though
-
-\begin{table*}[htp]
-\centering
-%\begin{minipage}{130mm}
-\caption{Free-free vs Dust}
-\begin{tabular}{llll}
-    \label{tab:freefree}
-Field Name   & Center (Galactic) & Field Size & Dust Fraction ($\beta=1.5$) \\
-             & degrees           & arcminutes &                             \\
-\hline
-\hline
-\input{freefreetable}
-\hline
-\hline
-\end{tabular}
-% \par this is a caption.
-\end{table*}
-
-We directly quantify the dust contribution to the 3 mm intensity in the
-targeted brightest fields.  Each field includes one or more prominent extended
-structures that were the focus for these pilot observations.  For each of these
-structures, we extracted an area that encompasses the bulk of the 3 mm emission
-and measured the fraction of that emission that is explained by optically-thin
-dust, which is the sum of the positive values from the scaled ATLASGAL data
-explained above divided by the sum of the 3 mm emission.  The results are reported
-in Table \ref{tab:freefree}.  Because we have assumed $\beta=1.5$, and typical
-dust $\beta$ values for the ISM are $\sim1.5-2$ \citep[e.g.,][]{Ossenkopf1994a},
-these can be treated as upper limits on the dust contribution.
-
-In the regions of interest, the dust contribution at 3 mm is limited to
-$\lesssim20\%$ on the several arcminute scales probed.  Regions with substantial
-synchrotron contributions from supernova remnants (W43, W51b) or other mechanisms
-(the Arches) have an even lower contribution from dust, $<10\%$.  In short, the 
-diffuse emission detected in MGPS90 is dominated by emission from hot gas rather
-than from cold molecular gas.
-
-
-
-
-%However,
-%despite this clear oversubtraction, the difference image shows an exquisite
-%high-resolution view of the compact dust-dominated features.
-
-%To get a better sense of what is detected, we do the stuff in freefree\_dust\_separation.py
-
-\begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/G01_arches_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the Sgr B2 field centered on the Arches region. 
-    All images are displayed on the same intensity scale in units of Jy/sr.  In the G01 field,
-    the 20 cm data have 30\arcsec resolution, so the MGPS90 data have been smoothed to match
-    the resolution of the other images.
-    (a; 870 \um scaled) ATLASGAL 870 \um scaled to 3 mm
-    (b; 3 mm free-free) smoothed MGPS90 - scaled ATLASGAL
-    (c; 3 mm) MGPS90 
-    (d; 3 mm Dust) smoothed MGPS90 - scaled VLA 20 cm continuum.
-    (e; 20 cm scaled) VLA 20 cm continuum scaled to 3 mm
-}
-\label{fig:arches_freefree}
-\end{figure*}
-
-\begin{figure*}[htp]
-    \includegraphics[width=17cm]{figures/G31_w43_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G31 field centered on W43.
-    See Figure \ref{fig:arches_freefree} for a description of the panels.
-    In G31, the 20 cm data have $\sim5$ \arcsec resolution, so they are
-    smoothed to match the MGPS90 data to create panels (d) and (e), while the
-    MGPS90 data are smoothed to match the ATLASGAL data to create panel (b).
-}
-\label{fig:w43freefree}
-\end{figure*}
-
-\section{Catalogs}
+\section{Compact Source Catalogs}
 
 We use \texttt{astrodendro} via the \texttt{dendrocat} wrapper to extract a
 catalog of both compact structures.  In brief, \texttt{astrodendro} catalogs
@@ -1122,6 +952,180 @@ source into several, none of which match the MGPS90 centroid to within
 scans noted in Figure \ref{fig:g34overview}.}
 \label{fig:g34hchii}
 \end{figure*}
+
+
+\section{Diffuse Emission}
+\subsection{Free-free separation}
+\label{sec:freefree}
+As stated in the introduction, the MGPS90 data have contributions from thermal
+free-free, thermal dust continuum, and nonthermal synchrotron emission.  We
+describe here our decomposition of the MGPS90 data into free-free and dust
+emission; the non-thermal emission was not separated from the free-free
+emission.
+
+
+We use the ATLASGAL 870\,$\mu$m data \citep{Schuller2009a} to estimate the dust
+contribution since at 870\,$\mu$m essentially all emission is from dust.  We
+estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data
+assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the
+ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
+90GHz} \simeq 0.013 S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).  We
+subtract the scaled ATLASGAL data from an appropriately smoothed version of the
+MGPS90 map to obtain an estimated free-free map.  We perform this subtraction
+on the feathered MGPS90 and Planck data (Section~\ref{sec:feather}).
+
+Similarly, we use 20 cm maps to estimate the dust contribution by subtracting
+a scaled 20 cm map from the MGPS90 data.
+%We compare the resultant ff+s maps with VLA images made at 20\,cm to gain insight into
+%the relative contributions from free-free and synchrotron emission.  
+%Sources with negative spectral indices will appear brighter at 20\,cm than at 90\,GHz.
+For most fields, we use 20\,cm MAGPIS data \citep{Helfand2006a}, which has an
+angular resolution of $\sim\!6\arcsec$ and a point source sensitivity of
+$1-2$\,mJy.  MAGPIS does not cover the Galactic center or 
+$\ell>48^\circ$, and so we use other data in these zones. In the Galactic
+center, we use the multi-configuration 20 cm map from \citet[][resolution
+$\sim30\arcsec$]{Yusef-Zadeh2004a}, and in the W51 field we use the
+multi-configuration map from \citet[][resolution $\lesssim1\arcsec$]{Mehringer1994a}.
+We scale the 20 cm to 90 GHz assuming the 20 cm consists exclusively of optically
+thin free-free emission  following a power law $S_{\nu}
+\propto \nu^{-0.12}$ \citep{Wilson2009a}.  If the power law has a more negative
+spectral index, 
+%when the scaled 20\,cm data is subtracted from the 3\,mm MGPS data,
+the resultant ``3\,mm Dust'' image will have negative values; if it is
+more positive, the resultant image will have positive values.  The observed
+fields were selected
+based on their rich ongoing star formation activity, so this approximation is
+reasonable, but there are several cases where additional emission mechanisms
+(e.g., synchrotron)
+must be active.
+%(which is incorrect; these maps contain both synchrotron
+%emission and optically thick free-free emission)
+
+We show the results of the decomposition for one example field in
+Figure~\ref{fig:arches_freefree}; the rest of the MGPS90 fields are in the
+Appendix.  Figure~\ref{fig:arches_freefree} contains panels of the MGPS90 data,
+the contribution to the MGPS90 data from thermal dust estimated from ATLASGAL
+subtraction, the contribution to the MGPS90 data from ff+s, 20\,cm data, and
+the contribution to the MGPS90 data from thermal dust estimated from 20\,cm
+subtraction.
+
+%The ratio
+%map  gives an indication of the ff+s spectral index, and can allow one to
+%separate thermal and nonthermal emission.}  We expect that the ratio $S_{\rm
+%90GHz}/S_{\rm 20cm} \simeq 0.25$ for optically-thin free-free emission and is
+%less than this value for synchrotron emission.
+
+The example in Figure \ref{fig:arches_freefree} shows good agreement between the
+two dust estimates and between the free-free estimates, and the differences
+highlight some of the incorrect assumptions in the above analysis.  The excess
+diffuse emission in the rightmost panel (MGPS90 - VLA) is most likely caused by
+the VLA's failure to recover large angular scales.  The missing emission on the
+right side of that map is caused by the excess synchrotron emission in the Sgr
+A region, which is not accounted for in our simple free-free model.  Both dust
+maps excellently recover the massive G0.253+0.015 cloud (the bean shaped
+feature in the upper left) and the southern dust ridge (the prominent dust feature
+just below the center of the map).
+
+The W43 region is substantially more dust-dominated than the Galactic Center
+(Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
+aligned with free-free features, so it is difficult to disentangle them by eye
+in the MGPS90 image.  The MGPS90 - 20 cm image is negative in the 20
+cm-dominated regions, likely indicating that there is substantial nonthermal
+emission in these HII regions.  While there are no known supernovae in the region, the population
+of OB and Wolf-Rayet stars in the region powering the expanding HII region may also
+drive strong shocks into the surrounding medium \citep[e.g.][]{Bally2010a}.
+The presence of such nonthermal emission indicates that electrons must be
+accelerated to relativistic velocities in the HII region, which has recently
+been shown to be possible in HII region expansion fronts
+\citep{Padovani2019a}.
+
+The W49B supernova remnant in the G43 field stands out as a bright nonthermal
+source.  No other supernova remnants in the surveyed area as as bright at 3\,mm (see
+Figure~\ref{fig:g43overview}). \citet{Sun2011a} found that the spectral energy
+distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz
+with index $\alpha=-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is
+$19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy.
+%(90/5)^(-0.46)*19.1 . 
+Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that most of
+the associated emission is nonthermal. 
+% note to Loren: the alpha=4.6 scaling results in the bright edges going to ~zero,
+% but the center ends up too low, suggesting that the center (the faint bit) is
+% consistent w/-0.12 but the edges are ~-0.46.  It's beyond the scope of this
+% paper to go into that level of detailed analysis, though
+
+\begin{table*}[htp]
+\centering
+%\begin{minipage}{130mm}
+\caption{Free-free vs Dust}
+\begin{tabular}{llll}
+    \label{tab:freefree}
+Field Name   & Center (Galactic) & Field Size & Dust Fraction ($\beta=1.5$) \\
+             & degrees           & arcminutes &                             \\
+\hline
+\hline
+\input{freefreetable}
+\hline
+\hline
+\end{tabular}
+% \par this is a caption.
+\end{table*}
+
+We directly quantify the dust contribution to the 3 mm intensity in the
+targeted brightest fields.  Each field includes one or more prominent extended
+structures that were the focus for these pilot observations.  For each of these
+structures, we extracted an area that encompasses the bulk of the 3 mm emission
+and measured the fraction of that emission that is explained by optically-thin
+dust, which is the sum of the positive values from the scaled ATLASGAL data
+explained above divided by the sum of the 3 mm emission.  The results are reported
+in Table \ref{tab:freefree}.  Because we have assumed $\beta=1.5$, and typical
+dust $\beta$ values for the ISM are $\sim1.5-2$ \citep[e.g.,][]{Ossenkopf1994a},
+these can be treated as upper limits on the dust contribution.
+
+In the regions of interest, the dust contribution at 3 mm is limited to
+$\lesssim20\%$ on the several arcminute scales probed.  Regions with substantial
+synchrotron contributions from supernova remnants (W43, W51b) or other mechanisms
+(the Arches) have an even lower contribution from dust, $<10\%$.  In short, the 
+diffuse emission detected in MGPS90 is dominated by emission from hot gas rather
+than from cold molecular gas.
+
+
+
+
+%However,
+%despite this clear oversubtraction, the difference image shows an exquisite
+%high-resolution view of the compact dust-dominated features.
+
+%To get a better sense of what is detected, we do the stuff in freefree\_dust\_separation.py
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/G01_arches_5panel.pdf}
+    \caption{Decomposition of the MGPS90 data in the Sgr B2 field centered on the Arches region. 
+    All images are displayed on the same intensity scale in units of Jy/sr.  In the G01 field,
+    the 20 cm data have 30\arcsec resolution, so the MGPS90 data have been smoothed to match
+    the resolution of the other images.
+    (a; 870 \um scaled) ATLASGAL 870 \um scaled to 3 mm
+    (b; 3 mm free-free) smoothed MGPS90 - scaled ATLASGAL
+    (c; 3 mm) MGPS90 
+    (d; 3 mm Dust) smoothed MGPS90 - scaled VLA 20 cm continuum.
+    (e; 20 cm scaled) VLA 20 cm continuum scaled to 3 mm
+}
+\label{fig:arches_freefree}
+\end{figure*}
+
+\begin{figure*}[htp]
+    \includegraphics[width=17cm]{figures/G31_w43_5panel.pdf}
+    \caption{Decomposition of the MGPS90 data in the G31 field centered on W43.
+    See Figure \ref{fig:arches_freefree} for a description of the panels.
+    In G31, the 20 cm data have $\sim5$ \arcsec resolution, so they are
+    smoothed to match the MGPS90 data to create panels (d) and (e), while the
+    MGPS90 data are smoothed to match the ATLASGAL data to create panel (b).
+}
+\label{fig:w43freefree}
+\end{figure*}
+
+
+
+
 
 \section{Conclusions}
 
