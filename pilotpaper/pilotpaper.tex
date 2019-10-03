@@ -19,12 +19,14 @@
 \begin{abstract}
 \todo{COAUTHORS: Please look at the file \texttt{authors.tex} and add your
 affiliation etc.}\\
-We report the results of a pilot program for a \MUSTANG Galactic Plane survey.
-The survey so far achieves a typical depth of $1$ mJy/beam in a $9\arcsec$
-beam.  We describe the survey parameters, quality assessment process, cataloging,
+We report the results of a pilot program for a \MUSTANG Galactic Plane survey
+at 3 mm (90 GHz), MGPS90.
+The survey so far achieves a typical $1--\sigma$ depth of $1-2$ mJy/beam in a
+$9\arcsec$ beam.  We describe the survey parameters, quality assessment
+process, cataloging,
 and comparison with other data sets.
 We have identified \nsources sources over seven observed fields (total area
-$\approx 10 \deg^2$).  The majority of these sources have identified counterparts
+$\approx 7.5 \deg^2$).  The majority of these sources have identified counterparts
 at other wavelengths.  By applying flux selection criteria to these sources,
 we successfully identified several known hypercompact HII (\hchii) regions,
 but did not find any new ones.  We identify \mmdetectionscmnondetections sources
@@ -50,7 +52,7 @@ longer wavelengths at resolutions $1.5\arcsec$ or worse \citep{Giveon2005a,Hoare
 
 Emission at 3 mm (90 GHz) consists of a combination of dust, free-free, and synchrotron
 continuum emission. 
-Between 1 mm and 6 cm, there are no existing plane surveys.  This wavelength
+Between 1 mm and 6 cm, there are no existing Galactic plane surveys.  This wavelength
 regime represents the global minimum in typical galactic spectral energy
 distributions.  At 3 mm, most dust emission is optically thin; very few regions
 have high enough column density on $\sim0.1-1$ pc scales to reach an optical
@@ -203,7 +205,7 @@ Known point sources were observed at regular intervals each night.
 
 \begin{enumerate}
     \item A calibration for the detector array, i.e., relative calibration between
-        the individual receivers, is found using a skydip and the
+        the individual detectors, is found using a skydip and the
         opacity at 90 GHz as given by CLEO (Control Library for Operators and
         Engineers\footnote{\url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}}) to get
         each timestream into
@@ -252,7 +254,7 @@ some is from our knowledge of $\tau$ (the sky optical depth) during the observat
 %\todo{Simon, or MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
-Maps were made using MUSTANG2's MINKASI (Seivers et.al. in prep) data reduction
+Maps were made using \MUSTANG's MINKASI (Seivers et.al. in prep) data reduction
 pipeline which is based on maximum likelihood \todo{maximum likelihood what?}.
 We used smoothed power spectra from a singular value decomposition (SVD) of the
 data on a scan by scan basis to obtain a noise model.
