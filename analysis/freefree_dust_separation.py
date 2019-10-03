@@ -188,25 +188,30 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
 
     # Fifth Panel:
 
+    # use freefree_proj to get the 20cm-estimated free-free contribution even
+    # if we're not using it for plotting
+    # MAGPIS data are high-resolution (comparable to but better than MGPS)
+    # Zadeh data are low-resolution, 30ish arcsec
+    # units: Jy/sr
+    freefree_proj,_ = reproject.reproject_interp((freefree, outwcs),
+                                                 gps20cutout.wcs,
+                                                 shape_out=gps20cutout.data.shape)
+
+
+    gps20_pixscale = (wcs.utils.proj_plane_pixel_area(gps20cutout.wcs)*u.deg**2)**0.5
+
+    # depending on which image has higher resolution, convolve one to the other
+    try:
+        gps20convbm = tgt_bm.deconvolve(gps20_bm)
+        gps20_jysr_sm = convolution.convolve_fft(gps20_jysr, gps20convbm.as_kernel(gps20_pixscale))
+    except ValueError:
+        gps20_jysr_sm = gps20_jysr
+        ff_convbm = gps20_bm.deconvolve(tgt_bm)
+        freefree_proj = convolution.convolve_fft(freefree_proj, ff_convbm.as_kernel(gps20_pixscale))
+
+
+
     if fifth_panel_synchro:
-        # MAGPIS data are high-resolution (comparable to but better than MGPS)
-        # Zadeh data are low-resolution, 30ish arcsec
-        # units: Jy/sr
-        freefree_proj,_ = reproject.reproject_interp((freefree, outwcs),
-                                                     gps20cutout.wcs,
-                                                     shape_out=gps20cutout.data.shape)
-
-
-        gps20_pixscale = (wcs.utils.proj_plane_pixel_area(gps20cutout.wcs)*u.deg**2)**0.5
-
-        # depending on which image has higher resolution, convolve one to the other
-        try:
-            gps20convbm = tgt_bm.deconvolve(gps20_bm)
-            gps20_jysr_sm = convolution.convolve_fft(gps20_jysr, gps20convbm.as_kernel(gps20_pixscale))
-        except ValueError:
-            gps20_jysr_sm = gps20_jysr
-            ff_convbm = gps20_bm.deconvolve(tgt_bm)
-            freefree_proj = convolution.convolve_fft(freefree_proj, ff_convbm.as_kernel(gps20_pixscale))
 
         ax4 = figure.add_subplot(1, 5, 5, projection=gps20cutout.wcs)
 
@@ -360,6 +365,7 @@ if __name__ == "__main__":
                                                              figsize=(12,8)))
 
                 breakdown[tgtname] = results
+                breakdown[tgtname]['region'] = reg
 
                 pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_5panel.pdf', bbox_inches='tight')
 
@@ -372,3 +378,14 @@ if __name__ == "__main__":
     print(f"{'Region':10s} {'Free-free':10s} {'Dust':10s}")
     for entry in breakdown:
         print(f"{entry:10s} {breakdown[entry]['freefree20'] / breakdown[entry]['totalpos20']:10.3f} {breakdown[entry]['dust20'] / breakdown[entry]['totalpos20']:10.3f}")
+
+    with open('../pilotpaper/freefreetable.tex', 'w') as fh:
+        for entry in breakdown:
+            if entry in ('w51main', 'sgra'):
+                # w51main is a subset of w51a
+                # sgra is covered by the arches field and has cropping, edge-of-field issues
+                continue
+            reg = breakdown[entry]['region']
+            fh.write(f"{entry:10s} & {reg.center.galactic.to_string(style='decimal', precision=3):35s} &"
+                     f"{reg.radius.to(u.arcmin).value:6.2f}' & "
+                     f" {breakdown[entry]['dust'] / breakdown[entry]['totalpos']:10.2f} \\\\\n")

@@ -99,7 +99,17 @@ filaments (in the Galactic center), and extragalactic sources.
 % Because both free-free and dust emission are optically thin...
 %One of the aims of this survey is to identify the youngest high-mass protostars.
 
-\MUSTANG \citep{Dicker2014a} is a 223 element bolometer array operating on the 100~m Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a 4.25\arcmin\ field-of-view (fov).\footnote{\url{http://www.gb.nrao.edu/mustang/}}  The detectors are TES detectors read out using a microwave multiplexing readout (umux). Typical observing modes consist of different on-the-fly mapping scans - either small daisy scans for arcminute sized targets or larger raster scans in perpendicular directions used in the data presented in this paper.  Both scan patterns are designed to maximize cross-linking on many timescales so as to enable the removal of 1/f noise from the instrument and the atmosphere.  In the large bandwidth of \MUSTANG, line contamination is generally negligible.
+\MUSTANG \citep{Dicker2014a} is a 223 element bolometer array operating on the
+100~m Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a
+4.25\arcmin\ field-of-view
+(fov).\footnote{\url{http://www.gb.nrao.edu/mustang/}}  The detectors are TES
+detectors read out using a microwave multiplexing readout (umux). Typical
+observing modes consist of different on-the-fly mapping scans - either small
+daisy scans for arcminute sized targets or larger raster scans in perpendicular
+directions used in the data presented in this paper.  Both scan patterns are
+designed to maximize cross-linking on many timescales so as to enable the
+removal of 1/f noise from the instrument and the atmosphere.  In the large
+bandwidth of \MUSTANG, line contamination is generally negligible.
 
 
 
@@ -113,7 +123,9 @@ filaments (in the Galactic center), and extragalactic sources.
 %spectral indices, which we cannot do with accuracy with only the 90\,GHz and
 %20\,cm data.
 
-We present the first component of an ongoing 3 mm survey with the \MUSTANG instrument on the GBT with 9\arcsec resolution.   When complete, this survey will cover most of the northern Galactic plane within $b<0.5$.
+We present the first component of an ongoing 3 mm survey with the \MUSTANG
+instrument on the GBT with 9\arcsec resolution.   When complete, this survey
+will cover most of the northern Galactic plane within $b<0.5$.
 
 
 \section{Observations}
@@ -196,7 +208,8 @@ Known point sources were observed at regular intervals each night.
         each timestream into
         antenna temperature.
     \item A map is made (in azimuth/elevation coordinates) of each calibration
-        point source scan in IDL.  \cite{Romero2019} describe in detail the IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
+        point source scan in IDL.  \cite{Romero2019a} describe in detail the
+        IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
             \item A single 2-D Gaussian is fit to the point source. 
             \item Fixing the centroid as found above, a double Gaussian (two
@@ -216,7 +229,11 @@ Known point sources were observed at regular intervals each night.
                 to a primary calibrator that is scaled to the expected
                 peak in Jy \perbeam.  The expected peak is determined from
                 planetary models if a planet or from interpolation of ALMA data
-                if only an ALMA calibrator is accessible.\footnote{We use standard ALMA calibrators from the GridCal program.  See \url{http://www.alma.cl/~ahales/cal_survey/plots/calsurvey_monitoring_B3.html}, \url{https://almascience.eso.org/sc/}, \cite{vanKempen2014}.} The scaling is
+                if only an ALMA calibrator is accessible.\footnote{We use
+                standard ALMA calibrators from the GridCal program.  See
+                \url{http://www.alma.cl/~ahales/cal_survey/plots/calsurvey_monitoring_B3.html},
+                \url{https://almascience.eso.org/sc/}, \cite{vanKempen2014}.}
+                The scaling is
                 linearly interpolated between calibration scans.
             \item Conversion to Kelvin accounts for the beam volume. As such,
                 the beam volumes are interpolated between scans.
@@ -421,6 +438,7 @@ The resulting FITS images are provided in the data repository.
 
 \subsection{Free-free separation}
 \label{sec:freefree}
+\todo{Does this belong in its own "analysis" section now?  Probably yes.}
 As stated in the introduction,
 the MGPS90
 data have contributions from thermal free-free, thermal dust continuum, and
@@ -518,28 +536,43 @@ the associated emission is nonthermal.
 % consistent w/-0.12 but the edges are ~-0.46.  It's beyond the scope of this
 % paper to go into that level of detailed analysis, though
 
+\begin{table*}[htp]
+\centering
+%\begin{minipage}{130mm}
+\caption{Free-free vs Dust}
+\begin{tabular}{llll}
+    \label{tab:freefree}
+Field Name   & Center (Galactic) & Field Size & Dust Fraction ($\beta=1.5$) \\
+             & degrees           & arcminutes &                             \\
+\hline
+\hline
+\input{freefreetable}
+\hline
+\hline
+\end{tabular}
+% \par this is a caption.
+\end{table*}
 
-{\color{red}
-Generally, all of the selected bright, extended regions are dominated by
-contributions from either free-free or synchrotron emission at 3 mm.
-In Table \ref{tab:freefreefrac}, we break down the contribution
-of free-free and dust emission to the total within a selected sub-region.
-Dust contributes no more than 20\% of the total emission to any of these.
+We directly quantify the dust contribution to the 3 mm intensity in the
+targeted brightest fields.  Each field includes one or more prominent extended
+structures that were the focus for these pilot observations.  For each of these
+structures, we extracted an area that encompasses the bulk of the 3 mm emission
+and measured the fraction of that emission that is explained by optically-thin
+dust, which is the sum of the positive values from the scaled ATLASGAL data
+explained above divided by the sum of the 3 mm emission.  The results are reported
+in Table \ref{tab:freefree}.  Because we have assumed $\beta=1.5$, and typical
+dust $\beta$ values for the ISM are $\sim1.5-2$ \citep[e.g.,][]{Ossenkopf1994a},
+these can be treated as upper limits on the dust contribution.
 
-Region     Free-free  Dust
-sgrb2           0.869      0.135
-sgra            0.843      0.178
-arches          0.926      0.077
-g34             0.798      0.212
-g29             0.897      0.112
-w51a            0.878      0.142
-w51main         0.834      0.187
-w51b            0.950      0.068
-w43             0.904      0.103
-w33             0.889      0.115
-w49a            0.884      0.127
-w49b            0.985      0.039
-}
+In the regions of interest, the dust contribution at 3 mm is limited to
+$\lesssim20\%$ on the several arcminute scales probed.  Regions with substantial
+synchrotron contributions from supernova remnants (W43, W51b) or other mechanisms
+(the Arches) have an even lower contribution from dust, $<10\%$.  In short, the 
+diffuse emission detected in MGPS90 is dominated by emission from hot gas rather
+than from cold molecular gas.
+
+
+
 
 %However,
 %despite this clear oversubtraction, the difference image shows an exquisite
