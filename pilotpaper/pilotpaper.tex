@@ -21,10 +21,20 @@
 affiliation etc.}\\
 We report the results of a pilot program for a \MUSTANG Galactic Plane survey.
 The survey so far achieves a typical depth of $1$ mJy/beam in a $9\arcsec$
-beam.
+beam.  We describe the survey parameters, quality assessment process, cataloging,
+and comparison with other data sets.
 We have identified \nsources sources over seven observed fields (total area
 $\approx 10 \deg^2$).  The majority of these sources have identified counterparts
-at other wavelengths.
+at other wavelengths.  By applying flux selection criteria to these sources,
+we successfully identified several known hypercompact HII (\hchii) regions,
+but did not find any new ones.  We identify \mmdetectionscmnondetections sources
+that have mm-wavelength counterparts but do not have cm-wavelength counterparts
+and are therefore candidate \hchii regions; of these,
+\mmdetectionscmnondetectionscompact are morphologically compact and are
+stronger candidates. 
+We separated the 3 mm emission into dust and free-free emission by comparing with
+archival 870 \um and 20 cm data.  In the selected pilot fields, the emission is
+dominated by (which emission mechanism?)
 \end{abstract}
 
 \section{Introduction}
@@ -495,12 +505,52 @@ just below the center of the map).
 The W43 region is substantially more dust-dominated than the Galactic Center
 (Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
 aligned with free-free features, so it is difficult to disentangle them by eye
-in the MGPS90 image.  The MGPS90 - 20 cm image is negative over the free-free
-dominated regions, likely indicating that there is substantial nonthermal
-emission in these HII regions.  The presence of such nonthermal emission
-indicates that electrons must be accelerated to relativistic velocities in the
-HII region, which has recently been shown to be possible in the HII region
-expansion front \citep{Padovani2019a}.
+in the MGPS90 image.  The MGPS90 - 20 cm image is negative in the 20
+cm-dominated regions, likely indicating that there is substantial nonthermal
+emission in these HII regions.  While there are no known supernovae in the region, the population
+of OB and Wolf-Rayet stars in the region powering the expanding HII region may also
+drive strong shocks into the surrounding medium \citep[e.g.][]{Bally2010a}.
+The presence of such nonthermal emission indicates that electrons must be
+accelerated to relativistic velocities in the HII region, which has recently
+been shown to be possible in HII region expansion fronts
+\citep{Padovani2019a}.
+
+The W49B supernova remnant in the G43 field stands out as a bright nonthermal
+source.  No other supernova remnants in the surveyed area as as bright at 3\,mm (see
+Figure~\ref{fig:g43overview}). \citet{Sun2011a} found that the spectral energy
+distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz
+with index $\alpha=-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is
+$19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy.
+%(90/5)^(-0.46)*19.1 . 
+Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that most of
+the associated emission is nonthermal. 
+% note to Loren: the alpha=4.6 scaling results in the bright edges going to ~zero,
+% but the center ends up too low, suggesting that the center (the faint bit) is
+% consistent w/-0.12 but the edges are ~-0.46.  It's beyond the scope of this
+% paper to go into that level of detailed analysis, though
+
+
+{\color{red}
+Generally, all of the selected bright, extended regions are dominated by
+contributions from either free-free or synchrotron emission at 3 mm.
+In Table \ref{tab:freefreefrac}, we break down the contribution
+of free-free and dust emission to the total within a selected sub-region.
+Dust contributes no more than 20\% of the total emission to any of these.
+
+Region     Free-free  Dust
+sgrb2           0.869      0.135
+sgra            0.843      0.178
+arches          0.926      0.077
+g34             0.798      0.212
+g29             0.897      0.112
+w51a            0.878      0.142
+w51main         0.834      0.187
+w51b            0.950      0.068
+w43             0.904      0.103
+w33             0.889      0.115
+w49a            0.884      0.127
+w49b            0.985      0.039
+}
 
 %However,
 %despite this clear oversubtraction, the difference image shows an exquisite
@@ -966,19 +1016,6 @@ of center).}
 \label{fig:g43overview}
 \end{figure*}
 
-The W49B supernova remnant in the G43 field stands out as a bright nonthermal
-source.  No other supernova remnants in the surveyed area as as bright at 3\,mm (see
-Figure~\ref{fig:g43overview}). \citet{Sun2011a} found that the spectral energy
-distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz
-with index $\alpha=-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is
-$19.10\pm0.98$\,Jy, and the 90\,GHz integrated flux density should be 5.1\,Jy.
-%(90/5)^(-0.46)*19.1 . 
-Integrating over W9B, we find a flux density of 5.2\,Jy, indicating that most of
-the associated emission is nonthermal. 
-% note to Loren: the alpha=4.6 scaling results in the bright edges going to ~zero,
-% but the center ends up too low, suggesting that the center (the faint bit) is
-% consistent w/-0.12 but the edges are ~-0.46.  It's beyond the scope of this
-% paper to go into that level of detailed analysis, though
 
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/G49_overview.pdf}
@@ -1064,8 +1101,10 @@ scans noted in Figure \ref{fig:g34overview}.}
 \label{fig:g34hchii}
 \end{figure*}
 
+\section{Conclusions}
 
-Acknowledgements
+\acknowledgements
+Authors XXX would like to acknowledge funding agencies YYY.
 
 
 \appendix

@@ -73,6 +73,8 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
     else:
         outwcs = img[0].wcs
 
+    reproj_pixscale = (wcs.utils.proj_plane_pixel_area(outwcs)*u.deg**2)**0.5
+
     agal_bm = tgt_bm = Beam(beam_map[survey])
     convbm = tgt_bm.deconvolve(mgps_beam)
 
@@ -257,7 +259,8 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
         ax4 = figure.add_subplot(1, 5, 4, projection=mgps_cutout.wcs)
 
         # use the central frequency corresponding to an approximately flat spectrum (flat -> 89.72)
-        dust20 = (mgpsjysr - gps20_proj * freefree_20cm_to_3mm).value
+        freefree20 = gps20_proj * freefree_20cm_to_3mm
+        dust20 = (mgpsjysr - freefree20).value
         dust20[np.isnan(gps20_proj) | (gps20_proj == 0)] = np.nan
 
         normdust20 = visualization.ImageNormalize(mgpsjysr,
@@ -268,7 +271,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                                                   stretch=visualization.LogStretch(),)
 
         # show smoothed 20 cm
-        ax3.imshow((gps20_proj * freefree_20cm_to_3mm).value, origin='lower', interpolation='none', norm=norm)
+        ax3.imshow((freefree20).value, origin='lower', interpolation='none', norm=norm)
         ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
         ax4.set_title("3 mm Dust")
         ax4.tick_params(direction='in')
@@ -285,11 +288,26 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
     if 'w49b' in reg.meta['text']:
         norm.vmin = np.min([np.nanpercentile(dust20, 8), np.nanpercentile(freefree, 0.1)])
 
-    ax0.imshow(mgps_cutout.data / mgps_beam.sr.value, origin='lower', interpolation='none', norm=norm)
+    ax0.imshow(mgpsjysr, origin='lower', interpolation='none', norm=norm)
     ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm)
     ax2.imshow(freefree, origin='lower', interpolation='none', norm=norm)
     ax3.imshow((gps20_proj * freefree_20cm_to_3mm).value, origin='lower', interpolation='none', norm=norm)
     ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm)
+
+    print(f"{reg}: dusty sum: {dusty[dusty>0].sum()}   freefreeish sum: {freefree[freefree>0].sum()}")
+
+    area = mgps_reproj.size * (reproj_pixscale**2).to(u.sr)
+    mgps_reproj_jysr = mgps_reproj / mgps_beam.sr.value
+
+    return {'dust': dusty[dusty>0].sum(),
+            'dust20': dust20[dust20>0].sum(),
+            'freefree': freefree[freefree>0].sum(),
+            'freefree20': freefree20[freefree20>0].sum(),
+            'totalpos': mgps_reproj_jysr[mgps_reproj_jysr>0].sum(),
+            'total': mgps_reproj_jysr.sum(),
+            'totalpos20': mgpsjysr[mgpsjysr>0].sum(),
+            'total20': mgpsjysr.sum(),
+           }
 
 
 
@@ -310,6 +328,8 @@ if __name__ == "__main__":
         return pixcrd[0] > 0 and pixcrd[1] > 0 and pixcrd[0] < header['NAXIS1']-1 and pixcrd[1] < header['NAXIS2']-1
 
     pl.close(1)
+
+    breakdown = {}
 
     for reg in regs:
 
@@ -334,7 +354,21 @@ if __name__ == "__main__":
                     pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_alpha0.46_5panel.pdf', bbox_inches='tight')
                     pl.clf()
 
-                make_hiidust_plot(reg, mgpsfile, width=reg.radius, regname=regname,
-                                  figure=pl.figure(1, figsize=(12,8)))
+                results = make_hiidust_plot(reg, mgpsfile, width=reg.radius,
+                                            regname=regname,
+                                            figure=pl.figure(1,
+                                                             figsize=(12,8)))
+
+                breakdown[tgtname] = results
 
                 pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_5panel.pdf', bbox_inches='tight')
+
+    print(breakdown)
+    print(f"{'Region':10s} {'Free-free':10s} {'Dust':10s}")
+    for entry in breakdown:
+        print(f"{entry:10s} {breakdown[entry]['freefree'] / breakdown[entry]['totalpos']:10.3f} {breakdown[entry]['dust'] / breakdown[entry]['totalpos']:10.3f}")
+
+    print()
+    print(f"{'Region':10s} {'Free-free':10s} {'Dust':10s}")
+    for entry in breakdown:
+        print(f"{entry:10s} {breakdown[entry]['freefree20'] / breakdown[entry]['totalpos20']:10.3f} {breakdown[entry]['dust20'] / breakdown[entry]['totalpos20']:10.3f}")
