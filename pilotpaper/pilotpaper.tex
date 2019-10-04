@@ -238,7 +238,7 @@ Known point sources were observed at regular intervals each night.
                 \url{https://almascience.eso.org/sc/}, \cite{vanKempen2014}.}
                 The scaling is
                 linearly interpolated between calibration scans.
-            \item Conversion to Kelvin accounts for the beam volume. As such,
+            \item Conversion to Rayleigh Jeans brightness temperature (K; see e.g. \citealt{Condon2016a}) accounts for the beam volume. As such,
                 the beam volumes are interpolated between scans.
         \end{enumerate}
     \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities,
@@ -251,7 +251,7 @@ Some of this uncertainty is from the extrapolation in time and frequency of the 
 sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
 some is from our knowledge of $\tau$ (the sky optical depth) during the observations (for which we use archival weather data and models of the atmosphere). 
-%\todo{Simon, or MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
+%\todo{Simon, or \MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
 Maps were made using \MUSTANG's MINKASI (Seivers et.al. in prep) data reduction
@@ -670,11 +670,11 @@ protostars.  Candidates are those sources with little to no infrared emission
 and very compact, optically thick (hypercompact) \hii regions.
 
 Massive stars form in the middle of ultra-dense cores undergoing gravitational
-collapse leading to an accretion rate of order $\dot{M} \sim 10^{-3}$ \msun
+collapse, leading to an accretion rate of order $\dot{M} \sim 10^{-3}$ \msun
 \peryr such that a 100 \msun star takes about $10^5$ years to accrete its mass.
 As the star contracts onto the main sequence it starts to ionize its
 environment to create an \hchii region.  For a sufficiently dense accretion
-flow, the Strömgren radius of the \hchii regions are bound by the gravity of
+flow, the Str{\"o}mgren radius of the \hchii regions are bound by the gravity of
 the star, with a radius $R_G \sim$50-100 AU
 \citep{Keto2002a,Keto2003a,Keto2007a}.  These gravitationally bound \hchii
 regions are optically thick at centimeter wavelengths and therefore emit as
@@ -686,9 +686,9 @@ blackbodies at wavelengths $\lambda\gtrsim$3~mm, with
 which is only
 0.06 mJy at $\nu=5$ GHz, and therefore below the detection limit of many
 existing surveys; they are certainly unremarkable sources at long wavelengths.
-These \hchii regions are bright at 90 GHz but faint at 5 GHz and lower
-frequencies, which is a direct means to distinguish them from older
-ultracompact (\uchii) regions.  Sources
+\hchii regions can be distinguished from from older
+ultracompact (\uchii) regions by their  bright 90\,GHz emission and faint emission at 5\,GHz and lower
+frequencies.  Sources
 with free-free emission that peaks at or just below 3 mm represent the youngest
 high-mass YSOs.  The dense cores surrounding these sources will be bright
 in the millimeter regime, since they will have high dust column densities and
@@ -740,8 +740,7 @@ the spectral index to meet our selection criterion 2.  Sources that have
 millimeter detections (since they must be surrounded by gas and dust) and not
 centimeter detections therefore remain candidate \hchii regions.  This large
 sample of \mmdetectionscmnondetections additional candidates, especially the
-\mmdetectionscmnondetectionscompact that are compact, can be further
-investigated with future deeper centimeter observations.
+\mmdetectionscmnondetectionscompact that are compact, are interesting candidates for future deep centimeter observations.
 
 Several well-known hypercompact \hii regions were excluded from these selection
 criteria.  The \hchii regions in W51, including the W51e cluster and W51d2
@@ -1024,7 +1023,7 @@ diffuse emission in the rightmost panel (MGPS90 - VLA) is most likely caused by
 the VLA's failure to recover large angular scales.  The missing emission on the
 right side of that map is caused by the excess synchrotron emission in the Sgr
 A region, which is not accounted for in our simple free-free model.  Both dust
-maps excellently recover the massive G0.253+0.015 cloud (the bean shaped
+maps do well at recovering emission from the massive G0.253+0.015 cloud (the bean-shaped
 feature in the upper left) and the southern dust ridge (the prominent dust feature
 just below the center of the map).
 
@@ -1034,8 +1033,8 @@ aligned with free-free features, so it is difficult to disentangle them by eye
 in the MGPS90 image.  The MGPS90 - 20 cm image is negative in the 20
 cm-dominated regions, likely indicating that there is substantial nonthermal
 emission in these HII regions.  While there are no known supernovae in the region, the population
-of OB and Wolf-Rayet stars in the region powering the expanding HII region may also
-drive strong shocks into the surrounding medium \citep[e.g.][]{Bally2010a}.
+of OB and Wolf-Rayet stars powering the expanding HII region may also
+drive strong shocks into the surrounding medium \citep[e.g.][]{Bally2010a}, leading to nonthermal emission.
 The presence of such nonthermal emission indicates that electrons must be
 accelerated to relativistic velocities in the HII region, which has recently
 been shown to be possible in HII region expansion fronts
@@ -1058,7 +1057,7 @@ the associated emission is nonthermal.
 \begin{table*}[htp]
 \centering
 %\begin{minipage}{130mm}
-\caption{Free-free vs Dust}
+\caption{Free-free and Dust Emission Fractions}
 \begin{tabular}{llll}
     \label{tab:freefree}
 Field Name   & Center (Galactic) & Field Size & Dust Fraction ($\beta=1.5$) \\
@@ -1130,10 +1129,14 @@ than from cold molecular gas.
 
 
 \section{Conclusions}
-We have presented the pilot progam for the MUSTANG 90 GHz Galactic Plane
-Survey, MGPS90.  The initial sample includes several high-mass star cluster
-forming regions that are all dominated by free-free and synchrotron emission at
-3 mm.  We cataloged the images, identifying \nsources compact sources using the
+We have presented the pilot data for the MUSTANG 90 GHz Galactic Plane
+Survey, MGPS90.  When complete, this survey
+will cover most of the northern Galactic plane within $b<0.5$.
+These initial data cover several high-mass star cluster
+forming regions.  All imaged regions are dominated by free-free and synchrotron emission at
+3 mm.  
+
+We cataloged emission in the images, identifying \nsources compact sources using the
 \texttt{dendrogram} algorithm, of which \ncompacthiicand are verified \hchii
 regions, and another \mmdetectionscmnondetectionscompact are plausible
 candidates.  
