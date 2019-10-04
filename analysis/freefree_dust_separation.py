@@ -379,6 +379,19 @@ if __name__ == "__main__":
     for entry in breakdown:
         print(f"{entry:10s} {breakdown[entry]['freefree20'] / breakdown[entry]['totalpos20']:10.3f} {breakdown[entry]['dust20'] / breakdown[entry]['totalpos20']:10.3f}")
 
+    reg_name_map = {
+        "arches":"Arches",
+        "sgrb2":"Sgr\,B2",
+        "w33":"W33",
+        "g29":"G29",
+        "w43":"W43",
+        "g34":"G34",
+        "w49a":"W49a",
+        "w49b":"W49b",
+        "w51a":"W51a",
+        "w51b":"W51b",
+    }
+
     with open('../pilotpaper/freefreetable.tex', 'w') as fh:
         for entry in breakdown:
             if entry in ('w51main', 'sgra'):
@@ -387,5 +400,5 @@ if __name__ == "__main__":
                 continue
             reg = breakdown[entry]['region']
             fh.write(f"{entry:10s} & {reg.center.galactic.to_string(style='decimal', precision=3):35s} &"
-                     f"{reg.radius.to(u.arcmin).value:6.2f}' & "
+                     f"{reg.radius.to(u.arcmin).value:6.2f} & "
                      f" {breakdown[entry]['dust'] / breakdown[entry]['totalpos']:10.2f} \\\\\n")
