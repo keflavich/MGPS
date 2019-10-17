@@ -393,12 +393,12 @@ if __name__ == "__main__":
     }
 
     with open('../pilotpaper/freefreetable.tex', 'w') as fh:
-        for entry in breakdown:
+        for entry in reg_name_map:
             if entry in ('w51main', 'sgra'):
                 # w51main is a subset of w51a
                 # sgra is covered by the arches field and has cropping, edge-of-field issues
                 continue
             reg = breakdown[entry]['region']
-            fh.write(f"{entry:10s} & {reg.center.galactic.to_string(style='decimal', precision=3):35s} &"
+            fh.write(f"{reg_name_map[entry]:10s} & {reg.center.galactic.to_string(style='decimal', precision=3):35s} &"
                      f"{reg.radius.to(u.arcmin).value:6.2f} & "
                      f" {breakdown[entry]['dust'] / breakdown[entry]['totalpos']:10.2f} \\\\\n")
