@@ -21,7 +21,7 @@
 affiliation etc.}\\
 We report the results of a pilot program for a \MUSTANG Galactic Plane survey
 at 3 mm (90 GHz), MGPS90.
-The survey so far achieves a typical $1--\sigma$ depth of $1-2$ mJy/beam in a
+The survey so far achieves a typical $1\sigma$ depth of $1-2$ mJy/beam in a
 $9\arcsec$ beam.  We describe the survey parameters, quality assessment
 process, cataloging,
 and comparison with other data sets.
@@ -104,16 +104,16 @@ filaments (in the Galactic center), and extragalactic sources.
 % Because both free-free and dust emission are optically thin...
 %One of the aims of this survey is to identify the youngest high-mass protostars.
 
-\MUSTANG \citep{Dicker2014a} is a 223 element bolometer array operating on the
-100~m Green Bank Telescope (GBT) with a wide (75--105~GHz) bandwidth and a
+\MUSTANG \citep{Dicker2014a} is a 215 element bolometer array operating on the
+100~m Robert C.\ Byrd Green Bank Telescope\footnote{This material is based upon work supported by the Green Bank Observatory which is a major facility funded by the National Science Foundation.} (GBT) with a wide (75--105~GHz) bandwidth and a
 4.25\arcmin\ field-of-view
 (fov).\footnote{\url{http://www.gb.nrao.edu/mustang/}}  The detectors are TES
 detectors read out using a microwave multiplexing readout (umux). Typical
-observing modes consist of different on-the-fly mapping scans - either small
+observing modes consist of different on-the-fly mapping scans -- either small
 daisy scans for arcminute sized targets or larger raster scans in perpendicular
 directions used in the data presented in this paper.  Both scan patterns are
 designed to maximize cross-linking on many timescales so as to enable the
-removal of 1/f noise from the instrument and the atmosphere.  In the large
+removal of $1/f$ noise from the instrument and the atmosphere.  In the large
 bandwidth of \MUSTANG, line contamination is generally negligible.
 
 
@@ -257,7 +257,8 @@ some is from our knowledge of $\tau$ (the sky optical depth) during the observat
 
 \subsection{Map Making}
 Maps were made using \MUSTANG's MINKASI (Seivers et.al. in prep) data reduction
-pipeline which is based on maximum likelihood \todo{maximum likelihood what?}.
+pipeline which is based on the maximum likelihood pipeline written for ACT\cite{D_nner_2012}.
+%maximum likelihood is a mathematical defination - see pg 13 of the reference.  It finds the map that, given your knowledge of the noise properties of the data, is most likely to be the true map of the sky.
 We used smoothed power spectra from a singular value decomposition (SVD) of the
 data on a scan by scan basis to obtain a noise model.
 This model does not work well if there are strong sources.
