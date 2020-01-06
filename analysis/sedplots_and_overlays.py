@@ -78,7 +78,14 @@ for regname,fn in files.items():
                 crd = coordinates.SkyCoord(*row['x_cen', 'y_cen'], frame=frame.name, unit=(u.deg, u.deg))
                 make_sed_plot(crd, mgps_fn, figure=fig5, regname=regname)
 
+                # HACK: if it already exists, the labels are broken
                 ax = fig5.add_subplot(4, 5, 20)
+                if ax in fig5.axes:
+                    ax.remove()
+                if ax in fig5.axes:
+                    fig5.axes.remove(ax)
+                ax = fig5.add_subplot(4, 5, 20)
+                ax.cla()
                 ax.loglog(x, y, 'o-')
                 ax.loglog(x, uplims, marker='v', color='orange', linestyle='none')
                 ax.set_aspect('equal', 'box')
@@ -86,10 +93,22 @@ for regname,fn in files.items():
                 ax.set_ylabel("Flux Density [mJy]")
                 ax.yaxis.set_label_position("right")
                 ax.yaxis.tick_right()
+                ax.set_xlim(10, 1e6)
+                ax.xaxis.set_ticks([100,1e4,1e6])
+                ax.xaxis.set_ticklabels(['100 $\mu$m', '1 cm', '1 m'])
+
+                ax.xaxis.set_tick_params(color='k', labelcolor='k')
+                ax.yaxis.set_tick_params(color='k', labelcolor='k')
 
                 fig5.savefig(f'{catalog_figure_path}/seds/SED_plot_{name}.pdf', bbox_inches='tight')
                 print(f"finished {name}")
 
+# DEBUG                break
+# DEBUG            break
+# DEBUG        break
+# DEBUG    break
+# DEBUG
+# DEBUGif False:
 
             #galhdr = fits.Header.fromtextfile('../GAL_031/g31gal.hdr')
             #data,_ = reproject.reproject_interp(files['G31'], galhdr)

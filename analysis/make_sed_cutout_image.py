@@ -50,6 +50,30 @@ wlmap = {'gps6': 6*u.cm,
          'HiGal500': 500*u.um,
          }
 
+survey_titles = {'gps6': 'MAGPIS Epoch 1',
+                 'gps6epoch2': 'MAGPIS Epoch 2',
+                 'gps6epoch3': 'MAGPIS Epoch 3',
+                 'gps6epoch4': 'MAGPIS Epoch 4',
+                 'gps20': "MAGPIS",
+                 'gps20new': "MAGPIS New",
+                 'gps90': "VLA",
+                 'gpsmsx': "MSX",
+                 'gpsmsx2': "MSX 2",
+                 'gpsglimpse36': "GLIMPSE",
+                 'gpsglimpse45': "GLIMPSE",
+                 'gpsglimpse58': "GLIMPSE",
+                 'gpsglimpse80': "GLIMPSE",
+                 'mipsgal': "MIPSGAL",
+                 'atlasgal': "ATLASGAL",
+                 'bolocam': "BGPS",
+                 'mgps': "$\mathbf{MGPS-90}$",
+                 'HiGal70':  "Hi-Gal",
+                 'HiGal160': "Hi-Gal",
+                 'HiGal250': "Hi-Gal",
+                 'HiGal350': "Hi-Gal",
+                 'HiGal500': "Hi-Gal",
+                 }
+
 def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_surveys(), figure=None,
                   regname='GAL_031'):
 
@@ -112,7 +136,10 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
 
     figure.clf()
 
-    for ii, (survey,img) in enumerate(images.items()):
+    imagelist = sorted(images.items(), key=lambda x: wlmap[x[0]])
+
+    #for ii, (survey,img) in enumerate(images.items()):
+    for ii, (survey,img) in enumerate(imagelist):
 
         if hasattr(img[0], 'header'):
             inwcs = wcs.WCS(img[0].header).celestial
@@ -139,7 +166,7 @@ def make_sed_plot(coordinate, mgpsfile, width=1*u.arcmin, surveys=Magpis.list_su
             pixscale_in = (wcs.utils.proj_plane_pixel_area(outwcs)*u.deg**2)**0.5
 
         ax = figure.add_subplot(4, 5, ii+1, projection=outwcs)
-        ax.set_title("{0}: {1}".format(survey, wlmap[survey]))
+        ax.set_title("{0}: {1}".format(survey_titles[survey], wlmap[survey]))
 
         if not np.any(np.isfinite(new_img)):
             print(f"SKIPPING {survey}")
