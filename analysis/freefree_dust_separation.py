@@ -326,7 +326,12 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
 
     cax = figure.add_axes([bbox.x1+0.01, bbox.y0, 0.02, bbox.height])
     cb = figure.colorbar(mappable=lastax.images[-1], cax=cax)
-    cb.set_ticks([-3, 0, 10, 50, 100])
+    if cb.get_ticks().min() > -5:
+        cb.set_ticks([-3, 0, 10, 50, 100])
+    elif cb.get_ticks().max() > 200:
+        cb.set_ticks([-10, 0, 20, 200])
+    else:
+        cb.set_ticks([-5, 0, 10, 50, 100])
     cb.set_label('MJy sr$^{-1}$')
 
     return {'dust': dusty[dusty>0].sum(),
