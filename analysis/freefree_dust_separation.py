@@ -55,6 +55,8 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
                                              coordinate.galactic.b.deg)
 
     mgps_cutout = Cutout2D(mgps_fh.data, coordinate.transform_to(frame.name), size=width*2, wcs=wcs.WCS(mgps_fh.header))
+    print()
+    print(reg.meta['text'])
     print(f"Retrieving MAGPIS data for {coordname} ({coordinate.to_string()} {coordinate.frame.name})")
     # we're treating 'width' as a radius elsewhere, here it's a full width
     images = {survey:getimg(coordinate, image_size=width*2, survey=survey) for survey in surveys}
@@ -184,7 +186,7 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
     ax3.imshow((gps20_Mjysr * freefree_20cm_to_3mm).value, origin='lower',
                interpolation='none', norm=norm, cmap=cmap)
     ax3.set_title("20 cm scaled")
-    ax0.set_xlabel("Galactic Longitude")
+
     ax3.coords[1].set_axislabel("")
     ax3.coords[1].set_ticklabel_visible(False)
     ax3.tick_params(direction='in')
@@ -295,10 +297,14 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
 
     #elif 'G01' not in regname:
     #    norm.vmin = np.min([np.nanpercentile(dust20, 0.5), np.nanpercentile(freefree, 0.1)])
-    if np.abs(np.nanpercentile(dust20, 0.5) - np.nanpercentile(freefree, 0.1)) < 1e8:
+    if np.abs(np.nanpercentile(dust20, 0.5) - np.nanpercentile(freefree, 0.1)) < 1e2:
         norm.vmin = np.min([np.nanpercentile(dust20, 0.5), np.nanpercentile(freefree, 0.1)])
+    if 'arches' in reg.meta['text']:
+        norm.vmin = 0.95 # force 1 to be on-scale
     if 'w49b' in reg.meta['text']:
         norm.vmin = np.min([np.nanpercentile(dust20, 8), np.nanpercentile(freefree, 0.1)])
+        norm.vmin = -4
+        norm.vmax = 11
 
     ax0.imshow(mgpsMjysr, origin='lower', interpolation='none', norm=norm, cmap=cmap)
     ax1.imshow(dusty, origin='lower', interpolation='none', norm=norm, cmap=cmap)
@@ -307,13 +313,19 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
     ax4.imshow(dust20, origin='lower', interpolation='none', norm=norm, cmap=cmap)
 
 
-    for ax in figure.axes:
-        ax.set_xlabel("Galactic Longitude")
-
     print(f"{reg}: dusty sum: {dusty[dusty>0].sum()}   freefreeish sum: {freefree[freefree>0].sum()}")
 
     area = mgps_reproj.size * (reproj_pixscale**2).to(u.sr)
     mgps_reproj_Mjysr = mgps_reproj / mgps_beam.sr.value / 1e6
+
+
+    # only label the middle axis
+    for ax in figure.axes:
+        ax.set_xlabel("Galactic Longitude")
+    for ax in figure.axes:
+        ax.set_xlabel(" ")
+
+    ax0.set_xlabel("Galactic Longitude")
 
     lastax = ax3
     bbox = lastax.get_position()
@@ -326,12 +338,13 @@ def make_hiidust_plot(reg, mgpsfile, width=1*u.arcmin,
 
     cax = figure.add_axes([bbox.x1+0.01, bbox.y0, 0.02, bbox.height])
     cb = figure.colorbar(mappable=lastax.images[-1], cax=cax)
-    if cb.get_ticks().min() > -5:
-        cb.set_ticks([-3, 0, 10, 50, 100])
-    elif cb.get_ticks().max() > 200:
+    cb.set_ticks([-3, 0, 10, 50, 100])
+    if 'w51' in reg.meta['text']:
         cb.set_ticks([-10, 0, 20, 200])
-    else:
-        cb.set_ticks([-5, 0, 10, 50, 100])
+    if 'w49b' in reg.meta['text']:
+        cb.set_ticks([-3, 0, 3, 10])
+    if 'arches' in reg.meta['text']:
+        cb.set_ticks([0, 1, 5, 10])
     cb.set_label('MJy sr$^{-1}$')
 
     return {'dust': dusty[dusty>0].sum(),
@@ -398,6 +411,7 @@ if __name__ == "__main__":
                 breakdown[tgtname]['region'] = reg
 
                 pl.savefig(f'{paths.extended_figure_path}/{regname}_{tgtname}_5panel.pdf', bbox_inches='tight')
+
 
 
     print(breakdown)
