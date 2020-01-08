@@ -66,31 +66,39 @@ with open('../pilotpaper/nhiicandidates.tex', 'w') as fh:
     fh.write(r"\newcommand{\ncompacthiicand}{"+str(ncompacthiicand)+r"\xspace}")
 
 
+print()
 # manual IDs
 cand_qual = {
-    'G30.764-0.033': 'Extended HII region',
+#    'G30.764-0.033': 'Extended HII region',
     'G30.944+0.035': 'OH/IR star', # index is 2.99....
-    'G30.943+0.035': 'OH/IR star', # index is 2.99....
-    'G43.165-0.030': 'W49A South',
-    'G43.148+0.014': 'W49',
-    'G43.166+0.012': 'W49',
-    'G49.535-0.392': 'diffuse: W51g',
-    'G49.490-0.367': 'W51 IRS 2',
-    'G49.422-0.307': 'diffuse',
-    'G48.914-0.284': 'diffuse',
-    'G0.529-0.084': 'diffuse',
-    'G0.169+0.150': 'diffuse',
+#    'G30.943+0.035': 'OH/IR star', # index is 2.99....
+    #'G43.165-0.030': 'W49A South',
+    #'G43.148+0.014': 'W49',
+    #'G43.149+0.012': 'W49',
+    'G43.149+0.012': 'W49',
+    'G43.166-0.030': 'W49',
+    'G43.167+0.010': 'W49',
+#    'G49.535-0.392': 'diffuse: W51g',
+#    'G49.490-0.367': 'W51 IRS 2',
+#    'G49.422-0.307': 'diffuse',
+#    'G48.914-0.284': 'diffuse',
+#    'G0.529-0.084': 'diffuse',
+#    'G0.169+0.150': 'diffuse',
     'G34.257+0.153': 'HII', # is a hypercompact HII region
-    'G49.394-0.483': 'W51e2/e8',
-    'G0.117+0.085': 'diffuse',
+#    'G49.394-0.483': 'W51e2/e8',
+#    'G0.117+0.085': 'diffuse',
 }
 
 print("The following sources have not been classified by hand:")
 for row in candidate_table:
     if row['SourceName'] not in cand_qual:
         print(f"{row['SourceName']}")
+print()
+print("If there are no sources above, that means you're done.")
+
+
+print()
 print(" ".join([
       f"figures/cataloging/seds/SED_plot_{row['FieldID']}_{row['SourceName'].strip()}.png"
       for row in candidate_table
      ]))
-print("If there are no sources above, that means you're done.")

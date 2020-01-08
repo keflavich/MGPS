@@ -22,6 +22,11 @@ catalogs_to_search = {'J/AJ/131/2525/table2': {'Fpeak':'Fpeak20cm', #mJy
                       'J/ApJS/205/1/catalog': {'Sint': 'Fint6cm_CORNISH',
                                                'e_Sint': 'eFint6cm_CORNISH',
                                               },
+                      'J/A+A/615/A103': {"SC": 'Fint6cm_CORNISH_2',
+                                         'log_EM_': 'CORNISH_EM',
+                                         'tau': 'CORNISH_tau',
+                                         'log_ne_': 'CORNISH_ne',
+                                        },
                       'J/ApJS/91/347/table2': {'Sp5GHz': 'Fpeak6cm_Becker',
                                                #'Si5GHz': 'Fint6cm_Becker',
                                               },
@@ -117,7 +122,7 @@ if __name__ == "__main__":
                                     if ppcat[colname].unit is None and tbl[origcolname].unit is not None:
                                         ppcat[colname].unit = tbl[origcolname].unit
                                         print(f"Set unit for {colname} to {tbl[origcolname].unit}")
-                                    if ('alpha' in origcolname) or ('Type' in origcolname):
+                                    if ('alpha' in origcolname) or ('Type' in origcolname) or ('tau' in origcolname):
                                         pass
                                     elif tbl[origcolname].unit is None:
                                         raise

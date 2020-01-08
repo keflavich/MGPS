@@ -20,7 +20,7 @@ for regname,fn in files.items():
 
 full_table = table.vstack(tables_)
 
-full_table.write(f'{catalog_path}/concatenated_catalog.ipac', format='ascii.ipac')
+full_table.write(f'{catalog_path}/concatenated_catalog.ipac', format='ascii.ipac', overwrite=True)
 
 print(f"Total of {len(full_table)} sources found.")
 
@@ -35,6 +35,15 @@ cm_mm_nondetection = ((~cmdetected) & (~mmdetected)) & mgps_ok
 cm_no_mm_yes = ((~cmdetected) & (mmdetected)) & mgps_ok
 
 
+full_table.add_column(Column(name='bolocam_and_mgps_detected', data=bolocamdetected))
+full_table.add_column(Column(name='atlasgal_and_mgps_detected', data=atlasgaldetected))
+full_table.add_column(Column(name='higal_and_mgps_detected', data=higaldetected))
+full_table.add_column(Column(name='cm_and_mgps_detected', data=cmdetected))
+full_table.add_column(Column(name='mm_and_mgps_detected', data=mmdetected))
+full_table.add_column(Column(name='mgps_detected_mm_and_cm_nondetected', data=cm_mm_nondetection))
+full_table.add_column(Column(name='mgps_and_mm_detected_cm_nondetected', data=cm_no_mm_yes))
+
+
 # extended = full_table['fwhm_major'] > 14
 # compact = full_table['fwhm_major'] < 14
 # filamentary = full_table['fwhm_major'] / full_table['fwhm_minor'] > 1.5
@@ -47,6 +56,10 @@ filamentary = full_table['MorphologyClass'] == 'F'
 compact = full_table['MorphologyClass'] == 'C'
 
 compact_nocm_yesmm = (~cmdetected) & (mmdetected) & compact
+
+full_table.add_column(Column(name='mgps_and_mm_detected_nocm_compact', data=compact_nocm_yesmm))
+
+full_table.write(f'{catalog_path}/concatenated_catalog.ipac', format='ascii.ipac', overwrite=True)
 
 print(f"Bolocam: {bolocamdetected.sum()}")
 print(f"ATLASGAL: {atlasgaldetected.sum()}")
