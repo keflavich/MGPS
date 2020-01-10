@@ -21,7 +21,7 @@
 affiliation etc.}\\
 We report the results of a pilot program for a Green Bank Telescope (GBT) \MUSTANG Galactic Plane survey
 at 3 mm (90 GHz), MGPS90.
-The survey so far achieves a typical $1\sigma$ depth of $1-2$ mJy/beam in a
+The survey so far achieves a typical $1\sigma$ depth of $1-2$ mJy\,beam$^{-1}$ with a
 $9\arcsec$ beam.  We describe the survey parameters, quality assessment
 process, cataloging,
 and comparison with other data sets.
@@ -43,7 +43,7 @@ Comparing the counts of \hchii to \uchii regions, we infer the \hchii region
 lifetime is 16-46\% that of the \uchii region lifetime.
 We additionally separated the 3 mm emission into dust and free-free emission by comparing with
 archival 870 \um and 20 cm data.  In the selected pilot fields, most
-($\gtrsim80\%$) of the 3 mm emission comes from hot gas, either through
+($\gtrsim80\%$) of the 3 mm emission comes from plasma, either through
 free-free or synchrotron emission.
 \end{abstract}
 
@@ -57,8 +57,7 @@ or worse.
 In the centimeter regime, large-area Galactic plane surveys have been conducted at 6 cm and 
 longer wavelengths at resolutions $1.5\arcsec$ or worse \citep{Giveon2005a,Hoare2012a,Beuther2016a}.
 
-Emission at 3 mm (90 GHz) consists of a combination of dust, free-free, and synchrotron
-continuum emission. 
+Emission at 3 mm (90 GHz) consists of a combination of dust, free-free, and synchrotron continuum emission. 
 Between 1 mm and 6 cm, there are no existing Galactic plane surveys.  This wavelength
 regime represents the global minimum in typical galactic spectral energy
 distributions.  At 3 mm, most dust emission is optically thin; very few regions
@@ -68,8 +67,8 @@ optically-thin free-free emission  at 3 mm; only the densest of hypercompact
 \hii (\hchii) regions are optically thick out to such high frequencies.
 Anomalous Microwave Emission (AME) peaks somewhere in the 10-60 GHz
 regime and remains a substantial fraction of the total emission on large angular scales out to
-$\sim100$ GHz, though so far most observations on small ($\lesssim10\arcmin$) scales have
-been limited to lower ($<50 GHz$) frequencies  \citep{Dickinson2018a}.
+$\sim100$~GHz, though so far most observations on small ($\lesssim10\arcmin$) scales have
+been limited to lower ($<50$~GHz) frequencies  \citep{Dickinson2018a}.
 % \todo{I could use help with the AME statement; I'm looking for a reasonable but not overly
 % reductionist 1-line summary of AME and its relevance to these observations.  My reading
 % is that no one has looked at compact HII regions in detail, but there are observations
@@ -280,7 +279,7 @@ some is from our knowledge of $\tau$ (the sky optical depth) during the observat
 %\todo{Simon, or \MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
-Maps were made using \MUSTANG's MINKASI (Seivers et al. in prep) data reduction
+Maps were made using \MUSTANG's MINKASI (Sievers et al. in prep) data reduction
 pipeline which is based on the maximum likelihood pipeline written for ACT \cite{Dunner2013a}.
 %maximum likelihood is a mathematical defination - see pg 13 of the reference.
 %It finds the map that, given your knowledge of the noise properties of the
@@ -448,24 +447,24 @@ $\alpha$ & Frequency & Wavelength\\
 4.0 & 93.33  & 3.212 \\
 \hline
 \end{tabular}
-\par The central frequencies are computed by computing the first moment of a
-power-law source function $S(\nu) = \nu^{\alpha}$ integrated over the \MUSTANG
+\par The central frequencies are computed by integrating the first moment of a
+power-law source function $S(\nu) = \nu^{\alpha}$ over the \MUSTANG
 bandpass.
 
 \end{table}
 
 \subsection{Combination with Planck data\label{sec:feather}}
 The largest angular scale recovered by \MUSTANG is approximately 4.25\arcmin.
-The large angular scale structure is therefore missing.  To recover those
+Large angular scale structure is therefore missing.  To recover those
 missing scales, we combine the \MUSTANG data with
-Planck 100 GHz data (with an effective central frequency of 104.225 GHz
+Planck 100\,GHz data (with an effective central frequency of 104.225\,GHz
 assuming a spectral index $\alpha=3$) scaled to the \MUSTANG central frequency
-of 92.44 GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
+of 92.44\,GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
 as implemented in the \texttt{uvcombine}
 \footnote{\url{https://github.com/radio-astro-tools/uvcombine}} package.
 Planck's spatial resolution is $\approx10\arcmin$, substantially larger
 than the largest scale recovered in the MGPS data, so intermediate-scale
-structures (4-10\arcmin) are likely to be poorly recovered.
+structures (4-10\arcmin) are likely recovered poorly.
 The resulting FITS images are provided in the data repository.
 
 \section{Compact Source Catalogs}
@@ -715,7 +714,7 @@ blackbodies at wavelengths $\lambda\gtrsim$3~mm, with
 which is only
 0.06 mJy at $\nu=5$ GHz, and therefore below the detection limit of many
 existing surveys; they are certainly unremarkable sources at long wavelengths.
-\hchii regions can be distinguished from from older
+\hchii regions can be distinguished from older
 ultracompact (\uchii) regions by their  bright 90\,GHz emission and faint emission at 5\,GHz and lower
 frequencies.  Sources
 with free-free emission that peaks at or just below 3 mm represent the youngest
