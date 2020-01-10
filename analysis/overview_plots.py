@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('agg')
 from dendrocat.aperture import Circle, Annulus
 from astropy import wcs
 from astropy.io import fits
@@ -57,17 +59,17 @@ for regname,fn in files.items():
             ax.tick_params(direction='in')
 
 
-            from mpl_toolkits.axes_grid1 import make_axes_locatable
-            divider = make_axes_locatable(ax)
-            cax = divider.append_axes("right", size="5%", pad=0.05)
-            cax.coords[0].grid(False)
-            cax.coords[1].grid(False)
-            cax.tick_params(direction='in')
-            cax.coords[0].set_ticks(alpha=0, color='w', size=0, values=[]*u.dimensionless_unscaled)
-            cax.coords[1].set_ticklabel_position('r')
-            cax.coords[1].set_axislabel_position('r')
+            #from mpl_toolkits.axes_grid1 import make_axes_locatable
+            #divider = make_axes_locatable(ax)
+            #cax = divider.append_axes("right", size="5%", pad=0.05)
+            #cax.coords[0].grid(False)
+            #cax.coords[1].grid(False)
+            #cax.tick_params(direction='in')
+            #cax.coords[0].set_ticks(alpha=0, color='w', size=0, values=[]*u.dimensionless_unscaled)
+            #cax.coords[1].set_ticklabel_position('r')
+            #cax.coords[1].set_axislabel_position('r')
 
-            pl.draw()
+            #pl.draw()
 
             #axbbox = ax.bbox.transformed(fig.transFigure.inverted())
             #print(f"Axis bbox in fig coords = {axbbox}")
@@ -75,11 +77,29 @@ for regname,fn in files.items():
             #print(f"Image extent bbox in fig coords = {axbbox}")
             #cax = fig.add_axes([axbbox.x1 + 0.01, axbbox.y0, 0.03, axbbox.y1 - axbbox.y0])
             #assert cax is not None
-            cb = fig.colorbar(mappable=im, cax=cax)#, fraction=0.031, pad=0.04)
+            #cb = fig.colorbar(mappable=im, cax=cax)#, fraction=0.031, pad=0.04)
+            #cb.set_label("$S_{3 mm}$ [Jy beam$^{-1}$]")
+            #cax.set_ylabel("$S_{3 mm}$ [Jy beam$^{-1}$]")
+
+            bbox = ax.get_position()
+            bad_height = bbox.height
+            print(f"bbox_height = {bbox.height}")
+            ii = 0
+
+            # this is a painful hack to force the bbox to update
+            while bbox.height == bad_height:
+                pl.pause(0.1)
+                bbox = ax.get_position()
+                print(f"bbox_height = {bbox.height}.  ii={ii}")
+                ii += 1
+                if ii > 10:
+                    break
+
+            cax = fig.add_axes([bbox.x1+0.01, bbox.y0, 0.02, bbox.height])
+            cb = fig.colorbar(mappable=im, cax=cax)
             cb.set_label("$S_{3 mm}$ [Jy beam$^{-1}$]")
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview.pdf", bbox_inches='tight')
-
 
             bolocamdetected = ~((catalog['Fint1100um'] == 0))
             atlasgaldetected = ~((catalog['Fint870um'] == 0))
