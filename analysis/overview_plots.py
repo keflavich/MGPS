@@ -84,16 +84,20 @@ for regname,fn in files.items():
             bbox = ax.get_position()
             bad_height = bbox.height
             print(f"bbox_height = {bbox.height}")
-            ii = 0
+            fig.savefig(f"{overview_figure_path}/{regname}_overview.pdf", bbox_inches='tight')
+            bbox = ax.get_position()
+            bad_height = bbox.height
+            print(f"bbox_height = {bbox.height}")
 
-            # this is a painful hack to force the bbox to update
-            while bbox.height == bad_height:
-                pl.pause(0.1)
-                bbox = ax.get_position()
-                print(f"bbox_height = {bbox.height}.  ii={ii}")
-                ii += 1
-                if ii > 10:
-                    break
+            #ii = 0
+            ## this is a painful hack to force the bbox to update
+            #while bbox.height == bad_height:
+            #    pl.pause(0.1)
+            #    bbox = ax.get_position()
+            #    print(f"bbox_height = {bbox.height}.  ii={ii}")
+            #    ii += 1
+            #    if ii > 10:
+            #        break
 
             cax = fig.add_axes([bbox.x1+0.01, bbox.y0, 0.02, bbox.height])
             cb = fig.colorbar(mappable=im, cax=cax)
