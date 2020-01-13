@@ -468,9 +468,9 @@ with an RMS surface accuracy 230 \um \citep{Frayer2018a}.
 \end{table}
 
 \subsection{Combination with Planck data\label{sec:feather}}
-The largest angular scale recovered by \MUSTANG is approximately 4.25\arcmin.
-Large angular scale structure is therefore missing.  To recover those
-missing scales, we combine the \MUSTANG data with
+The largest angular scale recovered by the \MUSTANG data pipeline is
+approximately 4.25\arcmin.  Large angular scale structure is therefore missing.
+To recover those missing scales, we combine the \MUSTANG data with
 Planck 100\,GHz data (with an effective central frequency of 104.225\,GHz
 assuming a spectral index $\alpha=3$) scaled to the \MUSTANG central frequency
 of 92.44\,GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
@@ -484,7 +484,7 @@ The resulting FITS images are provided in the data repository.
 \section{Compact Source Catalogs}
 
 We use \texttt{astrodendro} via the \texttt{dendrocat} wrapper to extract a
-catalog of both compact structures.  In brief, \texttt{astrodendro} catalogs
+catalog of compact structures.  In brief, \texttt{astrodendro} catalogs
 hierarchically nested signal, effectively cataloging contoured regions.  For
 the catalog described here, we included only the most compact structures, which
 are the `leaves' in the catalog hierarchy.
@@ -588,9 +588,12 @@ MAGPIS               & 20             & 5                      & \citet{Giveon20
 Of the \nsources total \MGPS sources, \mmdetections had millimeter/submillimeter
 matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
-had no match in the millimeter or centimeter catalogs.  \todo{Maybe show all of these unmatched sources, or comment further on what they could be?  Most likely, they're faint sources that \MUSTANG picks up but other surveys couldn't detect.}  There were
-\mmdetectionscmnondetections sources cross-matched at shorter wavelengths
-but not at longer wavelengths.  
+had no match in the millimeter or centimeter catalogs.  
+%\todo{Maybe show all of these unmatched sources, or comment further on what
+%they could be?  Most likely, they're faint sources that \MUSTANG picks up but
+%other surveys couldn't detect.}
+There were \mmdetectionscmnondetections sources cross-matched at shorter
+wavelengths but not at longer wavelengths.  
 
 %The overview figures, Figures
 %\ref{fig:g01overview}-\ref{fig:g49overview}, show the morphologically
@@ -1118,7 +1121,7 @@ been shown to be possible in HII region expansion fronts
 \citep{Padovani2019a}.
 
 The W49B supernova remnant in the G43 field stands out as a bright nonthermal
-source.  No other supernova remnants in the surveyed area as as bright at 3\,mm (see
+source.  No other supernova remnants in the surveyed area are as bright at 3\,mm (see
 Figure~\ref{fig:g43overview}). \citet{Sun2011a} found that the spectral energy
 distribution of W49B is well-fit by a single power law from 200\,MHz to 30\,GHz
 with index $\alpha=-0.46\pm0.01$.  They found that the 5\,GHz integrated flux density is
@@ -1223,7 +1226,11 @@ regions, and another \mmdetectionscmnondetectionscompact are plausible
 candidates.  
 
 \acknowledgements
-Authors XXX would like to acknowledge funding agencies YYY.
+\MUSTANG is funded by the NSF award number 1615604 and by the Mt.\ Cuba
+Astronomical Foundation. The National Radio Astronomy Observatory is a facility
+of the National Science Foundation operated under cooperative agreement by
+Associated Universities, Inc.
+
 
 
 \appendix
