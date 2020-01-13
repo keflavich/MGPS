@@ -14,26 +14,55 @@ xax = tables['t1619r19.txt']['Wavenumber']
 filterfunc = np.product([np.interp(xax, tbl['Wavenumber'], tbl['Transmission']) for tbl in tables.values()],
                         axis=0)
 
+# get the filters a second way, just to be sure
+import pandas
+xf = pandas.ExcelFile('Filters_Mustang1.5_May2013.xls')
+xax2 = pandas.read_excel('Filters_Mustang1.5_May2013.xls', xf.sheet_names[0])['Unnamed: 0'].data
+tables2 = [pandas.read_excel('Filters_Mustang1.5_May2013.xls', sheetname)
+           for sheetname in xf.sheet_names]
+filterfunc2 = np.product([np.interp(xax2, tbl['Unnamed: 0'], tbl[tbl.columns[1]])
+                          for tbl in tables2], axis=0)
+
+
 frq = u.Quantity(xax, u.cm**-1).to(u.GHz, u.spectral())
 filterfunc[frq < 75*u.GHz] = 0
+pl.figure(1).clf()
+pl.plot(frq, filterfunc, label='Spreadsheet Numbers (transcribed)')
 
-pl.plot(frq, filterfunc)
+frq2 = u.Quantity(xax2, u.cm**-1).to(u.GHz, u.spectral())
+filterfunc2[frq2 < 75*u.GHz] = 0
+pl.plot(frq2, filterfunc2, label='Spreadsheet Numbers (xls)')
+
+# Brian Mason's filterfunc
+frq, filterfunc = np.loadtxt('m2bp.txt').T
+frq = u.Quantity(frq, u.GHz)
+
+pl.plot(frq, filterfunc, label='m2bp')
+
+pl.legend(loc='upper right')
+pl.xlabel("Frequency [GHz]")
+pl.ylabel("Transmission Fraction")
+pl.xlim(60,160)
 
 # calculate effective central frequency
 nu0 = 100*u.GHz
 
 # include a component for the Ruze equation...
-def ruze(nu, epsilon=0.23025861*u.mm, eta_a=0.71):
+def ruze(nu, epsilon=0.23*u.mm, eta_a=0.71):
     # 0.23 = 0.71 e^((-4 pi epsilon / 110 GHz in mm)^2) from Frayer+2018
     # epsilon = 0.23025861 mm = (-np.log(0.23 / 0.71) / (4*np.pi)**2 * (110*u.GHz).to(u.mm, u.spectral())**2) ** 0.5
     return (eta_a * np.exp(-(4*np.pi*epsilon / (nu.to(u.mm, u.spectral())))**2)).decompose()
 
+ruze_component = ruze(frq)
+
 for alpha in np.arange(0, 4.5, 0.5):
     flux = (frq/nu0)**alpha
-    ruze_component = ruze(frq)
     ctrfrq = (frq * flux * filterfunc * ruze_component).sum() / (filterfunc * ruze_component * flux).sum()
-    print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}")
+    print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}\\\\")
 
+pl.figure(2).clf()
+ruze_component = ruze(frq)
+pl.plot(frq, (filterfunc * ruze_component), label='m2bp')
 
 """
 effective central frequencies
@@ -57,4 +86,15 @@ with Ruze:
 3.0 & 91.06 GHz & 3.292 mm
 3.5 & 91.51 GHz & 3.276 mm
 4.0 & 91.95 GHz & 3.260 mm
+
+Brian Mason's + Ruze:
+0.0 & 87.85 GHz & 3.413 mm\\
+0.5 & 88.23 GHz & 3.398 mm\\
+1.0 & 88.62 GHz & 3.383 mm\\
+1.5 & 89.02 GHz & 3.368 mm\\
+2.0 & 89.41 GHz & 3.353 mm\\
+2.5 & 89.80 GHz & 3.338 mm\\
+3.0 & 90.19 GHz & 3.324 mm\\
+3.5 & 90.58 GHz & 3.310 mm\\
+4.0 & 90.96 GHz & 3.296 mm\\
 """
