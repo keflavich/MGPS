@@ -22,9 +22,16 @@ pl.plot(frq, filterfunc)
 # calculate effective central frequency
 nu0 = 100*u.GHz
 
+# include a component for the Ruze equation...
+def ruze(nu, epsilon=0.23025861*u.mm, eta_a=0.71):
+    # 0.23 = 0.71 e^((-4 pi epsilon / 110 GHz in mm)^2) from Frayer+2018
+    # epsilon = 0.23025861 mm = (-np.log(0.23 / 0.71) / (4*np.pi)**2 * (110*u.GHz).to(u.mm, u.spectral())**2) ** 0.5
+    return (eta_a * np.exp(-4*np.pi*epsilon / (nu.to(u.mm, u.spectral())))).decompose()
+
 for alpha in np.arange(0, 4.5, 0.5):
     flux = (frq/nu0)**alpha
-    ctrfrq = (frq * flux * filterfunc).sum() / (filterfunc * flux).sum()
+    ruze_component = ruze(frq)
+    ctrfrq = (frq * flux * filterfunc * ruze_component).sum() / (filterfunc * ruze_component * flux).sum()
     print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}")
 
 
@@ -39,4 +46,15 @@ effective central frequencies
 3.0: 92.44841115744173 GHz
 3.5: 92.89157202413543 GHz
 4.0: 93.32862386559712 GHz
+
+with Ruze:
+    0.0 & 88.94 GHz & 3.371 mm
+0.5 & 89.39 GHz & 3.354 mm
+1.0 & 89.84 GHz & 3.337 mm
+1.5 & 90.30 GHz & 3.320 mm
+2.0 & 90.75 GHz & 3.303 mm
+2.5 & 91.21 GHz & 3.287 mm
+3.0 & 91.66 GHz & 3.271 mm
+3.5 & 92.11 GHz & 3.255 mm
+4.0 & 92.55 GHz & 3.239 mm
 """
