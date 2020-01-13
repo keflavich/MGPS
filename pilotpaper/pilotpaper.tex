@@ -288,7 +288,8 @@ We used smoothed power spectra from a singular value decomposition (SVD) of the
 data on a scan by scan basis to obtain a noise model.
 This model does not work well if there are strong sources.
 By subdividing timestreams and taking power spectra of each segment, it is
-possible to identify parts of the power spectra with strong sources as there is
+possible to identify power spectra taken from parts of the timestreams with
+strong sources as there is 
 a significant increase in the signal band ($\sim$0.1--15~Hz). These regions are
 flagged and an average power spectrum calculated from the median of the
 remaining segments. 
@@ -303,22 +304,31 @@ strong signal should have been removed) the full SVD noise model could be used
 (which tended to give better results on faint features). For W33, three
 iterations produced optimal results; the other regions required more
 iterations.
+% NB per Simon: FYI - in practice around strong sources I found it impossible
+% to remove all of the signal - 1 to 2" pointing errors exist in the GBT's data
+% so there is no possible fit that removes all signal from the timestreams of
+% every detector - hence why I had to go to the modified weltch method in the
+% last paragraph when estimating the power spectra.
 
 For some fields, notably G34, we only obtained scans in one direction.  Future
 observations filling in the orthogonal scan direction will be needed to eliminate
 the resulting scan-direction striping features.
 
-The map making process assumes the mean incoming intensity is zero.  This assumption
-encodes a large angular scale filter such that angular scales larger than $\sim4.25$\arcmin are not present in the data.  This filtering is visible as negative bowls in the images,
-especially in the Sgr B2 / Galactic Center field.
+The map making process assumes the mean incoming intensity is zero.  This
+assumption encodes a large angular scale filter such that angular scales larger
+than $\sim4.25$\arcmin are not present in the data.  This filtering is visible
+as negative bowls in the images, especially in the Sgr B2 / Galactic Center
+field.
 
 The processed images are shown in figures
 \ref{fig:g01overview}-\ref{fig:g49overview}.
 
 \subsection{Sensitivity and beam size}
 
-The noise in the maps is given per 1" pixel - given there are 80 (Main
-beam) to 140 (Main beam + near in sidelobes) arcsecond sq per beam one can expect the noise in the unsmoothed maps to drop by an order of magnitude when proper smoothing is applied. 
+The noise in the maps is given per 1\arcsec pixel - given there are 80 (main
+beam) to 140 (main beam + near in sidelobes) square arcseconds per beam, one can
+expect the noise in the unsmoothed maps to drop by an order of magnitude when
+proper smoothing is applied. 
 %\todo{MUSTANG team: could you clarify this section?  What is the `variance beam'?}
 
 %  old noise table
@@ -422,10 +432,13 @@ pointing centers can be used if needed.
 % we can validate our calibration against.}
 
 \subsection{Effective Central Frequency}
-The \MUSTANG bandpass filter is approximately flat over the range 75 to 105 GHz.
-We multiplied the bandpass filter by power law flux density distributions with $S_\nu\propto\nu^{\alpha}$
-to obtain the true effective central frequency of the bandpass for these assumed
-continuous distributions.  They are reported in Table \ref{tab:centralfreq}.
+The \MUSTANG bandpass filter is approximately flat over the range 75 to 105
+GHz, though including surface inaccuracies via the Ruze formula, the effective
+sensitivity declines by about a factor of three over this range.  We multiplied
+the bandpass filter by power law flux density distributions with
+$S_\nu\propto\nu^{\alpha}$ to obtain the true effective central frequency of
+the bandpass for these assumed continuous distributions.  They are reported in
+Table \ref{tab:centralfreq}.
 
 % analysis/filters.py
 \begin{table}[htp]

@@ -26,7 +26,7 @@ filterfunc2 = np.product([np.interp(xax2, tbl['Unnamed: 0'], tbl[tbl.columns[1]]
 
 frq = u.Quantity(xax, u.cm**-1).to(u.GHz, u.spectral())
 filterfunc[frq < 75*u.GHz] = 0
-pl.clf()
+pl.figure(1).clf()
 pl.plot(frq, filterfunc, label='Spreadsheet Numbers (transcribed)')
 
 frq2 = u.Quantity(xax2, u.cm**-1).to(u.GHz, u.spectral())
@@ -53,12 +53,16 @@ def ruze(nu, epsilon=0.23*u.mm, eta_a=0.71):
     # epsilon = 0.23025861 mm = (-np.log(0.23 / 0.71) / (4*np.pi)**2 * (110*u.GHz).to(u.mm, u.spectral())**2) ** 0.5
     return (eta_a * np.exp(-(4*np.pi*epsilon / (nu.to(u.mm, u.spectral())))**2)).decompose()
 
+ruze_component = ruze(frq)
+
 for alpha in np.arange(0, 4.5, 0.5):
     flux = (frq/nu0)**alpha
-    ruze_component = ruze(frq)
     ctrfrq = (frq * flux * filterfunc * ruze_component).sum() / (filterfunc * ruze_component * flux).sum()
     print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}\\\\")
 
+pl.figure(2).clf()
+ruze_component = ruze(frq)
+pl.plot(frq, (filterfunc * ruze_component), label='m2bp')
 
 """
 effective central frequencies
