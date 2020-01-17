@@ -2,6 +2,7 @@ import numpy as np
 import glob
 from astropy.table import Table
 from astropy import units as u
+import pandas
 import pylab as pl
 
 tables = {}
@@ -15,13 +16,21 @@ filterfunc = np.product([np.interp(xax, tbl['Wavenumber'], tbl['Transmission']) 
                         axis=0)
 
 # get the filters a second way, just to be sure
-import pandas
 xf = pandas.ExcelFile('Filters_Mustang1.5_May2013.xls')
 xax2 = pandas.read_excel('Filters_Mustang1.5_May2013.xls', xf.sheet_names[0])['Unnamed: 0'].data
 tables2 = [pandas.read_excel('Filters_Mustang1.5_May2013.xls', sheetname)
            for sheetname in xf.sheet_names]
+
 filterfunc2 = np.product([np.interp(xax2, tbl['Unnamed: 0'], tbl[tbl.columns[1]])
                           for tbl in tables2], axis=0)
+
+xf2 = pandas.ExcelFile('Filter_data.xlsm')
+xax3 = np.array(pandas.read_excel('Filter_data.xlsm', xf2.sheet_names[0], header=1)['#GHz'])
+tables3 = [pandas.read_excel('Filter_data.xlsm', sheetname, header=1)
+           for sheetname in xf2.sheet_names if sheetname[0] == 'K']
+
+filterfunc3 = np.product([np.interp(xax3, tbl['#GHz'], tbl['transmission'])
+                          for tbl in tables3], axis=0)
 
 
 frq = u.Quantity(xax, u.cm**-1).to(u.GHz, u.spectral())
@@ -31,18 +40,24 @@ pl.plot(frq, filterfunc, label='Spreadsheet Numbers (transcribed)')
 
 frq2 = u.Quantity(xax2, u.cm**-1).to(u.GHz, u.spectral())
 filterfunc2[frq2 < 75*u.GHz] = 0
-pl.plot(frq2, filterfunc2, label='Spreadsheet Numbers (xls)')
+pl.plot(frq2, filterfunc2, label='Spreadsheet Numbers (xls, Simon)')
+
+frq3 = u.Quantity(xax3, u.GHz)
+filterfunc3[frq3 < 75*u.GHz] = 0
+pl.plot(frq3, filterfunc3, label='Spreadsheet Numbers (xls, Charles)')
+
 
 # Brian Mason's filterfunc
 frq, filterfunc = np.loadtxt('m2bp.txt').T
 frq = u.Quantity(frq, u.GHz)
 
 pl.plot(frq, filterfunc, label='m2bp')
+pl.plot(frq, (filterfunc)*4, label='m2bp $\\times 4$')
 
 pl.legend(loc='upper right')
 pl.xlabel("Frequency [GHz]")
 pl.ylabel("Transmission Fraction")
-pl.xlim(60,160)
+pl.xlim(65,160)
 
 # calculate effective central frequency
 nu0 = 100*u.GHz
@@ -55,10 +70,14 @@ def ruze(nu, epsilon=0.23*u.mm, eta_a=0.71):
 
 ruze_component = ruze(frq)
 
-for alpha in np.arange(0, 4.5, 0.5):
-    flux = (frq/nu0)**alpha
-    ctrfrq = (frq * flux * filterfunc * ruze_component).sum() / (filterfunc * ruze_component * flux).sum()
-    print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}\\\\")
+for ff, name in ((filterfunc, 'm2bp'), (filterfunc2, 'xls Simon'), (filterfunc3, 'xls Charles'), ):
+    print()
+    print(name)
+    for alpha in np.arange(0, 4.5, 0.5):
+        flux = (frq/nu0)**alpha
+        ctrfrq = (frq * flux * filterfunc * ruze_component).sum() / (filterfunc * ruze_component * flux).sum()
+        print(f"{alpha} & {ctrfrq:0.2f} & {ctrfrq.to(u.mm, u.spectral()):0.3f}\\\\")
+
 
 pl.figure(2).clf()
 ruze_component = ruze(frq)

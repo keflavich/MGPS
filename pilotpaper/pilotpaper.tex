@@ -385,15 +385,18 @@ We use the \texttt{image-registration}\footnote{\url{http://image-registration.r
 toolkit to cross-correlate the \MUSTANG images with the 20 cm
 %convolved to Bolocam resolution with the Bolocam
 images and use a fourier-domain upsampling approach to obtain
-sub-pixel positional offsets.  The measured offsets are reported in Table
-\ref{tab:observations} and show the offset of the 20 cm data with respect to
+sub-pixel positional offsets.  We were not able to measure statistical uncertainties
+on these offsets, but correcting the images for the offsets resulted in smaller
+visual residuals in the difference images shown in Section \ref{sec:freefree}.
+The measured offsets are reported in Table \ref{tab:observations} and show the
+offset of the 20 cm data with respect to
 the \MUSTANG data.
 
 In several cases, the measured offset is comparable to the \MUSTANG beam.  We
 therefore correct these images for the offset, assuming the VLA 20 cm data
 have correct pointing.  The original pointing centers are recorded in the FITS
 headers of the published images with names \texttt{CRVALnA} so that the original
-pointing centers can be used if needed.
+pointing centers can be used if needed.   
 % \todo{Coauthors: if you could, please look at the data an ensure (1) that you're
 % looking at an image that has CRVAL1A/CRVAL2A in the headers and (2) that the image
 % appears to match well to other data sets you have.  Please see
