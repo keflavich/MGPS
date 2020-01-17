@@ -158,7 +158,7 @@ survey will be a blind survey of the Galactic plane.
 
 \section{Observations}
 
-A summary of the reported observations is given in Table \ref{tab:observations}.
+A summary of the reported observations is given in Tables \ref{tab:observationsummary} and \ref{tab:observations}.
 
 The images from this project are released at
 %\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910%2FDVN%2FD18I4Y&version=DRAFT}
@@ -169,7 +169,7 @@ The images from this project are released at
 %\begin{minipage}{130mm}
 \caption{Observation Summary}
 \begin{tabular}{llllllll}
-    \label{tab:observations}
+    \label{tab:observationsummary}
 Target   & Galactic Longitude & Field Size &     Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
          &                    &            &       hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
 \hline
@@ -188,6 +188,7 @@ Target   & Galactic Longitude & Field Size &     Time  &       Sessions   &  Est
 \par The $\ell$ and $b$ offsets are the fitted pointing offsets for these
 fields compared to 20 cm data; see Section \ref{sec:pointing}.
 \caption{Observing Session Dates and Lengths}
+
 \begin{tabular}{lll}
     \label{tab:observations}
 Session Number   & Session Start & Session Length \\
@@ -239,9 +240,8 @@ Known point sources were observed at regular intervals each night.
         point source scan in IDL.  \cite{Romero2019a} describe in detail the
         IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
-            \item A single 2-D Gaussian is fit to the point source. 
-            \item Fixing the centroid as found above, a double Gaussian (two
-                1-D Gaussians) is fit.
+            \item A single 2-D Gaussian is fit to the point source {\bf in order to estimate its location}. 
+            \item Fixing the centroid as found above, a double Gaussian is fit. {\bf The two Gaussian components share a common center; the central Gaussian represents the telescope main beam, and the second Gaussian represents the first sidelobe of the beam response. The main beam is allowed to be elliptical in the fit.}
             \item The beam volume is calculated from the map within a 60\arcsec
                 aperture and analytically from the fitted double 1D Gaussians. The
                 adopted beam volume from the double Gaussian is preferred, but
@@ -256,11 +256,11 @@ Known point sources were observed at regular intervals each night.
                 for each specific secondary calibrator. These peaks are tied
                 to a primary calibrator that is scaled to the expected
                 peak in Jy \perbeam.  The expected peak is determined from
-                planetary models if a planet or from interpolation of ALMA data
+                planetary models if a planet or from interpolation of ALMA data \citep{vanKempen2014,Fomalont2014}
                 if only an ALMA calibrator is accessible.\footnote{We use
                 standard ALMA calibrators from the GridCal program.  See
-                \url{http://www.alma.cl/~ahales/cal_survey/plots/calsurvey_monitoring_B3.html},
-                \url{https://almascience.eso.org/sc/}, \cite{vanKempen2014}.}
+                \url{http://www.alma.cl/~ahales/cal_survey/plots/calsurvey_monitoring_B3.html} and 
+                \url{https://almascience.eso.org/sc/}.}
                 The scaling is
                 linearly interpolated between calibration scans.
             \item Conversion to Rayleigh Jeans brightness temperature (K; see e.g. \citealt{Condon2016a}) accounts for the beam volume. As such,
@@ -500,7 +500,7 @@ and minimum of 100 pixels as the dendrogram parameters; the pixel scale is
 We then reject sources with a peak signal-to-noise
 ratio less than 5, where we used the average noise level across the field.
 We report the noise level estimated using the median absolute deviation
-scaled to the standard deviation for each field in table \ref{tab:observations}.
+scaled to the standard deviation for each field in table \ref{tab:observationsummary}.
 
 % We compute the noise for each source as the standard deviation
 % of pixel values in an aperture starting from 24\arcsec plus the source's major axis
