@@ -92,7 +92,7 @@ for regname,fn in files.items():
                 # highlight the MUSTANG point
                 mx = x[(x>2*u.mm) & (x < 4*u.mm)]
                 my = y[(x>2*u.mm) & (x < 4*u.mm)]
-                ax.plot(mx, my, marker='o', markerfacecolor='none', markeredgecolor='black')
+                ax.plot(mx, my, marker='s', markerfacecolor='blue', markeredgecolor='blue', zorder=-10)
 
 
                 ax.set_aspect('equal', 'box')
