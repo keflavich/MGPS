@@ -88,6 +88,13 @@ for regname,fn in files.items():
                 ax.cla()
                 ax.loglog(x, y, 'o-')
                 ax.loglog(x, uplims, marker='v', color='orange', linestyle='none')
+
+                # highlight the MUSTANG point
+                mx = x[(x>2*u.mm) & (x < 4*u.mm)]
+                my = y[(x>2*u.mm) & (x < 4*u.mm)]
+                ax.plot(mx, my, marker='o', facecolor='none', edgecolor='black')
+
+
                 ax.set_aspect('equal', 'box')
                 ax.set_xlabel("Wavelength ($\mu$m)")
                 ax.set_ylabel("Flux Density [mJy]")

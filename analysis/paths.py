@@ -14,3 +14,6 @@ pilotpaperpath = rootdir + 'pilotpaper'
 
 def root(x, rootdir=rootdir):
     return os.path.join(rootdir, x)
+
+def tpath(x):
+    return os.path.join(catalog_path, x)

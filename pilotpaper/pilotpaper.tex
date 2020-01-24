@@ -174,6 +174,7 @@ Target   & Galactic Longitude & Field Size &     Time  &       Sessions   &  Est
          &                    &            &       hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
 \hline
 \hline
+% noise levels are calculated in dendro_catalog.py from the smooth4 files in files.py
 \input{obstable_data}
 %W51      &      1.02      &        01        \\
 %W49      &      1.02      &        01, 02    \\
@@ -325,10 +326,10 @@ The processed images are shown in figures
 
 \subsection{Sensitivity and beam size}
 
-The noise in the maps is given per 1\arcsec pixel - given there are 80 (main
-beam) to 140 (main beam + near in sidelobes) square arcseconds per beam, one can
-expect the noise in the unsmoothed maps to drop by an order of magnitude when
-proper smoothing is applied. 
+% The noise in the maps is given per 1\arcsec pixel - given there are 80 (main
+% beam) to 140 (main beam + near in sidelobes) square arcseconds per beam, one can
+% expect the noise in the unsmoothed maps to drop by an order of magnitude when
+% proper smoothing is applied. 
 %\todo{MUSTANG team: could you clarify this section?  What is the `variance beam'?}
 
 %  old noise table
@@ -350,7 +351,8 @@ proper smoothing is applied.
 
 The effective beam size in the delivered maps is the convolution of the
 intrinsic FWHM = 8.1\arcsec beam with a FWHM = 4\arcsec Gaussian kernel,
-resulting in a 9\arcsec beam.
+resulting in a 9\arcsec beam.  The errors per beam reported in Table
+\ref{tab:observationsummary} correspond to these smoothed images.
 
 
 \subsection{Pointing Accuracy}
@@ -476,7 +478,7 @@ approximately 4.25\arcmin.  Large angular scale structure is therefore missing.
 To recover those missing scales, we combine the \MUSTANG data with
 Planck 100\,GHz data (with an effective central frequency of 104.225\,GHz
 assuming a spectral index $\alpha=3$) scaled to the \MUSTANG central frequency
-of 92.44\,GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
+of 90.19\,GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
 as implemented in the \texttt{uvcombine}
 \footnote{\url{https://github.com/radio-astro-tools/uvcombine}} package.
 Planck's spatial resolution is $\approx10\arcmin$, substantially larger
@@ -535,6 +537,7 @@ another, would likely be classified as extended.
 The full catalog is available on the project source code repository.
 \footnote{The July 15, 2019 version is at
 \url{https://github.com/keflavich/MGPS/blob/15fe744e44469cc825873dc5035d26ca12b44216/tables/concatenated_catalog.ipac}.}
+\todo{A complete description of the catalog columns is shown in Appendix XXXX.}
 
 % We experimented with a range of parameters for the noise threshold, the minimum
 % number of pixels, and the minimum $\Delta$ between levels.  While each of these
@@ -554,36 +557,40 @@ We cross-match the resulting catalog with the catalogs listed in Table \ref{tab:
 Matches in these catalogs are included if there is a source within 10\arcsec
 (approximately the \MUSTANG beam FWHM) of the MGPS catalog entry.
 
+
+% sensitivity estimates are SUPER ROUGH and come from catalog_flux_limits.py
 \begin{table*}[htp]
 \centering
 %\begin{minipage}{130mm}
 \caption{Comparison Data Set Summary}
-\begin{tabular}{llll}
+\begin{tabular}{lllll}
 \label{tab:otherdata}
-Name                 & Wavelength(s)  &  Angular Resolution    & References \\
-                     & \um            &  \arcsec               &  \\
-\hline                                                       
-Spitzer GLIMPSE      & 3.6--8.0       &  2                     & \citet{Churchwell2009a} \\
-Spitzer MIPSGAL      & 24             &  6                     & \citet{Gutermuth2015a} \\
-Herschel HiGal       & 70--500        &  6--36                 & \citet{Elia2017a} \\
-APEX-Laboca ATLASGAL & 870            &  20                    & \citet{Urquhart2014c} \\
-CSO-Bolocam BGPS     & 1100           &  33                    & \citet{Rosolowsky2010a}\\
-                                                             &&& \citet{Ginsburg2013a} \\
-GBT-\MUSTANG MGPS90  & 3274           &  9                     & This work \\
-\hline                                                       
-                     & cm             &                        & \\
-\hline                                                       
-MAGPIS               & 6              & 4                      & \citet{Giveon2005a} \\
-                                                             &&& \citet{Helfand2006a} \\
-CORNISH              & 6              & 1.5                    & \citet{Hoare2012a} \\
-MAGPIS               & 20             & 5                      & \citet{Giveon2005b} \\
+Name                 & Wavelength(s)  &  Angular Resolution  & Approximate Sensitivity$^*$  & References \\
+                     & \um            &  \arcsec             & mJy \perbeam  &  \\
+\hline
+Spitzer GLIMPSE      & 3.6--8.0       &  2                   & -  & \citet{Churchwell2009a} \\
+Spitzer MIPSGAL      & 24             &  6                   & -  & \citet{Gutermuth2015a} \\
+Herschel HiGal       & 70--500        &  6--36               & 20-85  & \citet{Elia2017a} \\
+APEX-Laboca ATLASGAL & 870            &  20                  & 70  & \citet{Urquhart2014c} \\
+CSO-Bolocam BGPS     & 1100           &  33                  & 50  & \citet{Rosolowsky2010a}\\
+                                                             & &&& \citet{Ginsburg2013a} \\
+GBT-\MUSTANG MGPS90  & 3274           &  9                   & 1-2  & This work \\
+\hline
+                     & cm             &                      &   & \\
+\hline
+MAGPIS               & 6              & 4                    & 2.5  & \citet{Giveon2005a} \\
+                                                             & &&& \citet{Helfand2006a} \\
+CORNISH              & 6              & 1.5                  & 2.5  & \citet{Hoare2012a} \\
+MAGPIS               & 20             & 5                    & 2  & \citet{Giveon2005b} \\
 \hline
 \end{tabular}
-%$^*$ When no matching entry was found, we adopted the listed value as a
-%$1-\sigma$ upper limit on the source flux when plotting SEDs.  However, all of these
-%surveys have significantly varying point source sensitivity at different locations,
-%so these limits should be treated carefully.  The GLIMPSE data were not included in
-%SED plots, so no upper limit is used.  
+$^*$ When no matching entry was found, we adopted the listed value as a
+$1-\sigma$ upper limit on the source flux when plotting SEDs.  However, all of these
+surveys have significantly varying point source sensitivity at different locations,
+so these limits should be treated as very loose.  The GLIMPSE and MIPSGAL data
+were not cross-matched, so no upper limit was used, but we used data from these
+surveys to produce cutout images for morphological comparison.  
+The HiGal sensitivity and angular resolution values both rise from 70 to 500 \um.
 
 \end{table*}
 
