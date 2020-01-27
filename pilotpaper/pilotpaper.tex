@@ -253,19 +253,19 @@ Known point sources were observed at regular intervals each night.
         \end{enumerate}
     \item
         \begin{enumerate}
-            \item The peaks of secondary calibrators are normalized by the mean
+            \item The peaks of secondary calibrators are normalized by the mean flux density
                 for each specific secondary calibrator. These peaks are tied
                 to a primary calibrator that is scaled to the expected
                 peak in Jy \perbeam.  The expected peak is determined from
-                planetary models if a planet or from interpolation of ALMA data \citep{vanKempen2014,Fomalont2014}
-                if only an ALMA calibrator is accessible.\footnote{We use
+                planetary models if a planet is available, or by interpolation using available ALMA data \citep{vanKempen2014,Fomalont2014}
+                if no planet with a suitable flux model is accessible.\footnote{We use
                 standard ALMA calibrators from the GridCal program.  See
                 \url{http://www.alma.cl/~ahales/cal_survey/plots/calsurvey_monitoring_B3.html} and 
                 \url{https://almascience.eso.org/sc/}.}
                 The scaling is
                 linearly interpolated between calibration scans.
-            \item Conversion to Rayleigh Jeans brightness temperature (K; see e.g. \citealt{Condon2016a}) accounts for the beam volume. As such,
-                the beam volumes are interpolated between scans.
+            \item Conversion to Rayleigh Jeans brightness temperature (K; see e.g. \citealt{Condon2016a}) accounts for the beam solid angle. As such,
+                the beam solid angles are interpolated between scans.
         \end{enumerate}
     \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities,
         and pointing offsets are recorded in an IDL save file and are
