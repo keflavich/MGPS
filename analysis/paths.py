@@ -17,3 +17,6 @@ def root(x, rootdir=rootdir):
 
 def tpath(x):
     return os.path.join(catalog_path, x)
+
+def texpath(x):
+    return os.path.join(pilotpaperpath, x)
