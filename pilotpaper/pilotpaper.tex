@@ -278,7 +278,6 @@ Some of this uncertainty is from the extrapolation in time and frequency of the 
 sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
 some is from our knowledge of $\tau$ (the sky optical depth) during the observations (for which we use archival weather data and models of the atmosphere). 
-%\todo{Simon, or \MUSTANG team: Does this use Ron Maddalena's weather model, or does it come from sky dips, or something else?}
 
 \subsection{Map Making}
 Maps were made using \MUSTANG's MINKASI (Sievers et al. in prep) data reduction
@@ -295,8 +294,6 @@ strong sources as there is
 a significant increase in the signal band ($\sim$0.1--15~Hz). These regions are
 flagged and an average power spectrum calculated from the median of the
 remaining segments. 
-%We also included a fudge factor for
-%lowering the power spectra in the signal band. \todo{MUSTANG team: can you say a little more about the fudge factor?  Or, maybe rephrase it in a way more appropriate for publication?}
 
 We followed an iterative process to obtain the best maps.  A map is made, the
 result then clipped at some level above any artifacts in that iteration and the
@@ -331,7 +328,6 @@ The processed images are shown in figures
 % beam) to 140 (main beam + near in sidelobes) square arcseconds per beam, one can
 % expect the noise in the unsmoothed maps to drop by an order of magnitude when
 % proper smoothing is applied. 
-%\todo{MUSTANG team: could you clarify this section?  What is the `variance beam'?}
 
 %  old noise table
 % \begin{table*}[htp]
@@ -347,7 +343,6 @@ The processed images are shown in figures
 % \hline
 %     \end{tabular}
 % These noise measurements are estimates based on relatively signal-free regions of the maps.
-% \todo{Decide whether to keep the left two columns or just report the MINKASI noise}
 % \end{table*}
 
 The effective beam size in the delivered maps is the convolution of the
@@ -400,15 +395,7 @@ therefore correct these images for the offset, assuming the VLA 20 cm data
 have correct pointing.  The original pointing centers are recorded in the FITS
 headers of the published images with names \texttt{CRVALnA} so that the original
 pointing centers can be used if needed.   
-% \todo{Coauthors: if you could, please look at the data an ensure (1) that you're
-% looking at an image that has CRVAL1A/CRVAL2A in the headers and (2) that the image
-% appears to match well to other data sets you have.  Please see
-% \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HPATJB&version=DRAFT},
-% which should be the July 11 version of the data release.}
 
-%\todo{GAL029 did not get a good enough pointing correction; there are clear offsets
-%in the point sources.  I don't know why this has happened and it's pretty painful
-%to investigate.}
 
 %These offsets should not be regarded as genuine pointing errors,
 %as there are substantial morphological differences between the MUSTANG and Bolocam
