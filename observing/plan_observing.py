@@ -73,45 +73,47 @@ assert len(targets) < 65
 time_grid = time_grid_from_range(time_range, time_resolution=1*u.day)
 
 observability_grid = np.zeros((24, len(time_grid)))
-pb = ProgressBar(observability_grid.shape[1])
 
-target = coordinates.SkyCoord(45*u.deg, 0*u.deg, frame='galactic')
+for targetlon in (25, 35, 45, 55):
+    target = coordinates.SkyCoord(targetlon*u.deg, 0*u.deg, frame='galactic')
 
-for ii, day in (enumerate(time_grid)):
-    day_time_grid = time_grid_from_range(Time([day, day+TimeDelta(1*u.day)]),
-                                         time_resolution=1*u.hour)
-    observability_grid[:, ii] = np.all([constraint(observer, target,
-                                                   times=day_time_grid) for
-                                        constraint in constraints], axis=0)
-    pb.update()
+    pb = ProgressBar(observability_grid.shape[1])
 
-# Create plot showing observability of the target:
+    for ii, day in (enumerate(time_grid)):
+        day_time_grid = time_grid_from_range(Time([day, day+TimeDelta(1*u.day)]),
+                                             time_resolution=1*u.hour)
+        observability_grid[:, ii] = np.all([constraint(observer, target,
+                                                       times=day_time_grid) for
+                                            constraint in constraints], axis=0)
+        pb.update()
 
-extent = [-0.5, -0.5+len(time_grid), -0.5, 24.5]
+    # Create plot showing observability of the target:
 
-fig = pl.figure(1)
-fig.clf()
-ax = pl.gca()
-ax.imshow(observability_grid, extent=extent, cmap='gray_r')
-ax.set_aspect(6)
+    extent = [-0.5, -0.5+len(time_grid), -0.5, 24.5]
 
-#ax.set_yticks(range(0, 3))
-#ax.set_yticklabels([c.__class__.__name__ for c in constraints])
-#ax.set_yticklabels
+    fig = pl.figure(1)
+    fig.clf()
+    ax = pl.gca()
+    ax.imshow(observability_grid, extent=extent, cmap='gray_r')
+    ax.set_aspect(6)
 
-#ax.set_xticks(np.arange(extent[0], extent[1]), minor=False)
-step = 15
-ax.set_xticks(range(0, len(time_grid), step))
-ax.set_xticklabels([t.datetime.strftime("%Y/%m/%d") for t in time_grid[::step]])
+    #ax.set_yticks(range(0, 3))
+    #ax.set_yticklabels([c.__class__.__name__ for c in constraints])
+    #ax.set_yticklabels
 
-ax.set_yticks(np.arange(extent[2], extent[3]), minor=True)
+    #ax.set_xticks(np.arange(extent[0], extent[1]), minor=False)
+    step = 15
+    ax.set_xticks(range(0, len(time_grid), step))
+    ax.set_xticklabels([t.datetime.strftime("%Y/%m/%d") for t in time_grid[::step]])
 
-#ax.grid(which='minor', color='w', linestyle='-', linewidth=0.5)
-#ax.tick_params(axis='x', which='minor', bottom='off')
-pl.setp(ax.get_xticklabels(), rotation=30, ha='right')
+    ax.set_yticks(np.arange(extent[2], extent[3]), minor=True)
 
-ax.tick_params(axis='y', which='minor', left='off')
-ax.set_xlabel('Time')
-fig.subplots_adjust(left=0.35, right=0.9, top=0.9, bottom=0.1)
-pl.show()
-pl.savefig("ObservabilityOfG45.png", bbox_inches='tight')
+    #ax.grid(which='minor', color='w', linestyle='-', linewidth=0.5)
+    #ax.tick_params(axis='x', which='minor', bottom='off')
+    pl.setp(ax.get_xticklabels(), rotation=30, ha='right')
+
+    ax.tick_params(axis='y', which='minor', left='off')
+    ax.set_xlabel('Time')
+    fig.subplots_adjust(left=0.35, right=0.9, top=0.9, bottom=0.1)
+    pl.show()
+    pl.savefig(f"ObservabilityOfG{targetlon}.png", bbox_inches='tight')

@@ -1,5 +1,5 @@
 import astroplan
-from astroplan.plots import plot_altitude, plot_schedule_airmass
+from astroplan.plots import plot_altitude, plot_airmass, plot_schedule_airmass
 from astropy import constants, units as u, table, stats, coordinates, wcs, log, coordinates as coord, convolution, modeling; from astropy.io import fits, ascii; from astropy.table import Table
 from astroplan import Observer
 import astropy.time
