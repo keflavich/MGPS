@@ -7,6 +7,9 @@
 \newcommand{\MGPS}{MGPS90\xspace}
 \newcommand{\MUSTANG}{MUSTANG-2\xspace}
 
+%\newcommand{\change}[1]{{\color{black} #1}}
+\newcommand{\change}[1]{{\bf \color{blue} #1}}
+
 \input{nsources}
 
 \input{nhiicandidates}
@@ -24,7 +27,7 @@ The survey so far achieves a typical $1\sigma$ depth of $1-2$ mJy\,beam$^{-1}$ w
 $9\arcsec$ beam.  We describe the survey parameters, quality assessment
 process, cataloging,
 and comparison with other data sets.
-We have identified \nsources sources over seven observed fields selecting some of
+We have identified \nsources\ \change{compact} sources over seven observed fields selecting some of
 the most prominent millimeter-bright regions between $0\deg < \ell < 50\deg$
 (total area $\approx 7.5 \deg^2$).  The majority of these sources have
 identified counterparts
@@ -105,7 +108,7 @@ to detect synchrotron emission from Galactic supernova remnants, nonthermal
 filaments (in the Galactic center), and extragalactic sources.
 
 The only objects that tend to peak at 3 mm are the most extremely dense and
-compact \hii regions.  To reach an optical depth $\sim1$ at 90 GHz, an \hii
+compact \hii regions.  To reach an optical depth $\tau_{90 GHz} \sim 1$ at 90 GHz, an \hii
 region must have an emission measure $EM\gtrsim10^{10}$ cm$^{-6}$ pc.  Such high $EM$ is
 only reached in extremely dense regions \citep[e.g.][]{Galvan-Madrid2009a}; for example, a 100 AU \hii region
 would reach $\tau_{90 GHz}\sim1$ at density $n\sim10^7$ \percc
@@ -236,12 +239,11 @@ Known point sources were observed at regular intervals each night.
         Engineers\footnote{\url{http://www.gb.nrao.edu/~rmaddale/CLEOManual/}}) to get
         each timestream into
         antenna temperature.
-    \item A map is made (in azimuth/elevation coordinates) of each calibration
-        point source scan in IDL.  \cite{Romero2019a} describe in detail the
+    \item A map is made in IDL (in azimuth/elevation coordinates) of each \change{scan on a calibrator, which is chosen to be an unresolved (point-like) source}.  \cite{Romero2019a} describe in detail the
         IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
-            \item A single 2-D Gaussian is fit to the point source {\bf in order to estimate its location}. 
-            \item Fixing the centroid as found above, a double Gaussian is fit. {\bf The two Gaussian components share a common center; the central Gaussian represents the telescope main beam, and the second Gaussian represents the first sidelobe of the beam response. The main beam is allowed to be elliptical in the fit.}
+            \item A single 2-D Gaussian is fit to the \change{unresolved} source in order to estimate its location. 
+            \item Fixing the centroid as found above, a double Gaussian is fit. The two Gaussian components share a common center; the central Gaussian represents the telescope main beam, and the second Gaussian represents the first sidelobe of the beam response. The main beam is allowed to be elliptical in the fit.
             \item The beam volume is calculated from the map within a 60\arcsec
                 aperture and analytically from the fitted double 1D Gaussians. The
                 adopted beam volume from the double Gaussian is preferred, but
@@ -264,24 +266,24 @@ Known point sources were observed at regular intervals each night.
                 \url{https://almascience.eso.org/sc/}.}
                 The scaling is
                 linearly interpolated between calibration scans.
-            \item Conversion to Rayleigh Jeans brightness temperature (K; see e.g. \citealt{Condon2016a}) accounts for the beam solid angle. As such,
+            \item Conversion to Rayleigh-Jeans brightness temperature (in K; see e.g. \citealt{Condon2016a}) accounts for the beam solid angle. As such,
                 the beam solid angles are interpolated between scans.
         \end{enumerate}
     \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities,
         and pointing offsets are recorded in an IDL save file and are
-        applied to the processing of the science scans.
+        applied to the processing of the \change{time ordered data taken on the science target (in this case, scans of the galactic plane)}.
 \end{enumerate}
 
 The absolute accuracy of these calibrations should be about 10\%.
 Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
 sources (the ALMA band is different from \MUSTANG but there are measurements at
 $\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
-some is from our knowledge of $\tau$ (the sky optical depth) during the observations (for which we use archival weather data and models of the atmosphere). 
+some is from our knowledge \change {of the optical depth $\tau_{90 GHz}$} during the observations (for which we use archival weather data and models of the atmosphere). 
 
 \subsection{Map Making}
 Maps were made using \MUSTANG's MINKASI (Sievers et al. in prep) data reduction
-pipeline which is based on the maximum likelihood pipeline written for ACT \cite{Dunner2013a}.
-%maximum likelihood is a mathematical defination - see pg 13 of the reference.
+pipeline which is based on the maximum likelihood pipeline written for the \change{Atacama Cosmology Telescope \citep[ACT;][]{Dunner2013a}}.
+%maximum likelihood is a mathematical definition - see pg 13 of the reference.
 %It finds the map that, given your knowledge of the noise properties of the
 %data, is most likely to be the true map of the sky.
 We used smoothed power spectra from a singular value decomposition (SVD) of the
@@ -291,7 +293,7 @@ By subdividing timestreams and taking power spectra of each segment, it is
 possible to identify power spectra taken from parts of the timestreams with
 strong sources as there is 
 a significant increase in the signal band ($\sim$0.1--15~Hz). These regions are
-flagged and an average power spectrum calculated from the median of the
+flagged and an average power spectrum is calculated from the median of the
 remaining segments. 
 
 We followed an iterative process to obtain the best maps.  A map is made, the
@@ -370,7 +372,7 @@ accuracy is $\sim4\arcsec$.
 %Galactic Plane Survey \citep[BGPS][]{Ginsburg2013a} images to measure pointing
 %offsets, since the Bolocam data are the closest in frequency to MUSTANG of the
 %available data sets and since those images were cross-calibrated against the
-%Herschel Hi-Gal images.
+%Herschel Hi-GAL images.
 We compared the \MUSTANG maps with 20 cm images from the MAGPIS Galactic Plane
 survey \citep{Helfand2006a} and from other sources
 \citep{Mehringer1994a,Yusef-Zadeh2004a} to measure pointing offsets,
@@ -423,7 +425,7 @@ pointing centers can be used if needed.
 % Find if there are any ALMA calibrators in any of our target fields that
 % we can validate our calibration against.}
 
-\subsection{Effective Central Frequency}
+\subsection{Effective Central Frequency}\label{sec:eff_freq}
 The \MUSTANG bandpass filter is approximately flat over the range 75 to 105
 GHz, though including surface inaccuracies via the Ruze formula, the effective
 sensitivity declines by about a factor of three over this range.  We multiplied
@@ -464,8 +466,8 @@ The largest angular scale recovered by the \MUSTANG data pipeline is
 approximately 4.25\arcmin.  Large angular scale structure is therefore missing.
 To recover those missing scales, we combine the \MUSTANG data with
 Planck 100\,GHz data (with an effective central frequency of 104.225\,GHz
-assuming a spectral index $\alpha=3$) scaled to the \MUSTANG central frequency
-of 90.19\,GHz.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
+assuming a spectral index $\alpha=3$) scaled to \change{an adopted} central frequency
+of 90.19\,GHz for \MUSTANG, \change{as appropriate for $\alpha=3$ (see Section \ref{sec:eff_freq})}.  We use a simple \texttt{feather} procedure \citep{Cotton2017a}
 as implemented in the \texttt{uvcombine}
 \footnote{\url{https://github.com/radio-astro-tools/uvcombine}} package.
 Planck's spatial resolution is $\approx10\arcmin$, substantially larger
@@ -535,7 +537,7 @@ are both shown in Appendix \ref{appendix:Catalog}.
 \subsection{Catalog cross-matching}
 \label{sec:catalogmatching}
 We cross-match the resulting catalog with the catalogs listed in Table \ref{tab:otherdata}.  
-% Herschel HiGal
+% Herschel Hi-GAL
 % \citep[70-500\um, $\sim6-36\arcsec$]{Elia2017a}, Spitzer GLIMPSE and MIPSGAL
 % \citep[3.6-24\um, $\sim2-6\arcsec$]{Churchwell2009a,Gutermuth2015a},
 % Bolocam BGPS \citep[1.1mm, $\approx33\arcsec$]{Aguirre2011a,Rosolowsky2010a,Ginsburg2013a}, LABOCA ATLASGAL
@@ -558,7 +560,7 @@ Name                 & Wavelength(s)  &  Angular Resolution  & Approximate Sensi
 \hline
 Spitzer GLIMPSE      & 3.6--8.0       &  2                   & -  & \citet{Churchwell2009a} \\
 Spitzer MIPSGAL      & 24             &  6                   & -  & \citet{Gutermuth2015a} \\
-Herschel HiGal       & 70--500        &  6--36               & 20-85  & \citet{Elia2017a} \\
+Herschel Hi-GAL       & 70--500        &  6--36               & 20-85  & \citet{Elia2017a} \\
 APEX-Laboca ATLASGAL & 870            &  20                  & 70  & \citet{Urquhart2014c} \\
 CSO-Bolocam BGPS     & 1100           &  33                  & 50  & \citet{Rosolowsky2010a}\\
                                                              & &&& \citet{Ginsburg2013a} \\
@@ -578,7 +580,7 @@ surveys have significantly varying point source sensitivity at different locatio
 so these limits should be treated as very loose.  The GLIMPSE and MIPSGAL data
 were not cross-matched, so no upper limit was used, but we used data from these
 surveys to produce cutout images for morphological comparison.  
-The HiGal sensitivity and angular resolution values both rise from 70 to 500 \um.
+The Hi-GAL sensitivity and angular resolution values both rise from 70 to 500 \um.
 
 \end{table*}
 
@@ -724,8 +726,7 @@ the star, with a radius $R_G \sim$50-100 AU
 regions are optically thick at centimeter wavelengths and therefore emit as
 blackbodies at wavelengths $\lambda\gtrsim$3~mm, with 
 \begin{equation}
-    S_\nu=21 \textrm{mJy} \left(\frac{d}{5
-    \textrm{kpc}}\right)^{-2} \left(\frac{R}{100 \textrm{AU}}\right)^2 \left(\frac{\nu}{90 \textrm{GHz}}\right)^2
+    S_\nu=21~\textrm{mJy} \left(\frac{d}{5~\textrm{kpc}}\right)^{-2} \left(\frac{R}{100~\textrm{AU}}\right)^2 \left(\frac{\nu}{90~\textrm{GHz}}\right)^2
 \end{equation}
 which is only
 0.06 mJy at $\nu=5$ GHz, and therefore below the detection limit of many
@@ -745,9 +746,9 @@ temperatures.
 We therefore select candidate HC\hii regions
 as those fitting either of these criteria:
 \begin{enumerate}
-    \item $S_{3 \mathrm{mm}} > 1.75 S_{6 \mathrm{cm}}$.  % or $S_{3 \mathrm{mm}} > S_{20 \mathrm{cm}}$.
-        This requirement selects free-free sources that have $\tau_{ff}=1$
-        at $\lambda = {6 \mathrm{cm}}$.  It corresponds to an emission
+    \item $S_{3 \mathrm{mm}} > 1.75~S_{6\mathrm{cm}}$.  % or $S_{3 \mathrm{mm}} > S_{20 \mathrm{cm}}$.
+        This requirement selects free-free sources that have $\tau_\textit{ff}=1$
+        at $\lambda = {6~\mathrm{cm}}$.  It corresponds to an emission
         measure ${EM=7\ee{7}~\mathrm{cm}^{-6}~\mathrm{pc}}$.
     \item
         The source is not detected at 6 and 20 cm, is detected at 1.1 mm, and has
@@ -759,7 +760,7 @@ as those fitting either of these criteria:
         index for optically thin dust with an opacity index $\beta=1$.  This
         requirement selects dust-detected sources in which there is some
         indication of an excess of free-free emission over pure dust emission
-        at 3 mm.
+        at 3~mm.
         \hchii regions that are optically
         thick up to $\sim3$ mm, those that are extremely compact and dense,
         are below the detection threshold of the centimeter surveys
@@ -805,10 +806,10 @@ To estimate the relative lifetime of the hypercompact and ultracompact phases,
 we compare the number of \hchii candidates to the number of detected \uchii
 regions from the CORNISH survey \citep{Kalcheva2018a}.  \citet{Wood1989a}
 seeded the idea that \uchii lifetimes may be substantially longer than expected
-for a freely expanding Strömgren sphere $t_{free expansion} \sim 4\ee{4}$ years,
+for a freely expanding Str\"omgren sphere $t_\textrm{fe} %$t_\textrm{free~expansion} 
+\sim 4\ee{4}$ years,
 but the improved sample of \citet{Kalcheva2018a} suggests that the discrepancy
-is not so large.  In any case, we adopt a loosely estimated \uchii lifetime somewhere
-between $4\ee{4} \mathrm{yr} < t_{\uchii} < 4\ee{5} \mathrm{yr}$.
+is not so large.  In any case, we adopt a loosely estimated \uchii lifetime \change{within the range} $4\ee{4}~\mathrm{yr} < t_{\uchii} < 4\ee{5}~\mathrm{yr}$.
 
 In the observed regions, the CORNISH survey detected 73 \uchii regions.  Over
 the same area, our sample includes \mmdetectionscmnondetectionscompact compact
@@ -851,7 +852,7 @@ period before expanding into \uchii or diffuse \hii regions.
 %     \includegraphics[scale=1]{figures/G31_dend_contour_thr4_minn20_mind1_detection_histograms.pdf}
 % \caption{Histograms of the MUSTANG 3mm flux density in the W43 field.  In each
 % panel, the colored region shows which sources were detected in one or more of
-% the Herschel Hi-Gal (top), Spitzer GLIMPSE or MIPSGAL (middle),
+% the Herschel Hi-GAL (top), Spitzer GLIMPSE or MIPSGAL (middle),
 % or MAGPIS 6 or 20 cm or CORNISH 6 cm (bottom) surveys.}
 % \label{fig:histogram}
 % \end{figure*}
@@ -862,7 +863,7 @@ period before expanding into \uchii or diffuse \hii regions.
 %     \includegraphics[width=17cm]{figures/SED_plot_G031_177.png}
 % \caption{SED plot for Source  G30.651-0.060 from W43.  The panels are labeled with the
 % survey and frequency used for the plot.  The data come from the MAGPIS cutout
-% server (\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal image
+% server (\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-GAL image
 % server (\url{https://tools.ssdc.asi.it/HiGAL.jsp}); references are given in the
 % text.  The bottom-right panel shows an SED constructed from the sources matched
 % from the catalogs described in Section \ref{sec:catalogmatching}.
@@ -888,7 +889,7 @@ period before expanding into \uchii or diffuse \hii regions.
 %     \caption{SED plot for Source G30.437-0.206 from W43.  The panels are
 %     labeled with the survey and frequency used for the plot.  The data come
 %     from the MAGPIS cutout server (\url{https://third.ucllnl.org/gps/}) and the
-%     Herschel Hi-Gal image server (\url{https://tools.ssdc.asi.it/HiGAL.jsp});
+%     Herschel Hi-GAL image server (\url{https://tools.ssdc.asi.it/HiGAL.jsp});
 %     references are given in the text.  The bottom-right panel shows an SED
 %     constructed from the sources matched from the catalogs described in Section
 %     \ref{sec:catalogmatching}.  This source is detected only at 3 mm and longer
@@ -993,7 +994,7 @@ data in bridging the gap between the millimeter and centimeter regimes.
 \includegraphics[width=17cm]{figures/SED_plot_G29_G29.578-0.268.pdf}
 \caption{SED of source G29.578-0.268, a planetary nebula.  The individual panels show cutouts from 
 various surveys hosted on the MAGPIS cutout service
-(\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-Gal cutout service
+(\url{https://third.ucllnl.org/gps/}) and the Herschel Hi-GAL cutout service
 (\url{https://tools.ssdc.asi.it/HiGAL.jsp}); individual survey references are in Section \ref{sec:catalogmatching}.
 The white bar in the lower-left is a 1\arcmin\ scalebar.
 Short wavelengths ($<24$ \um) are not included in the SED, the rest are included in the cross-matched catalog.
@@ -1029,7 +1030,7 @@ the second criterion.}
 within the MGPS90 beam.  The source passed the selection criteria in Section
 \ref{sec:hiireg}, confirming that these are useful criteria for identifying
 relatively isolated \hchii regions. The intermediate Herschel wavelengths (160,
-250, 350 \um) appear as upper limits because the HiGal catalogs broke this
+250, 350 \um) appear as upper limits because the Hi-GAL catalogs broke this
 source into several, none of which match the MGPS90 centroid to within
 10\arcsec.  The asymmetry in the \MGPS image is caused by the missing
 scans noted in Figure \ref{fig:g34overview}.}
@@ -1216,7 +1217,7 @@ flux is clearly dominated by hot gas.
 \section{Conclusions}
 We have presented the pilot data for the MUSTANG 90 GHz Galactic Plane
 Survey, MGPS90.  When complete, this survey
-will cover most of the northern Galactic plane within $b<0.5$.
+will cover most of the northern Galactic plane within $|b|<0.5^\circ$.
 These initial data cover several high-mass star cluster
 forming regions.  All imaged regions are dominated by free-free and synchrotron
 emission at 3 mm.  
