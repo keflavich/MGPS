@@ -96,7 +96,7 @@ for regname,fn in files.items():
 
 
                 ax.set_aspect('equal', 'box')
-                ax.set_xlabel("Wavelength ($\mu$m)")
+                ax.set_xlabel("Wavelength")# ($\mu$m)")
                 ax.set_ylabel("Flux Density [mJy]")
                 ax.yaxis.set_label_position("right")
                 ax.yaxis.tick_right()
