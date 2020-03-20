@@ -144,7 +144,7 @@ for col in formats:
         assert hasattr(cont_tbl[col], 'unit')
         assert cont_tbl[col].unit is not None
     else:
-        cont_tbl[col] = list(map(lambda x: round_to_n(x, 3), cont_tbl[col]))
+        cont_tbl[col] = list(map(lambda x: np.round(x, 3), cont_tbl[col]))
 
 
 cont_tbl.write(paths.tpath('continuum_photometry_forpub.tsv'), format='ascii.csv', delimiter='\t', overwrite=True)
