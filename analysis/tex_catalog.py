@@ -127,9 +127,9 @@ formats.update({#'Coordinates': lambda x: x.to_string('hmsdms', sep=":"),
            '$b$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
            '$\ell_G$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
            '$b_G$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
-           'PA$_G$': lambda x: ('{0:0.1f}'.format(np.round(x,1))),
-           'FWHM$_{maj,G}$': lambda x: ('{0:0.1f}'.format(np.round(x,1))),
-           'FWHM$_{min,G}$': lambda x: ('{0:0.1f}'.format(np.round(x,1))),
+           'PA$_G$': lambda x: strip_trailing_zeros(str(x)),# lambda x: ('{0:0.1f}'.format(np.round(x,1))),
+           'FWHM$_{maj,G}$': lambda x: str(x),# lambda x: ('{0:0.1f}'.format(np.round(x,1))),
+           'FWHM$_{min,G}$': lambda x: str(x),# lambda x: ('{0:0.1f}'.format(np.round(x,1))),
           })
 
 # shorter-form units
