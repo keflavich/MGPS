@@ -116,17 +116,20 @@ for colname in ['_idx', '_index', '_name', 'area_ellipse', 'area_exact',
         cont_tbl.remove_column(colname)
 
 
-formats = {key: lambda x: strip_trailing_zeros('{0:0.2f}'.format(round_to_n(x,2)))
+formats = {key: lambda x: ('{0:0.2f}'.format(np.round(x,2)))
            for key in rename_mapping.values()}
 
 formats.update({#'Coordinates': lambda x: x.to_string('hmsdms', sep=":"),
            '$S_{\\nu,10\'\'}$': lambda x: strip_trailing_zeros(str(x)), #'{0:0.2f}'.format(round_to_n(x,2))),
            '$S_{\\nu,15\'\'}$': lambda x: strip_trailing_zeros(str(x)), #'{0:0.2f}'.format(round_to_n(x,2))),
            '$S_{bg;15-20\'\'}$': lambda x: strip_trailing_zeros(str(x)), #'{0:0.2f}'.format(round_to_n(x,2))),
-           '$\ell$': lambda x: strip_trailing_zeros('{0:0.4f}'.format(round_to_n(x,5))),
-           '$b$': lambda x: strip_trailing_zeros('{0:0.4f}'.format(round_to_n(x,5))),
-           '$\ell_G$': lambda x: strip_trailing_zeros('{0:0.4f}'.format(round_to_n(x,5))),
-           '$b_G$': lambda x: strip_trailing_zeros('{0:0.4f}'.format(round_to_n(x,5))),
+           '$\ell$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
+           '$b$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
+           '$\ell_G$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
+           '$b_G$': lambda x: ('{0:0.3f}'.format(np.round(x,3))),
+           'PA$_G$': lambda x: ('{0:0.1f}'.format(np.round(x,1))),
+           'FWHM$_{maj,G}$': lambda x: ('{0:0.1f}'.format(np.round(x,1))),
+           'FWHM$_{min,G}$': lambda x: ('{0:0.1f}'.format(np.round(x,1))),
           })
 
 # shorter-form units
