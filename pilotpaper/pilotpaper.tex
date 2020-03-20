@@ -115,10 +115,10 @@ supernova remnants, nonthermal filaments (in the Galactic center), and
 extragalactic sources.
 
 The only objects that tend to peak at 3 mm are the most extremely dense and
-compact \hii regions.  To reach an optical depth $\tau_{90 \mathrm{GHz}} \sim1$ at 90 GHz, an \hii
-region must have an emission measure $EM\gtrsim10^{10}$ cm$^{-6}$ pc.  Such high $EM$ is
-only reached in extremely dense regions \citep[e.g.][]{Galvan-Madrid2009a}; for
-example, an $r\sim100$ AU \hii region
+compact \hii regions.  To reach an optical depth $\tau_{90 \mathrm{GHz}} \sim1$
+at 90 GHz, an \hii region must have an emission measure $EM\gtrsim10^{10}$
+cm$^{-6}$ pc.  Such high $EM$ is only reached in extremely dense regions
+\citep[e.g.][]{Galvan-Madrid2009a}; for example, an $r\sim100$ AU \hii region
 would reach $\tau_{90 GHz}\sim1$ at density $n\sim10^7$ \percc
 \citep[][]{Wilson2009a,Condon2016a}.  Such compact and dense \hii regions are
 expected to be a short phase in the early evolution of massive stars, occurring
@@ -181,8 +181,8 @@ The images from this project are released at
 \caption{Observation Summary}
 \begin{tabular}{llllllll}
     \label{tab:observationsummary}
-Target   & Galactic Longitude & Field Size &     Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
-         &                    &            &       hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
+\edit{Target Object Name}   & \edit{$\ell$ field identifier} & Field Size &     Time  &       Sessions   &  Estimated Noise & $\ell$ offset  & $b$ offset  \\
+                     &                         &            &       hr  &                  &  mJy \perbeam    & \arcsec        & \arcsec \\
 \hline
 \hline
 % noise levels are calculated in dendro_catalog.py from the smooth4 files in files.py
@@ -199,6 +199,9 @@ Target   & Galactic Longitude & Field Size &     Time  &       Sessions   &  Est
 \end{tabular}
 \par The $\ell$ and $b$ offsets are the fitted pointing offsets for these
 fields compared to 20 cm data; see Section \ref{sec:pointing}.
+\edit{The ``Target Object Name'' is the name of the most prominent named object
+in the field of view at $\sim90$ GHz, while the ``$\ell$ field identifier'' is
+the approximate Galactic longitude center of the field.}
 \caption{Observing Session Dates and Lengths}
 
 \begin{tabular}{lll}
@@ -259,12 +262,13 @@ Known point sources were observed at regular intervals each night.
                 second Gaussian represents the first sidelobe of the beam
                 response.
             \item The beam volume is calculated from the map within a 60\arcsec
-                aperture and analytically from the fitted double 1D Gaussians. The
-                adopted beam volume from the double Gaussian is preferred, but
-                if the fits are poor, the 60\arcsec aperture value is 
+                aperture and analytically from the fitted \edit{model}. The
+                adopted beam volume from the \edit{model} is preferred, but
+                % Charles, please help here
+                \todo{if the fits are poor, the 60\arcsec aperture value is
                 adopted. If both values are questionable, or some other
                 indicator of reliability fails, the beam volume of that
-                individual scan will be excluded.
+                individual scan will be excluded.}
         \end{enumerate}
     \item
         \begin{enumerate}
@@ -280,19 +284,24 @@ Known point sources were observed at regular intervals each night.
                 \url{https://almascience.eso.org/sc/}.}
                 The scaling is
                 linearly interpolated between calibration scans.
-            \item Conversion to Rayleigh-Jeans brightness temperature (in K; see e.g. \citealt{Condon2016a}) accounts for the beam solid angle. As such,
-                the beam solid angles are interpolated between scans.
+            \item Conversion to Rayleigh-Jeans brightness temperature (in K;
+                see e.g. \citealt{Condon2016a}) accounts for the beam solid
+                angle. As such, the beam solid angles are interpolated between
+                scans.
         \end{enumerate}
     \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities,
         and pointing offsets are recorded in an IDL save file and are
-        applied to the processing of the \change{time ordered data taken on the science target (in this case, scans of the galactic plane)}.
+        applied to the processing of the \change{time ordered data taken on the
+        science target (in this case, scans of the galactic plane)}.
 \end{enumerate}
 
-The absolute accuracy of these calibrations should be about 10\%.
-Some of this uncertainty is from the extrapolation in time and frequency of the ALMA
-sources (the ALMA band is different from \MUSTANG but there are measurements at
-$\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA and
-some is from our knowledge \change {of the optical depth $\tau_{90 GHz}$} during the observations (for which we use archival weather data and models of the atmosphere). 
+The absolute accuracy of these calibrations should be about 10\%.  Some of this
+uncertainty is from the extrapolation in time and frequency of the ALMA sources
+(the ALMA band is different from \MUSTANG but there are measurements at
+$\sim~100$ and 91 GHz), some is the error in the point source fluxes from ALMA
+and some is from our knowledge \change {of the optical depth $\tau_{90 GHz}$}
+during the observations (for which we use archival weather data and models of
+the atmosphere). 
 
 \subsection{Map Making}
 Maps were made using \MUSTANG's MINKASI (Sievers et al. in prep) data reduction
