@@ -140,7 +140,8 @@ for col in formats:
     if col not in cont_tbl.colnames:
         continue
     if hasattr(cont_tbl[col], 'unit') and cont_tbl[col].unit is not None:
-        cont_tbl[col] = u.Quantity(list(map(lambda x: round_to_n(x, 3), cont_tbl[col])), cont_tbl[col].unit)
+        cont_tbl[col] = u.Quantity(list(map(lambda x: np.round(x, 3), cont_tbl[col])),
+                                   cont_tbl[col].unit)
         assert hasattr(cont_tbl[col], 'unit')
         assert cont_tbl[col].unit is not None
     else:
