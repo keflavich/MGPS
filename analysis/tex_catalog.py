@@ -171,6 +171,11 @@ latexdict['tablefoot'] = ("}\par\n"
                           " from Gaussian fits.  The values displayed are rounded "
                           "such that the error is in the last digit; error estimates "
                           "can be found in the digital version of the table."
+                          "Note that position angles in the set (0, 90, 180, 270, 360) "
+                          "are caused by bad fits.  These fits are kept in the catalog "
+                          "because they passed other criteria and are high signal-to-noise, "
+                          "but they are likely of sources in crowded regions and therefore "
+                          "the fit parameters should be treated with caution."
 
                          )
 

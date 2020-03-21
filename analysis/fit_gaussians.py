@@ -31,8 +31,13 @@ for regname,fn in files.items():
 
             catalog = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch.ipac', format='ascii.ipac')
 
-            centers = coordinates.SkyCoord(catalog['x_cen'], catalog['y_cen'], frame='galactic', unit=(u.deg, u.deg))
-            reglist = [regions.PointSkyRegion(x, meta={'text':row['SourceName']}) for x,row in zip(centers, catalog) if row['rejected'] == 0]
+            centers = coordinates.SkyCoord(catalog['x_cen'], catalog['y_cen'],
+                                           frame='galactic',
+                                           unit=(u.deg, u.deg))
+            reglist = [regions.PointSkyRegion(x,
+                                              meta={'text':row['SourceName']})
+                       for x,row in zip(centers, catalog)
+                       if row['rejected'] == 0]
 
             fig = pl.figure(1)
             fig.clf()
@@ -50,7 +55,9 @@ for regname,fn in files.items():
                 pass
             header['BMAJ'] = 9/3600.
             header['BMIN'] = 9/3600.
-            header['BPA'] = 0.
+            # HACK - try setting the PA to be 45deg-ish to force
+            # Gaussfit to rotate
+            header['BPA'] = 45.12
             fh.writeto(fn, overwrite=True)
 
             diagnostics_dir = '/Volumes/external/mgps/gaussfit_diagnostics/'
@@ -64,6 +71,7 @@ for regname,fn in files.items():
                                         max_offset_in_beams=0.5,
                                         savepath=diagnostics_dir,
                                         prefix=prefix,
+                                        #debug=True,
                                        )
 
             gfit_tbl = gaussfits_to_table(gfit_dat)
