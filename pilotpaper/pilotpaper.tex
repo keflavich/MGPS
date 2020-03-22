@@ -263,19 +263,29 @@ Known point sources were observed at regular intervals each night.
                 central Gaussian represents the telescope main beam, and the
                 second Gaussian represents the first sidelobe of the beam
                 response.
-            \item The beam solid angle is calculated from the map within a 60\arcsec
-                aperture and analytically from the fitted \edit{model}. The
-                adopted beam solid angle from the \edit{model} is preferred, but
-                % Charles, please help here
-                \edit{if the resultant beam solid angle from the model appears
-                spurious, the 60\arcsec aperture value is adopted. There is not
-                a formal criterion (i.e., a threshold) for a spurious beam
-                solid angle. If an individual scan yielded a beam solid angle
-                that appeared to deviate substantially from the trend produced
-                by neighboring calibration scans, it was excluded.}
-                %If both values are questionable, or some other
-                %indicator of reliability fails, the beam volume of that
-                %individual scan will be excluded.}
+            \item
+                \edit{The beam solid angle is calculated both from the fitted model parameters
+                and from the sum within a 60\arcsec aperture.  These measurements
+                were consistent, so the analytically derived solid angles from the fitted
+                model parameters were used.}
+%                from the map within a 60\arcsec
+%                aperture and analytically from the fitted \edit{model}.
+%the beam solid angles were well behaved across all observing sessions used
+%here. Moreover, the beam solid angles as calculated by the two methods are
+%mutually consistent; therefore, the model beam solid angle was used across the
+%board.
+%                The
+%                adopted beam solid angle from the \edit{model} is preferred, but
+%                % Charles, please help here
+%                \edit{if the resultant beam solid angle from the model appears
+%                spurious, the 60\arcsec aperture value is adopted. There is not
+%                a formal criterion (i.e., a threshold) for a spurious beam
+%                solid angle. If an individual scan yielded a beam solid angle
+%                that appeared to deviate substantially from the trend produced
+%                by neighboring calibration scans, it was excluded.}
+%                %If both values are questionable, or some other
+%                %indicator of reliability fails, the beam volume of that
+%                %individual scan will be excluded.}
         \end{enumerate}
     \item
         \begin{enumerate}
