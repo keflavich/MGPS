@@ -56,7 +56,7 @@ for regname,fn in files.items():
             im = ax.imshow(data, cmap='gray_r', norm=asinhnorm)
             ax.set_xlabel("Galactic Longitude")
             ax.set_ylabel("Galactic Latitude")
-            ax.tick_params(direction='in')
+            ax.tick_params(direction='in', color='k')
 
 
             #from mpl_toolkits.axes_grid1 import make_axes_locatable
