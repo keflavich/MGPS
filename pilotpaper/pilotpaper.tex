@@ -395,8 +395,8 @@ The processed images are shown in figures
 
 The effective beam size in the delivered maps is the convolution of the
 intrinsic FWHM = 8.1\arcsec beam with a FWHM = 4\arcsec Gaussian kernel,
-resulting in a 9\arcsec beam.  \edit{This smoothing substantially increases
-the signal-to-noise in each pixel at a modest cost in beam area.}
+resulting in a 9\arcsec beam.  \edit{This smoothing suppresses
+sub-beam-scale noise at a modest cost in beam area.}
 % Why was this done, though?  I don't think there's a particularly strong
 % reason; the algorithms behave just as well on noisier data, in general...
 % I guess it looks nicer?
@@ -412,8 +412,8 @@ Individual scans were noted to have point sources shifted by up to half a beam
 and the true telescope pointing.  To ensure that point sources were coincident
 in the maps, scans were cross-correlated with a first-iteration map, then
 assigned a new timing offset.  The timing errors ranged from $\sim10$ to $30$
-milliseconds, \edit{corresponding to angular scales of XXX at our scan rate
-of YYYY arcseconds/second}.
+milliseconds, \edit{corresponding to angular scales of 1.2-3.6\arcsec at our
+scan rate of 120 arcseconds/second}.
 
 Additional half-beam pointing errors were noted in some individual scans,
 resulting in additional streaking artifacts in the data.  Most of these issues
