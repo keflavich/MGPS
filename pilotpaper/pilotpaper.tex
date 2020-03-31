@@ -206,7 +206,7 @@ the approximate Galactic longitude center of the field.}
 
 \begin{tabular}{lllllll}
     \label{tab:observations}
-Session Number   & Session Start & Session Length & Beam Peak Major & Minor & Beam Area & $\eta_{mb}$ \\
+Session Number   & Session Start & Session Length & Beam Peak Major & Minor & Beam Area & $\eta_{peak}$ \\
 & & hours & arcsec & arcsec & arcsec$^2$ \\
 \hline
 \hline
@@ -232,9 +232,11 @@ make a given map).
 \edit{The Beam Peak Major and Minor columns show the average and standard
 deviation fit parameters in full-width half-max units of the main peak toward
 each of the calibrators.  The Beam Area is the integrated area under the
-two-dimensional beam and includes sidelobe contributions.  The $\eta_{mb}$
+two-dimensional beam and includes sidelobe contributions.  The $\eta_{peak}$
 column measures how much of the beam area is in the central Gaussian beam; it
-is the ratio of the area of the Gaussian to the measured beam area.}
+is the ratio of the area of the Gaussian to the measured beam area.  The
+data are peak-calibrated, so this number indicates the fraction ($\sim20\%$)
+of the peak flux that is spread into the surrounding larger area.}
 In GAL034, only 6 of the constant-latitude scans were completed, so only the bottom
 1/3 of map has full cross linking.
 \end{table*}
@@ -412,8 +414,8 @@ Individual scans were noted to have point sources shifted by up to half a beam
 and the true telescope pointing.  To ensure that point sources were coincident
 in the maps, scans were cross-correlated with a first-iteration map, then
 assigned a new timing offset.  The timing errors ranged from $\sim10$ to $30$
-milliseconds, \edit{corresponding to angular scales of 1.2-3.6\arcsec at our
-scan rate of 120 arcseconds/second}.
+milliseconds, \edit{corresponding to angular scales of \approx1-3\arcsec at our
+scan rate of $\approx90$ arcseconds/second (scan speeds vary during an observation)}.
 
 Additional half-beam pointing errors were noted in some individual scans,
 resulting in additional streaking artifacts in the data.  Most of these issues
