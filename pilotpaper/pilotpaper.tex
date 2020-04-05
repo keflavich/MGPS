@@ -22,30 +22,27 @@
 \input{authors}
 
 \begin{abstract}
-%\todo{COAUTHORS: Please look at the file \texttt{authors.tex} and add your affiliation etc.}\\
-We report the results of a pilot program for a Green Bank Telescope (GBT) \MUSTANG Galactic Plane survey
-at 3 mm (90 GHz), MGPS90.
-The survey so far achieves a typical $1\sigma$ depth of $1-2$ mJy\,beam$^{-1}$ with a
-$9\arcsec$ beam.  We describe the survey parameters, quality assessment
-process, cataloging,
-and comparison with other data sets.
-We have identified \nsources\ \change{compact} sources over seven observed fields selecting some of
-the most prominent millimeter-bright regions between $0\deg < \ell < 50\deg$
-(total area $\approx 7.5 \deg^2$).  The majority of these sources have
-identified counterparts
-at other wavelengths.  By applying flux selection criteria to these sources,
-we successfully recovered several known hypercompact HII (\hchii) regions,
-but did not find any confirmed new ones with multiwavelength data.  We identify
-\mmdetectionscmnondetections sources that have mm-wavelength counterparts but
-do not have cm-wavelength counterparts and are therefore candidate \hchii
-regions; of these, \mmdetectionscmnondetectionscompact are morphologically
-compact and are strong candidates for new \hchii regions.  Given the limited
-number of candidates in the extended area in this survey compared to the relatively
-large numbers seen in protoclusters W51 and W49, it appears that most \hchii
-regions exist within dense protoclusters.
-Comparing the counts of \hchii to ultracompact HII (\uchii) regions, we infer the \hchii region
-lifetime is 16-46\% that of the \uchii region lifetime.
-We additionally separated the 3 mm emission into dust and free-free emission by comparing with
+We report the results of a pilot program for a Green Bank Telescope (GBT)
+\MUSTANG Galactic Plane survey at 3 mm (90 GHz), MGPS90.  The survey so far
+achieves a typical $1\sigma$ depth of $1-2$ mJy\,beam$^{-1}$ with a $9\arcsec$
+beam.  We describe the survey parameters, quality assessment process,
+cataloging, and comparison with other data sets.  We have identified \nsources\
+\change{compact} sources over seven observed fields selecting some of the most
+prominent millimeter-bright regions between $0\deg < \ell < 50\deg$ (total area
+$\approx 7.5 \deg^2$).  The majority of these sources have identified
+counterparts at other wavelengths.  By applying flux selection criteria to
+these sources, we successfully recovered several known hypercompact HII
+(\hchii) regions, but did not find any confirmed new ones with multiwavelength
+data.  We identify \mmdetectionscmnondetections sources that have mm-wavelength
+counterparts but do not have cm-wavelength counterparts and are therefore
+candidate \hchii regions; of these, \mmdetectionscmnondetectionscompact are
+morphologically compact and are strong candidates for new \hchii regions.
+Given the limited number of candidates in the extended area in this survey
+compared to the relatively large numbers seen in protoclusters W51 and W49, it
+appears that most \hchii regions exist within dense protoclusters.  Comparing
+the counts of \hchii to ultracompact HII (\uchii) regions, we infer the \hchii
+region lifetime is 16-46\% that of the \uchii region lifetime.  We additionally
+separated the 3 mm emission into dust and free-free emission by comparing with
 archival 870 \um and 20 cm data.  In the selected pilot fields, most
 ($\gtrsim80\%$) of the 3 mm emission comes from plasma, either through
 free-free or synchrotron emission.
@@ -236,7 +233,7 @@ two-dimensional beam and includes sidelobe contributions.  The $\eta_{peak}$
 column measures how much of the beam area is in the central Gaussian beam; it
 is the ratio of the area of the Gaussian to the measured beam area.  The
 data are peak-calibrated, so this number indicates the fraction ($\sim20\%$)
-of the peak flux that is spread into the surrounding larger area.}
+of the peak flux that is spread into the surrounding larger area ($\sim20\arcsec$).}
 In GAL034, only 6 of the constant-latitude scans were completed, so only the bottom
 1/3 of map has full cross linking.
 \end{table*}
@@ -573,9 +570,10 @@ package\footnote{\url{https://github.com/radio-astro-tools/gaussfit_catalog/}}.
 Profiles were fitted to the original, unfiltered data.  Profiles were
 restricted to have major and minor axes FWHM$<27\arcsec$, restricting the fits
 to be within a factor of three of the beam size.  \edit{Sources substantially larger
-than this likely have fluxes attenuated by the filter function of the data acquisition
-and reduction pipeline; however, the full spatial transfer function of \MUSTANG
-has not yet been measured.} Fits were performed to a
+than this likely have measured integrated intensities attenuated by the filter
+function of the data acquisition and reduction pipeline; however, the full
+spatial transfer function of \MUSTANG has not yet been measured.} Fits were
+performed to a
 30\arcsec radius around each source.  If a second source was present in that
 radius, it was masked out with a single-beam-FWHM circle.  We classified
 sources as `compact' if they have major axes $r_{maj}<14\arcsec$, `extended' if
@@ -653,15 +651,11 @@ data set is asymmetric, $\sim6\times12\arcsec$ \citep{Molinari2016a}.}
 
 \end{table*}
 
-%\todo{Add a summary of the auxiliary data sets used either here or in an adjacent section}
 
 Of the \nsources total \MGPS sources, \mmdetections had millimeter/submillimeter
 matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
 had no match in the millimeter or centimeter catalogs.  
-%\todo{Maybe show all of these unmatched sources, or comment further on what
-%they could be?  Most likely, they're faint sources that \MUSTANG picks up but
-%other surveys couldn't detect.}
 There were \mmdetectionscmnondetections sources cross-matched at shorter
 wavelengths but not at longer wavelengths.  
 
@@ -678,16 +672,6 @@ the sample with no detections at other wavelengths; this subset is much
 fainter than the overall distribution, suggesting that the majority
 of these sources were either below the detection limit or the confusion
 limit of the other surveys.  
-% \todo{These are just fits, there's nothing particularly interesting about them:
-% We fit cut-off power-law distributions
-% \begin{equation}
-%     p(S) \propto S^{-\alpha}
-% \end{equation}
-% to each of these histograms\citep{Clauset2007a,Alstott2014a}, finding a slope
-% $\alpha=\plalphaall\pm\plsigmaall$ for the full distribution and
-% $\alpha=\plalphacmmmn\pm\plsigmacmmmn$ for the cm/mm nondetections.
-% }
-
 
 % fulltable_histograms
 \begin{figure*}[htp]
@@ -699,16 +683,6 @@ limit of the other surveys.
 \end{figure*}
 
 
-% \todo{Add measurements of known HCHII regions - get those IDs from somewhere.}
-% Known HCHIIs are W51 clusters (Ginsburg 2017), W49 objects (De-Pree...),
-% G34.26+0.15 (Sewilo), Sgr B2.
-
-% \subsection{W43 catalog}
-% We use the W43 region as our test area to examine the cataloging process and
-% cross-matching in detail.
-% \todo{The old cataloging was performed on the file
-% \texttt{GAL\_031\_precon\_2\_arcsec\_pass\_9.fits}.}
-% 
 % In W43, most (80\%) of the 108 MUSTANG 3mm sources have a corresponding Herschel
 % compact source, 49\% have a centimeter association, and only 19\% have a
 % Spitzer association.  Visual inspection of the Spitzer maps revealed that there are likely
@@ -904,9 +878,6 @@ form there, indicating an overall higher population, or because the gas density 
 higher, allowing the \hii regions to remain in the hypercompact phase for a longer
 period before expanding into \uchii or diffuse \hii regions.
 
-% TODO: HCHII lifetime estimates?
-% How many UCHII regions exist in our target area?
-
 % G29.977-0.047: SED is dust-only, but there is excess at 3 mm plus a bright 70 \um source.  Could be?
 % G30.009-0.273: Compact HII region?  6cm detection, 20cm limit
 % G30.099+0.077: Candidate?  24, 70 \um bright.  CH3OH, H2O source
@@ -1046,8 +1017,6 @@ YSO that is a candidate \hchii region with no centimeter detection (Fig.
 (Fig.  \ref{fig:g34hchii}).  These SEDs highlight the important role of \MGPS
 data in bridging the gap between the millimeter and centimeter regimes.
 
-%\todo{In this section, we'll show SEDs of a few selected sources (HCHII region, UCHII region,
-%dust-only source, OH/IR star, whatever) along with the cutout mosaic.}
 % candidates: G11.943-0.156: dust-only, detected at infrared but not cm.  Bright mm.  BGPS spatially offset
 % G11.945-0.036: extended HII region (why no 20cm counterpart in catalog?)
 % G11.971+0.192: likely extragalactic, possible radio jet
@@ -1134,7 +1103,7 @@ ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
 \edit{Values of $\beta$ ranging from $1 < \beta < 2$ are often inferred from SED modeling,
 so there is substantial (factor of $\sim4$) uncertainty in the extrapolated dust fluxes.
 While this uncertainty limits our ability to quantitatively interpret the dust-subtracted
-images, the morphology of these images is mostly unaffected.}  We
+images, the morphology of these images is less affected.}  We
 subtract the scaled ATLASGAL data from an appropriately smoothed version of the
 MGPS90 map to obtain an estimated free-free map.  We perform this subtraction
 on the feathered MGPS90 and Planck data (Section~\ref{sec:feather}).
