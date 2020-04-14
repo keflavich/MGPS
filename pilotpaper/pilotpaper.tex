@@ -234,7 +234,7 @@ column measures how much of the beam area is in the central Gaussian beam; it
 is the ratio of the area of the Gaussian to the measured beam area.  The
 data are peak-calibrated, so this number indicates the fraction ($\sim20\%$)
 of the peak flux that is spread into the surrounding larger area ($\sim20\arcsec$).}
-In GAL034, only 6 of the constant-latitude scans were completed, so only the bottom
+In \edit{G34}, only 6 of the constant-latitude scans were completed, so only the bottom
 1/3 of map has full cross linking.
 \end{table*}
 
@@ -267,8 +267,9 @@ Known point sources were observed at regular intervals each night.
                 second Gaussian represents the first sidelobe of the beam
                 response.
             \item \edit{The beam solid angle is calculated both from the fitted
-                model parameters and from the sum within a 60\arcsec aperture.
-                These measurements were consistent, so we used the analytically
+                model parameters and from the sum \edit{of pixel values} within
+                a 60\arcsec aperture.  These measurements were consistent, so
+                we used the analytically
                 derived solid angles from the fitted model parameters.
                 These measurements are reported in Table \ref{tab:observations}.
                 }
@@ -314,7 +315,7 @@ Known point sources were observed at regular intervals each night.
     \item Calibration to Jy, conversion from Jy \perbeam to Kelvin, opacities,
         and pointing offsets are recorded in an IDL save file and are
         applied to the processing of the \change{time ordered data taken on the
-        science target (in this case, scans of the galactic plane)}.
+        science target (in this case, scans of the Galactic plane)}.
 \end{enumerate}
 
 The absolute accuracy of these calibrations is about 10\%.  Some of this
@@ -441,8 +442,9 @@ on these offsets, but correcting the images for the offsets resulted in smaller
 visual residuals in the difference images shown in Section \ref{sec:freefree}.
 The measured offsets are reported in Table \ref{tab:observations} and show the
 offset of the 20 cm data with respect to
-the \MUSTANG data.  \edit{The mean and standard deviation offset from
-the 20cm data are $\Delta\ell=1.8\pm2\arcsec$ and $\Delta b=4.4\pm2.7\arcsec$.}
+the \MUSTANG data.  \edit{The mean and standard deviation offset from the 20 cm
+data are $\Delta\ell=1.8\pm2\arcsec$ and $\Delta b=4.4\pm2.7\arcsec$,
+respectively.}
 
 In several cases, the measured offset is comparable to the \MUSTANG beam.  We
 therefore correct these images for the offset, assuming the VLA 20 cm data
@@ -798,7 +800,7 @@ as those fitting either of these criteria:
         The source is not detected at 6 and 20 cm, is detected at 1.1~mm, and has
         \begin{equation}
             \frac{S_{3\mathrm{mm}}}{S_{1.1\mathrm{mm}}} > \left(\frac{3.28~\mathrm{mm}}
-            {1.11~\mathrm{mm}}\right)^{-\alpha} = 0.038
+            {1.11~\mathrm{mm}}\right)^{-\alpha} = 0.039
         \end{equation}\\
         where $\alpha=3$ is the spectral
         index for optically thin dust with an opacity index $\beta=1$.  This
