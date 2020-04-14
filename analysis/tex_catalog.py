@@ -174,8 +174,8 @@ latexdict['tablefoot'] = ("}\par\n"
                           "Note that position angles in the set (0, 90, 180, 270, 360) "
                           "are caused by bad fits.  These fits are kept in the catalog "
                           "because they passed other criteria and are high signal-to-noise, "
-                          "but they are likely of sources in crowded regions and therefore "
-                          "the fit parameters should be treated with caution."
+                          "but they are likely of sources in crowded regions so the "
+                          "corresponding fit parameters should be treated with caution."
 
                          )
 

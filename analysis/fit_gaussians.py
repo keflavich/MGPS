@@ -87,10 +87,10 @@ for regname,fn in files.items():
             compact = merge_tbl['fwhm_major'].quantity < 14*u.arcsec
             aspect_ratio = merge_tbl['fwhm_major'].quantity / merge_tbl['fwhm_minor'].quantity
             merge_tbl.add_column(Column(name='AspectRatio', data=aspect_ratio))
-            filamentary = aspect_ratio > 1.5
+            filamentary = (aspect_ratio > 1.5) & extended
             labelcol = np.array(['E']*len(extended))
-            labelcol[compact] = 'C'
             labelcol[filamentary] = 'F'
+            labelcol[compact] = 'C'
             merge_tbl.add_column(Column(name='MorphologyClass', data=labelcol))
 
             # add further criteria...
