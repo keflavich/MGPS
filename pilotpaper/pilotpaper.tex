@@ -577,16 +577,18 @@ function of the data acquisition and reduction pipeline; however, the full
 spatial transfer function of \MUSTANG has not yet been measured.} Fits were
 performed to a
 30\arcsec radius around each source.  If a second source was present in that
-radius, it was masked out with a single-beam-FWHM circle.  We classified
-sources as `compact' if they have major axes $r_{maj}<14\arcsec$, `extended' if
-they have major axis $r_{maj}>14\arcsec$, and `filamentary' if they have
-$r_{maj}/r_{min}>1.5$.
+radius, it was masked out with a single-beam-FWHM circle.  
+% We classified
+% sources as `compact' if they have major axes $\sigma_{maj}<14\arcsec$, `extended' if
+% they have major axis $\sigma_{maj}>14\arcsec$, and `filamentary' if they have
+% $\sigma_{maj}/\sigma_{min}>1.5$ and $\sigma_{maj} > 14\arcsec$.
 
 A total of \nsources sources were identified across the seven fields.
-Of these, the majority, \nextended were extended and round (at least 14\arcsec
-major axis), and an additional \nfilamentary had aspect ratios
-$\sigma_{maj}/\sigma_{min} > 1.5$.
-Only \ncompact sources were compact.  Note that any confused or
+\edit{Of these, the majority, \nextended were extended and round ($\sigma_{maj} >
+14\arcsec$), and an additional \nfilamentary had both long aspect ratios
+$\sigma_{maj}/\sigma_{min} > 1.5$ and were extended ($\sigma_{maj} >
+14\arcsec$)}.
+Only \ncompact sources were compact \edit{($\sigma_{maj} < 14\arcsec$)}.  Note that any confused or
 clustered sources, e.g., two compact sources within $\sim5-20\arcsec$ of one
 another, would likely be classified as extended.
 
