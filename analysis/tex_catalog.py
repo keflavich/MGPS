@@ -77,6 +77,8 @@ for old, new in rename_mapping.items():
     if old in cont_tbl.colnames:
         cont_tbl[old].meta['description'] = description[old]
         cont_tbl.rename_column(old, new)
+        assert 'description' in cont_tbl[new].meta
+        print(old,new,cont_tbl[new].meta)
 
 
 # remove all not-renamed columns
@@ -142,6 +144,7 @@ for col in formats:
     #    continue
     if col not in cont_tbl.colnames:
         continue
+    meta = cont_tbl[col].meta
     if hasattr(cont_tbl[col], 'unit') and cont_tbl[col].unit is not None:
         cont_tbl[col] = u.Quantity(list(map(lambda x: np.round(x, 3), cont_tbl[col])),
                                    cont_tbl[col].unit)
@@ -149,6 +152,7 @@ for col in formats:
         assert cont_tbl[col].unit is not None
     else:
         cont_tbl[col] = list(map(lambda x: np.round(x, 3), cont_tbl[col]))
+    cont_tbl[col].meta = meta
 
 
 cont_tbl.write(paths.tpath('continuum_photometry_forpub.tsv'), format='ascii.csv', delimiter='\t', overwrite=True)
@@ -183,3 +187,37 @@ cont_tbl.sort('$S_{\\nu,10\'\'}$')
 cont_tbl[:-20:-1].write(paths.texpath("continuum_photometry.tex"),
                         formats=formats, overwrite=True, latexdict=latexdict)
 
+cont_tbl_ipac = cont_tbl.copy()
+
+
+rename_mapping_ipac = {
+    'Dendrogram $S_{\\nu}$': 'Dendrogram_Snu',
+    '$\ell$': 'GalacticLongitude',
+    '$b$': 'GalacticLatitude',
+    '$S_{\\nu,10\'\'}$': 'Snu_10arcsecAperture',
+    '$S_{\\nu,15\'\'}$': 'Snu_15arcsecAperture',
+    '$S_{bg;15-20\'\'}$': 'Sbackground_15to20arcsecAperture',
+    '$A_G$': 'FittedGaussianAmplitude',
+    '$\ell_G$': 'FittedGaussianGLON',
+    '$b_G$': 'FittedGaussianGLAT',
+    'FWHM$_{maj,G}$': 'FittedGaussianFWHM_maj',
+    'FWHM$_{min,G}$': 'FittedGaussianFWHM_min',
+    'PA$_G$': 'FittedGaussianPositionAngle',
+    '$e_{A,G}$': 'eGaussianAmp',
+    '$e_{\ell,G}$': 'eGaussianGLON',
+    '$e_{b,G}$': 'eGaussianGLAT',
+    '$e_{\mathrm{FWHM},maj,G}': 'eGaussianFWHM_maj',
+    '$e_{\mathrm{FWHM},min,G}': 'eGaussianFWHM_min',
+    '$e_{\mathrm{PA},G}$': 'eGaussianPA',
+}
+
+for old, new in rename_mapping_ipac.items():
+    if old in cont_tbl.colnames:
+        cont_tbl_ipac.rename_column(old, new)
+        cont_tbl_ipac.meta['keywords'][new] = {'value': cont_tbl[old].meta['description']}
+        #cont_tbl_ipac[new].meta = cont_tbl[old].meta
+        #cont_tbl_ipac[new].meta['comments'] = cont_tbl[old].meta['description']
+        #cont_tbl_ipac[new].meta['keywords'] = {new: cont_tbl[old].meta['description']}
+
+cont_tbl_ipac.write(paths.tpath("continuum_photometry_full.ipac"),
+                    format='ascii.ipac', overwrite=True)
