@@ -9,6 +9,8 @@ import pylab as pl
 
 full_table = Table.read(f'{catalog_path}/concatenated_catalog.ipac', format='ascii.ipac')
 
+mgps_ok = full_table['rejected'] == 0
+
 bolocamdetected = ~((full_table['Fint1100um'] == 0))
 atlasgaldetected = ~((full_table['Fint870um'] == 0))
 higaldetected = full_table['HerschelDetected'] == 'True'
@@ -18,6 +20,7 @@ cm_mm_nondetection = (~cmdetected) & (~mmdetected)
 compact = full_table['MorphologyClass'] == 'C'
 
 
+pl.figure(1)
 pl.clf()
 bins = np.logspace(np.log10(2.5e-3), 1)
 pl.hist(full_table['MUSTANG_dend_flux'], bins=bins, log=True,
@@ -35,6 +38,26 @@ pl.ylabel("Number of Sources")
 pl.savefig(f'{catalog_figure_path}/full_catalog_histogram.pdf')
 
 pl.xlim(0.003, 25)
+
+
+
+
+pl.figure(2)
+pl.clf()
+bins = np.logspace(np.log10(2.5e-3), 1)
+pl.hist(full_table['MUSTANG_dend_flux'][mgps_ok], bins=bins, log=True,
+        label="All sources")
+pl.hist(full_table['MUSTANG_dend_flux'][cm_mm_nondetection & mgps_ok],
+        bins=bins, log=True, label="cm/mm nondetections")
+pl.hist(full_table['MUSTANG_dend_flux'][compact & mgps_ok],
+        bins=bins, log=True, label="Compact sources", alpha=0.75, edgecolor='k', facecolor='none')
+pl.hist(full_table['MUSTANG_dend_flux'][compact & cm_mm_nondetection & mgps_ok],
+        bins=bins, log=True, label="Compact sources w/o cm/mm detections", alpha=0.75, edgecolor='w')
+pl.semilogx()
+pl.legend(loc='best')
+pl.xlabel("MUSTANG source flux $S_{3 \mathrm{mm}}$ [Jy]")
+pl.ylabel("Number of Sources")
+pl.savefig(f'{catalog_figure_path}/full_catalog_histogram_cleaned.pdf')
 
 
 PL_all = powerlaw.Fit(full_table['MUSTANG_dend_flux'])

@@ -12,8 +12,8 @@ latexdict = latexdict.copy()
 
 orig_cont_tbl = Table.read(paths.tpath("concatenated_catalog.ipac"), format='ascii.ipac')
 cont_tbl = Table.read(paths.tpath("concatenated_catalog.ipac"), format='ascii.ipac')
+rejected = cont_tbl['rejected']
 
-cont_tbl = cont_tbl[(cont_tbl['rejected'] == 0)]
 
 description = {'_idx': 'Source ID number',
                'MUSTANG_10as_sum': 'MUSTANG aperture flux within a 10" aperture',
@@ -68,9 +68,15 @@ for key in rename_mapping.keys():
     ekey = f'e_{key}'
     if ekey in cont_tbl.colnames:
         unit = cont_tbl[key].unit
-        cont_tbl[key] = rounded_arr(cont_tbl[key], cont_tbl[ekey], extra=0)
+        try:
+            cont_tbl[key] = rounded_arr(cont_tbl[key], cont_tbl[ekey], extra=0)
+        except:
+            pass
         cont_tbl[key].unit = unit
-        cont_tbl[ekey] = rounded_arr(cont_tbl[ekey], cont_tbl[ekey], extra=1)
+        try:
+            cont_tbl[ekey] = rounded_arr(cont_tbl[ekey], cont_tbl[ekey], extra=1)
+        except:
+            pass
         cont_tbl.remove_column(ekey)
 
 for old, new in rename_mapping.items():
@@ -155,6 +161,8 @@ for col in formats:
     cont_tbl[col].meta = meta
 
 
+cont_tbl_ipac = cont_tbl.copy()
+cont_tbl = cont_tbl[(rejected == 0)]
 cont_tbl.write(paths.tpath('continuum_photometry_forpub.tsv'), format='ascii.csv', delimiter='\t', overwrite=True)
 
 # coords = coordinates.SkyCoord(cont_tbl['RA'], cont_tbl['Dec'])
@@ -187,7 +195,6 @@ cont_tbl.sort('$S_{\\nu,10\'\'}$')
 cont_tbl[:-20:-1].write(paths.texpath("continuum_photometry.tex"),
                         formats=formats, overwrite=True, latexdict=latexdict)
 
-cont_tbl_ipac = cont_tbl.copy()
 
 
 rename_mapping_ipac = {
@@ -218,6 +225,9 @@ for old, new in rename_mapping_ipac.items():
         #cont_tbl_ipac[new].meta = cont_tbl[old].meta
         #cont_tbl_ipac[new].meta['comments'] = cont_tbl[old].meta['description']
         #cont_tbl_ipac[new].meta['keywords'] = {new: cont_tbl[old].meta['description']}
+
+cont_tbl_ipac.add_column(Column(name='Rejected', data=[bool(x) for x in rejected]))
+cont_tbl_ipac.meta['keywords']['rejected'] = {'value': 'Rejected sources with peak SNR<5 or S_peak/S_background < 2 in Section 3.1'}
 
 cont_tbl_ipac.write(paths.tpath("continuum_photometry_full.ipac"),
                     format='ascii.ipac', overwrite=True)

@@ -26,6 +26,8 @@ print(f"Total of {len(full_table)} sources found.")
 
 mgps_ok = full_table['rejected'] == 0
 
+print(f"Total of {len(full_table)} sources found (but really only {mgps_ok.sum()}).")
+
 bolocamdetected = ~((full_table['Fint1100um'] == 0)) & mgps_ok
 atlasgaldetected = ~((full_table['Fint870um'] == 0)) & mgps_ok
 higaldetected = (full_table['HerschelDetected'] == 'True') & mgps_ok
@@ -33,6 +35,7 @@ cmdetected = (full_table['cmDetected'] == 'True') & mgps_ok
 mmdetected = (bolocamdetected | atlasgaldetected | higaldetected) & mgps_ok
 cm_mm_nondetection = ((~cmdetected) & (~mmdetected)) & mgps_ok
 cm_no_mm_yes = ((~cmdetected) & (mmdetected)) & mgps_ok
+cm_yes_mm_no = ((cmdetected) & (~mmdetected)) & mgps_ok
 
 
 full_table.add_column(Column(name='bolocam_and_mgps_detected', data=bolocamdetected))
@@ -69,10 +72,12 @@ print(f"mm: {mmdetected.sum()}")
 
 with open('../pilotpaper/nsources.tex', 'w') as fh:
     fh.write(r"\newcommand{\nsources}{"+str(len(full_table))+r"\xspace}""\n")
+    fh.write(r"\newcommand{\noksources}{"+str(mgps_ok.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\cmdetections}{"+str(cmdetected.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\mmdetections}{"+str(mmdetected.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\cmmmnondetections}{"+str(cm_mm_nondetection.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\mmdetectionscmnondetections}{"+str(cm_no_mm_yes.sum())+r"\xspace}""\n")
+    fh.write(r"\newcommand{\cmdetectionsmmnondetections}{"+str(cm_yes_mm_no.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\mmdetectionscmnondetectionscompact}{"+str(compact_nocm_yesmm.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\ncompact}{"+str(compact.sum())+r"\xspace}""\n")
     fh.write(r"\newcommand{\nextended}{"+str(extended.sum())+r"\xspace}""\n")

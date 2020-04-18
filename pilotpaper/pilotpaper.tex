@@ -26,8 +26,8 @@ We report the results of a pilot program for a Green Bank Telescope (GBT)
 \MUSTANG Galactic Plane survey at 3 mm (90 GHz), MGPS90.  The survey 
 achieves a typical $1\sigma$ depth of $1-2$ mJy\,beam$^{-1}$ with a $9\arcsec$
 beam.  We describe the survey parameters, quality assessment process,
-cataloging, and comparison with other data sets.  We have identified \nsources\
-\change{compact} sources over seven observed fields selecting some of the most
+cataloging, and comparison with other data sets.  We have identified \noksources\
+ sources over seven observed fields selecting some of the most
 prominent millimeter-bright regions between $0\deg < \ell < 50\deg$ (total area
 $\approx 7.5 \deg^2$).  The majority of these sources have 
 counterparts at other wavelengths.  By applying flux selection criteria to
@@ -657,12 +657,16 @@ data set is asymmetric, $\sim6\times12\arcsec$ \citep{Molinari2016a}.}
 \end{table*}
 
 
-Of the \nsources total \MGPS sources, \mmdetections had millimeter/submillimeter
+Of the \nsources total \MGPS sources, \change{\noksources passed our selection criteria that
+the peak signal-to-noise ratio in the source was $SNR>5$ and the peak signal was at least
+twice that of the background, $S_{peak} > 2 S_{background}$.}.
+Of those, \mmdetections had millimeter/submillimeter
 matches (Herschel 70-500 \um, LABOCA 870 \um, or Bolocam 1.1 mm), \cmdetections 
 had centimeter-wavelength matches (6 cm or 20 cm), and \cmmmnondetections
-had no match in the millimeter or centimeter catalogs.  
+had no match in the millimeter or centimeter catalogs.
 There were \mmdetectionscmnondetections sources cross-matched at shorter
-wavelengths but not at longer wavelengths.  
+wavelengths but not at longer wavelengths, \edit{and \cmdetectionsmmnondetections
+with long-wavelength matches but no short-wavelength}.
 
 %The overview figures, Figures
 %\ref{fig:g01overview}-\ref{fig:g49overview}, show the morphologically
@@ -676,13 +680,13 @@ has few sources below 5 mJy.  The overlaid histogram shows the subset of
 the sample with no detections at other wavelengths; this subset is much
 fainter than the overall distribution, suggesting that the majority
 of these sources were either below the detection limit or the confusion
-limit of the other surveys.  
+limit of the other surveys.
 
 % fulltable_histograms
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/full_catalog_histogram.pdf}
     \caption{Histogram of the source catalog.  Blue shows all sources,
-    while orange (overlaid on top) shows only those sources that have
+    while orange (overlaid \edit{as a foreground layer}) shows only those sources that have
     no matches at cm or mm wavelengths in the searched surveys.}
 \label{fig:fullcathist}
 \end{figure*}
@@ -832,9 +836,10 @@ which have only 30\arcsec resolution, could be affected by confusion (source ble
 and therefore be too bright for a 3 mm excess to be detected, preventing
 selection by criterion 2.
 
-While we would expect some excess above the extrapolated dust emission for
-dusty \hchii regions, it is plausible that the excess is not enough to modify
-the spectral index to meet our selection criterion 2.  Sources that have
+While we would expect some \edit{free-free} excess \edit{at 90 GHz} above the
+dust emission \edit{extrapolated from 1.1 mm in} dusty \hchii regions, it is
+plausible that the excess is not enough to modify the spectral index to meet
+our selection criterion 2.  Sources that have
 millimeter detections (since they must be surrounded by gas and dust) and not
 centimeter detections therefore remain candidate \hchii regions.  This large
 sample of \mmdetectionscmnondetections additional candidates, especially the
@@ -1283,10 +1288,10 @@ These initial data cover several high-mass star cluster
 forming regions.  All imaged regions are dominated by free-free and synchrotron
 emission at 3 mm.  
 
-We cataloged emission in the images, identifying \nsources compact sources using the
+We cataloged emission in the images, identifying \noksources sources using the
 \texttt{dendrogram} algorithm, of which \ncompacthiicand are verified \hchii
 regions, and another \mmdetectionscmnondetectionscompact are plausible
-candidates.  
+candidates.
 
 \acknowledgements
 We thank the anonymous referee for a detailed and constructive report.
