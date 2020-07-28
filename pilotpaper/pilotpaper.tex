@@ -18,12 +18,12 @@
 \input{distribution_alphas}
 
 \begin{document}
-\title{The \MUSTANG Galactic Plane Survey (MGPS90) pilot}
+\title{The \MUSTANG Galactic Plane Survey (\MGPS) pilot}
 \input{authors}
 
 \begin{abstract}
 We report the results of a pilot program for a Green Bank Telescope (GBT)
-\MUSTANG Galactic Plane survey at 3 mm (90 GHz), MGPS90.  The survey 
+\MUSTANG Galactic Plane survey at 3 mm (90 GHz), \MGPS.  The survey 
 achieves a typical $1\sigma$ depth of $1-2$ mJy\,beam$^{-1}$ with a $9\arcsec$
 beam.  We describe the survey parameters, quality assessment process,
 cataloging, and comparison with other data sets.  We have identified \nsources\
@@ -80,9 +80,9 @@ been limited to lower ($<50$~GHz) frequencies  \citep{Dickinson2018a}.
 %star formation with many \hii\ regions, we expect free-free emission to be the
 %dominant source of 90\,GHz flux.
 
-Thermally-emitting dust follows a modified Planck function of typical temperature
+Thermally emitting dust follows a modified Planck function of typical temperature
 \edit{10-30}\,K in Galactic clouds; its intensity therefore peaks near
-\edit{1-3}\,THz, \edit{placing the 90 GHz MGPS90 observations firmly on the
+\edit{1-3}\,THz, \edit{placing the 90 GHz \MGPS observations firmly on the
 Rayleigh-Jeans tail}.  At
 90\,GHz, the dust flux density is set by the dust column density $N_d$, the
 dust temperature $T_d$,
@@ -96,7 +96,7 @@ frequency can be modeled as a power law: $\kappa_\nu \propto \nu^{\beta}$,
 where $\beta$ is the dust emissivity index.
 %Therefore, $S_{\nu, d} \propto \nu^\beta$.  
 Ongoing and future massive star formation is associated with dust emission, and
-we expect to see dust emission at 90\,GHz in the MGPS90 fields.  
+we expect to see dust emission at 90\,GHz in the \MGPS fields.  
 
 The flux density from optically thin free-free emission is roughly flat as a
 function of frequency, $S_{\nu, ff} \propto \nu^{\alpha}$, where $\alpha=-0.12$
@@ -134,7 +134,8 @@ stage in \hii region evolution.
 based upon work supported by the Green Bank Observatory which is a major
 facility funded by the National Science Foundation.} (GBT) with a wide
 (75--105~GHz) bandwidth and a 4.25\arcmin\ field-of-view
-(fov).\footnote{\url{http://www.gb.nrao.edu/mustang/}}  The TES detectors are 
+(fov).\footnote{\url{http://www.gb.nrao.edu/mustang/}}  The Transition Edge
+Sensor (TES) detectors are 
 read out using a microwave multiplexing readout (umux). Typical
 observing modes consist of different on-the-fly mapping scans -- either small
 daisy scans for arcminute sized targets or larger raster scans in perpendicular
@@ -258,7 +259,7 @@ Known point sources were observed at regular intervals each night.
         antenna temperature.
     \item A map is made in IDL (in azimuth/elevation coordinates) of each
         \change{scan on a calibrator, which is chosen to be an unresolved
-        (point-like) source}.  \cite{Romero2020a} describe in detail the
+        (pointlike) source}.  \cite{Romero2020a} describe in detail the
         IDL pipeline for \MUSTANG (MUSTANG IDL Data Analysis System, MIDAS)
         \begin{enumerate}
             \item A single 2-D Gaussian is fit to the point source to
@@ -329,8 +330,9 @@ during the observations (for which we use archival weather data and models of
 the atmosphere).
 
 \subsection{Map Making}
-Maps \edit{of the science fields} were made using \MUSTANG's MINKASI (Sievers
-et al. in prep) data reduction pipeline which is based on the maximum
+Maps \edit{of the science fields} were made using \MUSTANG's MINKASI (J. Sievers
+et al. in prep\footnote{\url{https://github.com/sievers/minkasi}}) data
+reduction pipeline which is based on the maximum
 likelihood pipeline written for the \change{Atacama Cosmology Telescope
 \citep[ACT;][]{Dunner2013a}}.
 %maximum likelihood is a mathematical definition - see pg 13 of the reference.
@@ -431,7 +433,7 @@ kernel.
 We compared the \MUSTANG maps with 20 cm images from the MAGPIS Galactic Plane
 survey \citep{Helfand2006a} and from other sources
 \citep{Mehringer1994a,Yusef-Zadeh2004a} to measure pointing offsets, since
-these images showed the closest morphological match to the MGPS90 data.
+these images showed the closest morphological match to the \MGPS data.
 However, there are substantial regions in each field, particularly the Galactic
 center, that are synchrotron-dominated at 20 cm and have no corresponding
 features at 3 mm; we masked out these features.  We use the
@@ -530,7 +532,7 @@ of 90.19\,GHz for \MUSTANG, \change{as appropriate for $\alpha=3$ (see Section
 \footnote{\url{https://github.com/radio-astro-tools/uvcombine}} \edit{python}
 package.
 Planck's spatial resolution is $\approx10\arcmin$, substantially larger
-than the largest scale recovered in the MGPS data, so intermediate-scale
+than the largest scale recovered in the \MGPS data, so intermediate-scale
 structures (4-10\arcmin) are likely recovered poorly.
 These data are not used in the analysis in this paper, but the
 FITS images are provided in the data repository.
@@ -616,7 +618,7 @@ We cross-match the resulting catalog with the catalogs listed in Table \ref{tab:
 % and MAGPIS 6cm and 20cm
 % \citep[$\sim1\arcsec$]{Giveon2005a} and CORNISH 6cm \citep[$\sim1\arcsec$]{Hoare2012a} catalogs.
 Matches in these catalogs are included if there is a source within 10\arcsec
-(approximately the \MUSTANG beam FWHM) of the MGPS catalog entry.
+(approximately the \MUSTANG beam FWHM) of the \MGPS catalog entry.
 
 
 % sensitivity estimates are SUPER ROUGH and come from catalog_flux_limits.py
@@ -635,7 +637,7 @@ Herschel Hi-GAL       & 70--500        &  6--36               & 20-85  & \citet{
 APEX-Laboca ATLASGAL & 870            &  20                  & 70  & \citet{Urquhart2014b} \\
 CSO-Bolocam BGPS     & 1100           &  33                  & 50  & \citet{Rosolowsky2010a}\\
                                                              & &&& \citet{Ginsburg2013a} \\
-GBT-\MUSTANG MGPS90  & 3274           &  9                   & 1-2  & This work \\
+GBT-\MUSTANG \MGPS  & 3274           &  9                   & 1-2  & This work \\
 \hline
                      & cm             &                      &   & \\
 \hline
@@ -772,7 +774,7 @@ and very compact, optically thick (hypercompact) \hii regions.
 Massive stars form in the middle of ultra-dense cores undergoing gravitational
 collapse, leading to an accretion rate of order $\dot{M} \sim 10^{-3}$ \msun
 \peryr such that a 100 \msun star takes about $10^5$ years to accrete its mass.
-As the star contracts onto the main sequence it starts to ionize its
+As the star contracts onto the main sequence, it starts to ionize its
 environment to create an \hchii region.  For a sufficiently dense accretion
 flow, the Str{\"o}mgren radius of the \hchii region is bound by the gravity of
 the star, with a radius $R_G \sim$50-100 AU
@@ -854,7 +856,7 @@ criteria.  The \hchii regions in W51, including the W51e cluster and W51d2
 \citep{De-Pree1998a} are confused, residing in the same beams as other
 high-mass stars at different evolutionary states.  G34.257+0.153 includes a pair
 of \hchii regions but less other surrounding emission, so it did pass our selection
-criteria \citep{Sewilo2004a,Avalos2006a}.  MGPS90 is clearly capable of detecting
+criteria \citep{Sewilo2004a,Avalos2006a}.  \MGPS is clearly capable of detecting
 \hchii regions that are not in dense protoclusters.
 
 
@@ -1076,7 +1078,7 @@ forming high-mass stars.}
 \begin{figure*}[htp]
 \includegraphics[width=17cm]{figures/SED_plot_G34_G34.257+0.153.pdf}
 \caption{SED of source G34.257+0.153, which contains several \hchii regions
-within the MGPS90 beam \citep{Avalos2009a,Sewilo2011a}.  The source passed the
+within the \MGPS beam \citep{Avalos2009a,Sewilo2011a}.  The source passed the
 selection criteria in Section \ref{sec:hiireg}, confirming that these are
 useful criteria for identifying relatively isolated \hchii regions. The
 intermediate Herschel wavelengths (160, 250, 350 \um) appear as upper limits
@@ -1099,9 +1101,9 @@ the second criterion.}
 
 \section{Diffuse Emission: Free-free separation}
 \label{sec:freefree}
-As stated in the introduction, the MGPS90 data have contributions from thermal
+As stated in the introduction, the \MGPS data have contributions from thermal
 free-free, thermal dust continuum, and nonthermal synchrotron emission.  We
-describe here our decomposition of the MGPS90 data into free-free and dust
+describe here our decomposition of the \MGPS data into free-free and dust
 emission; the non-thermal emission was not separated from the free-free
 emission.
 
@@ -1110,18 +1112,18 @@ We use the ATLASGAL 870\,$\mu$m data \citep{Schuller2009a} to estimate the dust
 contribution since at 870\,$\mu$m essentially all emission is from dust.  We
 estimate the 90\,GHz flux density from dust by scaling the ATLASGAL data
 assuming a dust emissivity index $\beta=1.5$.  Using this value of $\beta$, the
-ATLASGAL 870\,$\mu$m and MGPS90 data flux densities are related via $S_{\rm
+ATLASGAL 870\,$\mu$m and \MGPS data flux densities are related via $S_{\rm
 90GHz} \simeq 0.013~S_{\rm 870\mu m}$ (cf. Equation~\ref{eq:dust}).
 \edit{Values of $\beta$ ranging from $1 < \beta < 2$ are often inferred from SED modeling,
 so there is substantial (factor of $\sim4$) uncertainty in the extrapolated dust fluxes.
 While this uncertainty limits our ability to quantitatively interpret the dust-subtracted
 images, the morphology of these images is less affected.}  We
 subtract the scaled ATLASGAL data from an appropriately smoothed version of the
-MGPS90 map to obtain an estimated free-free map.  We perform this subtraction
-on the feathered MGPS90 and Planck data (Section~\ref{sec:feather}).
+\MGPS map to obtain an estimated free-free map.  We perform this subtraction
+on the feathered \MGPS and Planck data (Section~\ref{sec:feather}).
 
 Similarly, we use 20\,cm maps to estimate the dust contribution by subtracting
-a scaled 20\,cm map from the MGPS90 data.
+a scaled 20\,cm map from the \MGPS data.
 %We compare the resultant ff+s maps with VLA images made at 20\,cm to gain insight into
 %the relative contributions from free-free and synchrotron emission.  
 %Sources with negative spectral indices will appear brighter at 20\,cm than at 90\,GHz.
@@ -1145,12 +1147,12 @@ where additional emission mechanisms (e.g., synchrotron) \edit{contribute to the
 observed intensity.}
 
 We show the results of the decomposition for one example field in
-Figure~\ref{fig:arches_freefree}; the rest of the MGPS90 fields are in the
-Appendix.  Figure~\ref{fig:arches_freefree} contains panels of the MGPS90 data,
-the contribution to the MGPS90 data from thermal dust estimated from ATLASGAL
-subtraction, the contribution to the MGPS90 data from free-free and synchrotron
+Figure~\ref{fig:arches_freefree}; the rest of the \MGPS fields are in the
+Appendix.  Figure~\ref{fig:arches_freefree} contains panels of the \MGPS data,
+the contribution to the \MGPS data from thermal dust estimated from ATLASGAL
+subtraction, the contribution to the \MGPS data from free-free and synchrotron
 emission, 20\,cm data, and
-the contribution to the MGPS90 data from thermal dust estimated from 20\,cm
+the contribution to the \MGPS data from thermal dust estimated from 20\,cm
 subtraction.
 
 %The ratio
@@ -1162,7 +1164,7 @@ subtraction.
 The example in Figure \ref{fig:arches_freefree} shows good agreement between the
 two dust estimates and between the free-free estimates, and the differences
 highlight some of the incorrect assumptions in the above analysis.  The excess
-diffuse emission in the rightmost panel (MGPS90 - VLA) is most likely caused by
+diffuse emission in the rightmost panel (\MGPS - VLA) is most likely caused by
 the VLA's failure to recover large angular scales.  The missing emission on the
 right side of that map is caused by the excess synchrotron emission in the Sgr
 A region, which is not accounted for in our simple free-free model.  Both dust
@@ -1173,7 +1175,7 @@ just below the center of the map).
 The W43 region is substantially more dust-dominated than the Galactic Center
 (Figure \ref{fig:w43freefree}).  The dusty features, however, are all closely
 aligned with free-free features, so it is difficult to disentangle them by eye
-in the MGPS90 image.  The MGPS90 - 20 cm image is negative in the 20
+in the \MGPS image.  The \MGPS - 20 cm image is negative in the 20
 cm-dominated regions, likely indicating that there is substantial nonthermal
 emission in these HII regions.  While there are no known supernovae in the region, the population
 of OB and Wolf-Rayet stars powering the expanding HII region may also
@@ -1197,8 +1199,8 @@ the associated emission is nonthermal.
 % consistent w/-0.12 but the edges are ~-0.46.  It's beyond the scope of this
 % paper to go into that level of detailed analysis, though
 
-The decomposed images are shown in Figures
-\ref{fig:arches_freefree}-\ref{fig:w51mainfreefree}.
+The decomposed images are shown in Figures \ref{fig:arches_freefree},
+\ref{fig:w43freefree}, and Appendix \ref{sec:freefreeappendix}.
 
 \begin{table*}[htp]
 \centering
@@ -1232,7 +1234,7 @@ In the regions of interest, the dust contribution at 3 mm is limited to
 $\lesssim20\%$ on the several arcminute scales probed.  Regions with substantial
 synchrotron contributions from supernova remnants (W49b, W51b) or other mechanisms
 (the Arches) have an even lower contribution from dust, $<10\%$.  In short, the 
-integrated diffuse emission detected in MGPS90 is dominated by emission from hot gas rather
+integrated diffuse emission detected in \MGPS is dominated by emission from hot gas rather
 than from cold molecular gas.  We are, however, unable to determine whether the \emph{area}
 of the survey is dominated by hot or cold gas, as the large angular scale filtering of the
 interferometric data sets prevents such an assessment; it remains possible that the area
@@ -1250,17 +1252,17 @@ flux is clearly dominated by hot gas.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G01_arches_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G01 field centered on the
+    \caption{Decomposition of the \MGPS data in the G01 field centered on the
     Arches region. 
     All images are displayed on the same intensity scale.  In the G01 field,
-    the 20\,cm data have 30\arcsec resolution, so the MGPS90 data have been
+    the 20\,cm data have 30\arcsec resolution, so the \MGPS data have been
     smoothed to match
     the resolution of the other images.
     \edit{From left to right,}
     (a; 870 \um scaled) ATLASGAL 870 \um scaled to 3 mm,
-    (b; 3 mm free-free) smoothed MGPS90 - scaled ATLASGAL,
-    (c; 3 mm) MGPS90,
-    (d; 3 mm Dust) smoothed MGPS90 - scaled VLA 20 cm continuum,
+    (b; 3 mm free-free) smoothed \MGPS - scaled ATLASGAL,
+    (c; 3 mm) \MGPS,
+    (d; 3 mm Dust) smoothed \MGPS - scaled VLA 20 cm continuum,
     (e; 20 cm scaled) VLA 20 cm continuum scaled to 3 mm.
     \edit{The images are displayed with a logarithmic stretch.}
 }
@@ -1269,11 +1271,11 @@ flux is clearly dominated by hot gas.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G31_w43_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G31 field centered on W43.
+    \caption{Decomposition of the \MGPS data in the G31 field centered on W43.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     In G31, the 20 cm data have $\sim5$ \arcsec resolution, so they are
-    smoothed to match the MGPS90 data to create panels (d) and (e), while the
-    MGPS90 data are smoothed to match the ATLASGAL data to create panel (b).
+    smoothed to match the \MGPS data to create panels (d) and (e), while the
+    \MGPS data are smoothed to match the ATLASGAL data to create panel (b).
 }
 \label{fig:w43freefree}
 \end{figure*}
@@ -1284,7 +1286,7 @@ flux is clearly dominated by hot gas.
 
 \section{Conclusions}
 We have presented the pilot data for the MUSTANG 90 GHz Galactic Plane
-Survey, MGPS90.  When complete, this survey
+Survey, \MGPS.  When complete, this survey
 will cover most of the northern Galactic plane within $|b|<0.5^\circ$.
 These initial data cover several high-mass star cluster
 forming regions.  All imaged regions are dominated by free-free and synchrotron
@@ -1308,13 +1310,15 @@ RGM acknowledges support from UNAM-PAPIIT project IN104319.
 \appendix
 
 \section{Additional free-free / dust decomposition maps}
+\label{sec:freefreeappendix}
 In this appendix, we show cutout images focused on a selection of bright
 extended emission regions and the associated free-free decomposition described
 in Section \ref{sec:freefree}.
+These are Figures \ref{fig:sgrb2freefree}-\ref{fig:w51mainfreefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G01_sgrb2_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G01 field centered on Sgr B2.
+    \caption{Decomposition of the \MGPS data in the G01 field centered on Sgr B2.
     See Figure \ref{fig:arches_freefree}.
     The differences in the ATLASGAL- and 20 cm-based dust decomposition highlight the
     different angular scales recovered by those data sets.
@@ -1324,7 +1328,7 @@ in Section \ref{sec:freefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G12_w33_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G12 field centered on W33.
+    \caption{Decomposition of the \MGPS data in the G12 field centered on W33.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     The diffuse free-free emission is well-removed by subtracting the 20 cm data,
     but the compact point source appears much brighter in the 3 mm-derived map;
@@ -1337,7 +1341,7 @@ in Section \ref{sec:freefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G29_g29_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G29 field.
+    \caption{Decomposition of the \MGPS data in the G29 field.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     Some of the compact structures exhibit strong excesses at 20 cm.
 }
@@ -1346,7 +1350,7 @@ in Section \ref{sec:freefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G34_g34_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G34 field centered on G34.26+0.15.
+    \caption{Decomposition of the \MGPS data in the G34 field centered on G34.26+0.15.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     The vertical streak is an artifact as mentioned in Figure \ref{fig:g34overview}.
 }
@@ -1356,7 +1360,7 @@ in Section \ref{sec:freefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G43_w49a_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G43 field centered on W49A.
+    \caption{Decomposition of the \MGPS data in the G43 field centered on W49A.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     As in Figure \ref{fig:g29freefree}, several compact structures appear to have
     excess 20 cm emission.  However, other structures exhibit free-free
@@ -1368,7 +1372,7 @@ in Section \ref{sec:freefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G43_w49b_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G43 field centered on W49B.
+    \caption{Decomposition of the \MGPS data in the G43 field centered on W49B.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     W49B is a supernova remnant completely dominated by synchrotron emission.
     Panel (b) therefore shows synchrotron, not free-free, emission.
@@ -1378,7 +1382,7 @@ in Section \ref{sec:freefree}.
 
 \begin{figure*}[htp]
     \includegraphics[width=17cm]{figures/G49_w51main_5panel.pdf}
-    \caption{Decomposition of the MGPS90 data in the G49 field centered on W51 Main.
+    \caption{Decomposition of the \MGPS data in the G49 field centered on W51 Main.
     See Figure \ref{fig:arches_freefree} for a description of the panels.
     There is a mix of under- and over-subtracted emission in the dust map in panel (d);
     the arc shape in the center is purely free-free emission \citep{Ginsburg2016a,Ginsburg2017a}, but
