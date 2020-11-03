@@ -1,6 +1,10 @@
 import os
+import socket
 
-rootdir = '/Users/adam/work/mgps/'
+if socket.gethostname() == 'alien':
+    rootdir = '/home/adam/work/mgps/'
+else:
+    rootdir = '/Users/adam/work/mgps/'
 
 figure_path = rootdir + 'figures/'
 overview_figure_path = rootdir + 'figures/overview/'

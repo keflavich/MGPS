@@ -1,3 +1,4 @@
+import paths
 files = {
     'G31':'../GAL_031/GAL031_5pass_1_.0.2_10mJy_10mJy_final_smooth4.fits',
     #'SgrB2':'../SgrB2/SgrB2_precon_2_arcsec_pass_9.fits',
@@ -7,7 +8,7 @@ files = {
 }
 
 basepath = '/Volumes/external/mgps/'
-basepath = '/Users/adam/work/mgps/Feb5_2019/'
+basepath = f'{paths.rootdir}/Feb5_2019/'
 
 
 files = {
