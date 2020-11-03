@@ -132,7 +132,7 @@ for regname,fn in files.items():
             mask = kept & (cmdetected & ~mmdetected)
             if any(mask):
                 keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
-                                   marker='o', linestyle='none',
+                                   marker='^', linestyle='none',
                                    markerfacecolor='none', markeredgecolor='b',
                                    transform=ax.get_transform('world'))
             mask = kept & cm_mm_nondetection
@@ -144,8 +144,15 @@ for regname,fn in files.items():
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.pdf", bbox_inches='tight')
 
+            extended = (catalog['rejected'] == 0) & (catalog['MorphologyClass'] != 'C')
+            if any(extended):
+                keptpts, = ax.plot(catalog['x_cen'][extended], catalog['y_cen'][extended],
+                                   marker='o', linestyle='none',
+                                   markerfacecolor='none', markeredgecolor='red',
+                                   transform=ax.get_transform('world'))
+
             if any(~kept):
-                allpts, = ax.plot(catalog['x_cen'][~kept], catalog['y_cen'][~kept],
+                allpts, = ax.plot(catalog['x_cen'][~(kept | extended)], catalog['y_cen'][~(kept | extended)],
                                   marker='x', linestyle='none',
                                   markerfacecolor='none', markeredgecolor='r',
                                   transform=ax.get_transform('world'))
