@@ -19,6 +19,12 @@ from astropy.visualization import (MinMaxInterval, AsinhStretch,
                                    PercentileInterval,
                                    ImageNormalize)
 
+otype_markers = {'Evolved star': ('*', 'r'),
+                 'HII region': ('o', 'blue'),
+                 'HII/YSO': ('s', 'cyan'),
+                 'PN': ('x', 'm'),
+                 'YSO': ('d', 'green')}
+
 
 reglist = regions.io.read_ds9('cutout_regions.reg')
 cutout_regions = {reg.meta['label']: reg for reg in reglist}
@@ -30,6 +36,8 @@ for regname,fn in files.items():
 
             #catalog = Table.read(f'{catalog_path}/{regname}_dend_contour_thr{threshold}_minn{min_npix}_mind{min_delta}_crossmatch_gaussfits.ipac', format='ascii.ipac')
             catalog = Table.read(f'{catalog_path}/concatenated_catalog.ipac', format='ascii.ipac')
+            # downselect to only this field
+            catalog = catalog[catalog['FieldID'] == regname]
 
             fig = pl.figure(1)
             fig.clf()
@@ -84,9 +92,10 @@ for regname,fn in files.items():
 
             bbox = ax.get_position()
             bad_height = bbox.height
+            # this stuff is almost certainly a hack to make things render
             print(f"bbox_height = {bbox.height}")
             fig.savefig(f"{overview_figure_path}/{regname}_overview.pdf", bbox_inches='tight')
-            fig.savefig(f"{overview_figure_path}/{regname}_overview.png", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview.png", bbox_inches='tight', dpi=200)
             bbox = ax.get_position()
             bad_height = bbox.height
             print(f"bbox_height = {bbox.height}")
@@ -106,7 +115,7 @@ for regname,fn in files.items():
             cb.set_label("$S_{3 mm}$ [Jy beam$^{-1}$]")
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview.pdf", bbox_inches='tight')
-            fig.savefig(f"{overview_figure_path}/{regname}_overview.png", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview.png", bbox_inches='tight', dpi=200)
 
             bolocamdetected = ~((catalog['Fint1100um'] == 0))
             atlasgaldetected = ~((catalog['Fint870um'] == 0))
@@ -125,33 +134,44 @@ for regname,fn in files.items():
                 keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
                                    marker='^', linestyle='none',
                                    markerfacecolor='none', markeredgecolor='m',
+                                   label="mm & cm",
                                    transform=ax.get_transform('world'))
             mask = kept & (mmdetected & ~cmdetected)
             if any(mask):
                 keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
                                    marker='s', linestyle='none',
                                    markerfacecolor='none', markeredgecolor='g',
+                                   label="mm, not cm",
                                    transform=ax.get_transform('world'))
             mask = kept & (cmdetected & ~mmdetected)
             if any(mask):
                 keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
-                                   marker='^', linestyle='none',
+                                   marker='v', linestyle='none',
+                                   label="cm, not mm",
                                    markerfacecolor='none', markeredgecolor='b',
                                    transform=ax.get_transform('world'))
             mask = kept & cm_mm_nondetection
             if any(mask):
                 keptpts, = ax.plot(catalog['x_cen'][mask], catalog['y_cen'][mask],
                                    marker='d', linestyle='none',
+                                   label='no mm, no cm',
                                    markerfacecolor='none', markeredgecolor='orange',
                                    transform=ax.get_transform('world'))
 
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_nolegend.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_nolegend.png", bbox_inches='tight', dpi=200)
+
+            pl.sca(ax)
+            leg = ax.legend(loc='top left')
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.pdf", bbox_inches='tight')
-            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.png", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.png", bbox_inches='tight', dpi=200)
+            leg.remove()
 
             extended = (catalog['rejected'] == 0) & (catalog['MorphologyClass'] != 'C')
             if any(extended):
                 keptpts, = ax.plot(catalog['x_cen'][extended], catalog['y_cen'][extended],
                                    marker='o', linestyle='none',
+                                   label='Extended',
                                    markerfacecolor='none', markeredgecolor='red',
                                    transform=ax.get_transform('world'))
 
@@ -162,7 +182,7 @@ for regname,fn in files.items():
                                   transform=ax.get_transform('world'))
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withrejectcatalog.pdf", bbox_inches='tight')
-            fig.savefig(f"{overview_figure_path}/{regname}_overview_withrejectcatalog.png", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withrejectcatalog.png", bbox_inches='tight', dpi=200)
 
             allpts.set_visible(False)
 
@@ -173,11 +193,31 @@ for regname,fn in files.items():
                 hiicandpts, = ax.plot(catalog['x_cen'][mask],
                                       catalog['y_cen'][mask],
                                       marker='+', linestyle='none',
+                                      label='HCHII candidate',
                                       markerfacecolor='b', markeredgecolor='c',
                                       transform=ax.get_transform('world'))
 
-
+            leg = ax.legend(loc='top left')
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_andHII.pdf", bbox_inches='tight')
-            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_andHII.png", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_andHII.png", bbox_inches='tight', dpi=200)
+            leg.remove()
+
+            for ln in ax.get_lines():
+                ln.remove()
+
+            for otype, (shape, color) in otype_markers.items():
+                mask = catalog['RMSClass'] == otype
+                if any(mask):
+                    rmspts, = ax.plot(catalog['x_cen'][mask],
+                                      catalog['y_cen'][mask], marker=shape,
+                                      linestyle='none', label=otype,
+                                      markerfacecolor='none',
+                                      markeredgecolor=color,
+                                      transform=ax.get_transform('world'))
+
+            leg = ax.legend(loc='top left')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withRMStypes.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withRMStypes.png", bbox_inches='tight', dpi=200)
+
 
             axbbox = ax.bbox.transformed(fig.transFigure.inverted())
