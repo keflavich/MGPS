@@ -85,6 +85,7 @@ for regname,fn in files.items():
             bad_height = bbox.height
             print(f"bbox_height = {bbox.height}")
             fig.savefig(f"{overview_figure_path}/{regname}_overview.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview.png", bbox_inches='tight')
             bbox = ax.get_position()
             bad_height = bbox.height
             print(f"bbox_height = {bbox.height}")
@@ -104,6 +105,7 @@ for regname,fn in files.items():
             cb.set_label("$S_{3 mm}$ [Jy beam$^{-1}$]")
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview.png", bbox_inches='tight')
 
             bolocamdetected = ~((catalog['Fint1100um'] == 0))
             atlasgaldetected = ~((catalog['Fint870um'] == 0))
@@ -143,6 +145,7 @@ for regname,fn in files.items():
                                    transform=ax.get_transform('world'))
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog.png", bbox_inches='tight')
 
             extended = (catalog['rejected'] == 0) & (catalog['MorphologyClass'] != 'C')
             if any(extended):
@@ -158,6 +161,7 @@ for regname,fn in files.items():
                                   transform=ax.get_transform('world'))
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withrejectcatalog.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withrejectcatalog.png", bbox_inches='tight')
 
             allpts.set_visible(False)
 
@@ -173,5 +177,6 @@ for regname,fn in files.items():
 
 
             fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_andHII.pdf", bbox_inches='tight')
+            fig.savefig(f"{overview_figure_path}/{regname}_overview_withcatalog_andHII.png", bbox_inches='tight')
 
             axbbox = ax.bbox.transformed(fig.transFigure.inverted())
